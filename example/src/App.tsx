@@ -1,18 +1,27 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-a11y-order';
+import { A11yOrder, useFocusOrder } from 'react-native-a11y-order';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const { a11yOrder, refs } = useFocusOrder<Text>(3);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <A11yOrder a11yOrder={a11yOrder}>
+        <Text style={styles.font} ref={refs[0]}>
+          First
+        </Text>
+        <Text style={styles.font} ref={refs[2]}>
+          Third
+        </Text>
+        <Text style={styles.font} ref={refs[1]}>
+          Second
+        </Text>
+      </A11yOrder>
+      <Text style={styles.font}>Four</Text>
+      <Text style={styles.font}>Five</Text>
+      <Text style={styles.font}>Six</Text>
     </View>
   );
 }
@@ -23,6 +32,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  font: { fontSize: 25 },
   box: {
     width: 60,
     height: 60,

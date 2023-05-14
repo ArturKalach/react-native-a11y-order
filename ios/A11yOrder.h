@@ -1,12 +1,6 @@
-
-#ifdef RCT_NEW_ARCH_ENABLED
-#import "RNA11yOrderSpec.h"
-
-@interface A11yOrder : NSObject <NativeA11yOrderSpec>
-#else
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
-@interface A11yOrder : NSObject <RCTBridgeModule>
-#endif
+@interface A11yOrder : RCTEventEmitter <RCTBridgeModule>
 
 @end

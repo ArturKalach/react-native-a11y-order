@@ -160,6 +160,6 @@
   "codegenConfig": {
     "name": "RNA11yOrderSpec",
     "type": "modules",
-    "jsSrcsDir": "src"
+    "jsSrcsDir": "src/nativeSpecs"
   }
 }
