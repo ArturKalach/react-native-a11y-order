@@ -10,7 +10,7 @@ const LINKING_ERROR =
 const isTurboModuleEnabled = global.__turboModuleProxy != null;
 
 const A11yOrderModule = isTurboModuleEnabled
-  ? require('./NativeA11yOrder').default
+  ? require('../nativeSpecs/NativeA11yOrder').default
   : NativeModules.A11yOrder;
 
 const A11yOrder = A11yOrderModule
@@ -24,6 +24,9 @@ const A11yOrder = A11yOrderModule
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return A11yOrder.multiply(a, b);
+export function setA11yOrder(
+  tags: number[],
+  targetView?: number
+): Promise<number> {
+  return A11yOrder.setA11yOrder(tags, targetView);
 }

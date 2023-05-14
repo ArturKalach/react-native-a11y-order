@@ -1,13 +1,15 @@
 package com.a11yorder;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReadableArray;
 
-abstract class A11yOrderSpec extends ReactContextBaseJavaModule {
+public abstract class A11yOrderSpec extends ReactContextBaseJavaModule {
   A11yOrderSpec(ReactApplicationContext context) {
     super(context);
   }
 
-  public abstract void multiply(double a, double b, Promise promise);
+  public abstract void setA11yOrder(@NonNull ReadableArray reactTags, Double _tag);
 }

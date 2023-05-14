@@ -12,6 +12,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		49BCF49E2A10F7D300AAB9D7 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BCF49B2A10F7D300AAB9D7 /* GameKit.framework */; };
+		49BCF49F2A10F7D300AAB9D7 /* GameplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BCF49C2A10F7D300AAB9D7 /* GameplayKit.framework */; };
+		49BCF4A02A10F7D300AAB9D7 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BCF49D2A10F7D300AAB9D7 /* GameController.framework */; };
 		7699B88040F8A987B510C191 /* libPods-A11yOrderExample-A11yOrderExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-A11yOrderExample-A11yOrderExampleTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -38,6 +41,9 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = A11yOrderExample/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-A11yOrderExample-A11yOrderExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-A11yOrderExample-A11yOrderExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-A11yOrderExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A11yOrderExample.debug.xcconfig"; path = "Target Support Files/Pods-A11yOrderExample/Pods-A11yOrderExample.debug.xcconfig"; sourceTree = "<group>"; };
+		49BCF49B2A10F7D300AAB9D7 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		49BCF49C2A10F7D300AAB9D7 /* GameplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameplayKit.framework; path = System/Library/Frameworks/GameplayKit.framework; sourceTree = SDKROOT; };
+		49BCF49D2A10F7D300AAB9D7 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		5709B34CF0A7D63546082F79 /* Pods-A11yOrderExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A11yOrderExample.release.xcconfig"; path = "Target Support Files/Pods-A11yOrderExample/Pods-A11yOrderExample.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-A11yOrderExample-A11yOrderExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-A11yOrderExample-A11yOrderExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-A11yOrderExample-A11yOrderExampleTests/Pods-A11yOrderExample-A11yOrderExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-A11yOrderExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-A11yOrderExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -59,6 +65,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49BCF49E2A10F7D300AAB9D7 /* GameKit.framework in Frameworks */,
+				49BCF49F2A10F7D300AAB9D7 /* GameplayKit.framework in Frameworks */,
+				49BCF4A02A10F7D300AAB9D7 /* GameController.framework in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-A11yOrderExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,6 +108,9 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49BCF49D2A10F7D300AAB9D7 /* GameController.framework */,
+				49BCF49B2A10F7D300AAB9D7 /* GameKit.framework */,
+				49BCF49C2A10F7D300AAB9D7 /* GameplayKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-A11yOrderExample.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-A11yOrderExample-A11yOrderExampleTests.a */,
@@ -486,6 +498,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XN4LC2S5W9;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = A11yOrderExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -513,6 +526,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XN4LC2S5W9;
 				INFOPLIST_FILE = A11yOrderExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -564,7 +578,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -598,6 +612,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -635,7 +650,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -661,6 +676,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
