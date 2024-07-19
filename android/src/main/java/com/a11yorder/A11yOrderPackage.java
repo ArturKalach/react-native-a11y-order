@@ -1,14 +1,21 @@
 package com.a11yorder;
 
+
 import androidx.annotation.Nullable;
 
+import com.a11yorder.views.A11yDirectionView.A11yDirectionViewManager;
+import com.a11yorder.views.A11yIndexView.A11yIndexViewManager;
+import com.a11yorder.views.A11yOrderView.A11yOrderViewManager;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.module.model.ReactModuleInfo;
 import com.facebook.react.module.model.ReactModuleInfoProvider;
 import com.facebook.react.TurboReactPackage;
+import com.facebook.react.uimanager.ViewManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class A11yOrderPackage extends TurboReactPackage {
@@ -41,5 +48,14 @@ public class A11yOrderPackage extends TurboReactPackage {
       ));
       return moduleInfos;
     };
+  }
+
+  @Override
+  public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+    List<ViewManager> viewManagers = new ArrayList<>();
+    viewManagers.add(new A11yIndexViewManager());
+    viewManagers.add(new A11yOrderViewManager());
+    viewManagers.add(new A11yDirectionViewManager());
+    return viewManagers;
   }
 }
