@@ -113,12 +113,15 @@ using namespace facebook::react;
     
     BOOL isOrderChanged = oldViewProps.orderKey != newViewProps.orderKey || _orderKey == nil;
     if(isOrderChanged) {
-        [self setOrderKey:  [NSString stringWithUTF8String:newViewProps.orderKey.c_str()]];
+        [self setOrderKey: [NSString stringWithUTF8String:newViewProps.orderKey.c_str()]];
     }
-    
-    if((isIndexChanged || isOrderChanged) && self.subviews.count > 0) {
+}
+
+- (void)finalizeUpdates:(RNComponentViewUpdateMask)updateMask {
+    if(self.subviews.count > 0) {
         [self linkIndex: self.subviews[0]];
     }
+    [super finalizeUpdates:updateMask];
 }
 
 - (void)focusView {

@@ -1,8 +1,15 @@
 # React Native A11y Order
 
-React Native A11y Order Library for modifying screen reader order.
+React Native A11y Order Library: Advanced control of screen reader order.
 
-Sometimes we need change reader order, some time we need group components for better reading. `react-native-a11y-order` is native first library for solving problems with ordering of screen readers on Android and iOS.
+Setting the right reading order can be a challenge, but there is a way to do it. The react-native-a11y-order is a native-first library designed to solve problems with the ordering of screen readers on both Android and iOS platforms.
+
+| iOS reader                                                | Android reader                                                |
+| --------------------------------------------------------- | ------------------------------------------------------------- |
+| <img src="/.github/images/ios-reader.gif" height="500" /> | <img src="/.github/images/android-reader.gif" height="500" /> |
+
+- New architecture
+- Backward compatibility
 
 ## Installation
 
@@ -10,11 +17,17 @@ Sometimes we need change reader order, some time we need group components for be
 npm install react-native-a11y-order
 ```
 
+```sh
+yarn add react-native-a11y-order
+```
+
 ## Usage
 
 #### A11y.Order, A11y.Index
 
-The order system include two native based view components: A11y.Order and A11y.Index
+There is always a question about how to set the focus order for a screen reader in React Native. `A11y.Order` and `A11y.Index` are designed to assist with this task. `A11y.Order` is a container component that defines an ordering group, while `A11y.Index` is a wrapper component that helps define a position within the order. 
+
+To illustrate, let's look at an example:
 
 ```js
 import { A11y } from 'react-native-a11y-order';
@@ -41,16 +54,15 @@ export default function App() {
           </Text>
         </A11y.Index>
       </A11y.Order>
-      <Text style={styles.font}>Four</Text>
-      <Text style={styles.font}>Five</Text>
-      <Text style={styles.font}>Six</Text>
+      <Text style={styles.font}>Fourth</Text>
+      <Text style={styles.font}>Fifth</Text>
+      <Text style={styles.font}>Sixth</Text>
     </View>
   );
 }
 ```
 
-Additionaly, `A11y.Index` includes posibility to focus content programaticaly:
-
+Additionally, for dynamic interaction scenarios, setting focus programmatically can be very useful. This can be achieved using the focus command via a component ref.
 
 ```js
 import { A11y, IndexCommands } from 'react-native-a11y-order';
@@ -76,10 +88,8 @@ export default function App() {
 ```
 
 > [!NOTE]
-> Becouse of native nature, it is better to wrap all component inside `A11y.Order` with `A11y.Index`. The component which is not wrapped inside `A11y.Index` can be skiped from reading order (iOS), or readed at the end (Android). If you need to manage lot's of element try to group them with view and then controle via the ordering system, you can find example below.
+> Because of its native nature, it is important to wrap all components inside `A11y.Order` with `A11y.Index`. Components not wrapped in `A11y.Index` may be skipped from the reading order on iOS, or read at the end on Android. If you need to manage many elements, try to group them with a view and then control them via the ordering system. You can find an example below.
 
-<details>
-  <summary>Group with order example</summary>
 
 Don't: 
 
@@ -95,16 +105,16 @@ export default function App() {
         </A11y.Index>
         <Text style={styles.font}>
           Third
-        </Text> // <===== don't left unwrap components
+        </Text> // <===== Do not leave components unwrapped
         <A11y.Index index={2}>
           <Text style={styles.font}>
             Second
           </Text>
         </A11y.Index>
-        <Text style={styles.font}>Four</Text>  // <===== this is also wrong
-        <Text style={styles.font}>Five</Text>
+        <Text style={styles.font}>Fourth</Text>  // <===== This is also incorrect
+        <Text style={styles.font}>Fifth</Text>
       </A11y.Order>
-      <Text style={styles.font}>Six</Text> // <===== this is correct becouse it is out of `A11y.Order`
+      <Text style={styles.font}>Sixth</Text> // <===== This is correct because it is outside of `A11y.Order`
     </View>
   );
 }
@@ -147,9 +157,7 @@ export default function App() {
 }
 ```
 
-</details>
-
-
+A11y.Index Props:
 
 | Props          | Description                                      |
 | -------------- | ------------------------------------------------ |
@@ -158,9 +166,22 @@ export default function App() {
 | ref: focus     | focus command for setting accessibility focus    |
 
 
+A11y.Order Props:
+
+| Props          | Description                                      |
+| -------------- | ------------------------------------------------ |
+| ViewProps      | Default View props includin style, testID, etc   |
+
+
+
+
 #### A11y.Group
 
-A11y.Group is created to solve problem with reading components in `ScrollView` or `FlatList` with `horizontal={true}` mode. In the new architecture this issue has been partionaly fixed, but application which are not used new architecture yet could came across with order problem.
+`A11y.Group` can be used to enhance the experience of screen readers navigating through `ScrollView` or `FlatList` with the horizontal property enabled. You can skip this if you are using the new architecture; however, it is the best for applications that have not yet migrated.
+
+| View                                                      | A11y.Group                                                    |
+| --------------------------------------------------------- | ------------------------------------------------------------- |
+| <img src="/.github/images/horizontal-scroll-view.gif" height="500" /> | <img src="/.github/images/horizontal-scroll-group.gif" height="500" /> |
 
 ```js
 import { A11y, IndexCommands } from 'react-native-a11y-order';
@@ -206,27 +227,25 @@ export default function App() {
 <details>
   <summary>Why?</summary>
 
+The previous versions of this library used native modules to update order, but in a world with Fabric components and new architecture, there is no visible future for managing native components via modules or `findNodeHandler`.
 
-The privious versions of this library used native modules to update order, but in the world with Fabric components and new architecture there are no future visible future for managing native components via modules or findNodeHandler.  
+I thought a lot about retaining the previous API for support and compatibility, but after investigation, it was decided to deprecate the 'old' API and remove it in future releases.
 
-I thought a lot about keeping previous API for support and capability, but after investigation it has been decided to depricate "old" API and remove it future releases.
-
-The new approach is better, we don't need manage refs, worry about attaching nodes to the screen, and it works on native, additionaly new approach is follow ReactNative concept what would make it easier to support in future (hello there: bridgeles).
-
+The new approach is better: we no longer need to manage refs, worry about attaching nodes to the screen, and it works natively. Additionally, this new approach follows the React Native concept, which will make it easier to support in the future (hello there: bridgeless).
 
 </details>
 
-1. Update: `A11yOrder` with `A11y.Order`
+1. Update: `A11yOrder` to `A11y.Order`
 
 ```js
-  Privious: <A11yOrder a11yOrder={a11yOrder}>
+  Previous: <A11yOrder a11yOrder={a11yOrder}>
   Now: <A11y.Order>
 ```
 
-2. Wrap components into `A11y.Index`
+2. Wrap components in `A11y.Index`
 
 ```js
-  Privious: <Text style={styles.font} ref={refs[0]}>
+  Previous: <Text style={styles.font} ref={refs[0]}>
     First
   </Text>
   Now: <A11y.Index index={1}>
@@ -236,7 +255,7 @@ The new approach is better, we don't need manage refs, worry about attaching nod
   </A11y.Index>
 ```
 
-3. Remove unesesary refs
+3. Remove unnecessary refs
 
 ```js
 <A11y.Index index={1}>
@@ -246,8 +265,9 @@ The new approach is better, we don't need manage refs, worry about attaching nod
 </A11y.Index>
 ```
 
-This is all, the index changes, removements, etc... should work out of the box.
+4. Remove deprecated hooks and utilities: `useFocusOrder`, `useDynamicFocusOrder`, `useA11yOrderManager`.
 
+That's all. The index changes, removals, etc., should work out of the box.
 
 ## Contributing
 
