@@ -20,10 +20,20 @@ const COUNT_OF_FRAMES = 1;
 
 const DEBOUNCE_DELAY = SECONDS_PER_FRAME * COUNT_OF_FRAMES;
 
+/**
+ * @deprecated The method should not be used
+ * This API is going to be removed in future releases, you can find migration instruction here: https://github.com/ArturKalach/react-native-a11y-order?tab=readme-ov-file#migration
+ */
 export const useA11yOrderManager = <T extends React.Component>(
   orderRef: RefObject<View>,
-  onlyFor?: Platform['OS']
+  onlyFor?: Platform['OS'],
+  ignoreWarn?: Boolean
 ) => {
+  if (!ignoreWarn) {
+    console.warn(
+      'useA11yOrderManager: This API is going to be removed in future releases, you can find migration instruction here: https://github.com/ArturKalach/react-native-a11y-order?tab=readme-ov-file#migration'
+    );
+  }
   const currentRef = useRef<(T | null)[]>([]);
   const registeredRefs = useRef<(T | null)[]>([]);
 

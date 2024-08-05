@@ -37,6 +37,17 @@
     [view setAccessibilityElements: [_positions getValues]];
 }
 
+- (void)update:(NSNumber*)lastPosition withPosition:(NSNumber*)position withObject:(NSObject*)obj {
+    [_positions update:lastPosition withPosition:position withObject:obj];
+    if(_container != nil) {
+        [_container setAccessibilityElements: [_positions getValues]];
+    }
+}
+
+-(void)clear {
+    [_positions clear];
+}
+
 -(UIView*)getContainer {
     return _container;
 }

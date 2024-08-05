@@ -5,4 +5,5 @@ export type A11yOrderProps = {
     ref: React.RefObject<View>;
     onLayout: () => void;
   };
+  ignoreWarn?: boolean;
 } & ViewProps;

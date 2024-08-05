@@ -1,9 +1,8 @@
 package com.a11yorder;
 
-import android.view.ViewGroup;
+import com.a11yorder.views.A11yOrderView.A11yOrderView;
+import com.facebook.react.views.view.ReactViewManager;
 
-import com.facebook.react.uimanager.ViewGroupManager;
-
-public abstract class A11yOrderViewManagerSpec<T extends ViewGroup> extends ViewGroupManager<T> {
-  public abstract void setIndexes(T wrapper, @Nullable ReadableArray value);
+public abstract class A11yOrderViewManagerSpec<T extends A11yOrderView> extends ReactViewManager {
+  public abstract void setOrderKey(T view, @androidx.annotation.Nullable String value);
 }

@@ -13,8 +13,6 @@
 #import <React/RCTUIManager.h>
 #import "RNAOA11yOrderView.h"
 #import "RNAOA11yOrderViewManager.h"
-#import "RCTBridge.h"
-#import "RNAOA11yOrderView.h"
 
 @implementation RNAOA11yOrderViewManager
 

@@ -1,9 +1,12 @@
 package com.a11yorder;
 
-import android.view.ViewGroup;
+import com.a11yorder.views.A11yIndexView.A11yIndexView;
+import com.facebook.react.views.view.ReactViewManager;
 
-import com.facebook.react.uimanager.ViewGroupManager;
+public abstract class A11yIndexViewManagerSpec<T extends A11yIndexView> extends ReactViewManager {
+  public abstract void setOrderIndex(T viewGroup, int value);
 
-public abstract class A11yIndexViewManagerSpec<T extends ViewGroup> extends ViewGroupManager<T> {
-  public abstract void setOrderIndex(T wrapper, String orderIndex);
+  public abstract void setOrderKey(T viewGroup, String value);
+
+  public abstract void focus(T view);
 }

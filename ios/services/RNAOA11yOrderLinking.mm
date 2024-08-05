@@ -54,6 +54,22 @@
     }
 }
 
+- (void)update:(NSNumber*)position lastPosition:(NSNumber*)lastPosition withOrderKey:(NSString*)orderKey withView:(UIView*) view {
+    RNAOA11yRelashioship* relashioship = [_relationships objectForKey: orderKey];
+    if(relashioship != nil) {
+        [relashioship update:lastPosition withPosition:position withObject:view];
+    }
+}
+
+- (void)removeContainer:(NSString*)orderKey {
+    RNAOA11yRelashioship* relashioship = [_relationships objectForKey: orderKey];
+    if(relashioship != nil) {
+        [_relationships removeObjectForKey:orderKey];
+        [relashioship clear];
+    }
+    [self setAccessibilityElements: nil];
+}
+
 -(UIView*)getContainer:(NSString*)orderKey withView:(UIView*) view {
     RNAOA11yRelashioship* relashioship = [_relationships objectForKey: orderKey];
     if(relashioship != nil) {

@@ -1,14 +1,13 @@
 //
-//  RNAOA11yDirectionView.h
+//  RNAOA11yGroupView.h
 //  A11yOrder
 //
 //  Created by Artur Kalach on 13/07/2024.
 //  Copyright © 2024 Facebook. All rights reserved.
 //
 
-#ifndef RNAOA11yDirectionView_h
-#define RNAOA11yDirectionView_h
-
+#ifndef RNAOA11yGroupView_h
+#define RNAOA11yGroupView_h
 
 
 #import <UIKit/UIKit.h>
@@ -20,7 +19,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNAOA11yDirectionView : RCTViewComponentView
+@interface RNAOA11yGroupView : RCTViewComponentView
+@end
 
 NS_ASSUME_NONNULL_END
 
@@ -29,10 +29,9 @@ NS_ASSUME_NONNULL_END
 
 
 #import <React/RCTView.h>
-@interface RNAOA11yDirectionView : RCTView
-
+@interface RNAOA11yGroupView : RCTView
 @end
 
 #endif
 
-#endif /* RNAOA11yDirectionView_h */
+#endif /* RNAOA11yGroupView_h */

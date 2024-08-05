@@ -1,58 +1,31 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
-import { A11ySequence, A11yDirection } from 'react-native-a11y-order';
+import { StyleSheet, View } from 'react-native';
+import { SliderExample } from './components/SliderExample';
+import { CircleExample } from './components/CircleExample';
+import { ReorderExample } from './components/ReorderExample';
+import { Button } from 'react-native';
 
-const R = () => {
-  const id = React.useId();
-  return (
-    <A11yDirection style={{ flex: 1 }}>
-      <View>
-        <View>
-          <Text>{id}</Text>
-        </View>
-        <View>
-          <Text>-{id}</Text>
-        </View>
-      </View>
-    </A11yDirection>
-  );
-};
+enum Examples {
+  Circle = 'circle',
+  Slider = 'slider',
+  Shuffle = 'shiffle',
+}
 
 export default function App() {
-  // const { a11yOrder, refs } = useFocusOrder<Text>(3);
+  const [example, setExample] = React.useState(Examples.Circle);
 
   return (
     <View style={styles.container}>
-      <View style={{ height: 100, width: 20 }} />
-      <ScrollView contentContainerStyle={{ flex: 1 }} horizontal>
-        <R />
-        <R />
-        <R />
-        <R />
-        <R />
-        <R />
-        <R />
-        <R />
-      </ScrollView>
+      {example === Examples.Circle && <CircleExample />}
+      {example === Examples.Slider && <SliderExample />}
+      {example === Examples.Shuffle && <ReorderExample />}
 
-      <A11ySequence.Container>
-        <A11ySequence.Index index={1}>
-          <Text style={styles.font}>First</Text>
-        </A11ySequence.Index>
-        <A11ySequence.Index index={3}>
-          <Text style={styles.font}>Third</Text>
-        </A11ySequence.Index>
-        <A11ySequence.Index index={2}>
-          <Text style={styles.font}>Second</Text>
-        </A11ySequence.Index>
-        <A11ySequence.Index index={4}>
-          <View>
-            <Text style={styles.font}>Fourth</Text>
-            <Text style={styles.font}>Fifth</Text>
-          </View>
-        </A11ySequence.Index>
-      </A11ySequence.Container>
+      <View style={styles.btns}>
+        <Button title="Circle" onPress={() => setExample(Examples.Circle)} />
+        <Button title="Slider" onPress={() => setExample(Examples.Slider)} />
+        <Button title="Shuffle" onPress={() => setExample(Examples.Shuffle)} />
+      </View>
     </View>
   );
 }
@@ -69,4 +42,5 @@ const styles = StyleSheet.create({
     height: 60,
     marginVertical: 20,
   },
+  btns: { flexDirection: 'row', marginTop: 10 },
 });

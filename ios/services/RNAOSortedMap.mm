@@ -27,15 +27,12 @@
     return self;
 }
 
-- (void)put:(NSNumber*)position withObject:(NSObject*)obj {
-    _hasBeenChanged = YES;
-    [_dirctionary setObject: obj forKey:position];
-    
+- (void)updateSortedKey:(NSNumber*)position {
     if([_sortedKeys count] == 0) {
         [_sortedKeys addObject: position];
     } else {
         NSInteger indexOfFirstLarger = -1;
-
+        
         for (NSInteger i = 0; i < _sortedKeys.count; i++) {
             NSNumber *number = _sortedKeys[i];
             if ([number integerValue] > [position integerValue]) {
@@ -43,14 +40,22 @@
                 break;
             }
         }
-
-
+        
+        
         if(indexOfFirstLarger == -1) {
             [_sortedKeys addObject: position];
         } else {
             [_sortedKeys insertObject:position atIndex:indexOfFirstLarger];
         }
     }
+}
+
+- (void)put:(NSNumber*)position withObject:(NSObject*)obj {
+    _hasBeenChanged = YES;
+    if([_dirctionary objectForKey:position] == nil) {
+        [self updateSortedKey: position];
+    }
+    [_dirctionary setObject: obj forKey:position];
 }
 
 - (void)remove:(NSNumber*)position {
@@ -62,13 +67,36 @@
     [_dirctionary removeObjectForKey:position];
 }
 
+
+- (void)remove:(NSNumber*)position withObject:(NSObject*)obj {
+    if([_dirctionary objectForKey:position] == obj) {
+        NSUInteger positionIndex = [_sortedKeys indexOfObject:position];
+        if (positionIndex != NSNotFound) {
+            [_sortedKeys removeObjectAtIndex:positionIndex];
+        }
+        [_dirctionary removeObjectForKey:position];
+    }
+}
+
+- (void)clear {
+    [_dirctionary removeAllObjects];
+    [_sortedKeys removeAllObjects];
+    [_cachedResult removeAllObjects];
+}
+
+- (void)update:(NSNumber*)lastPosition withPosition:(NSNumber*)position withObject:(NSObject*)obj {
+    _hasBeenChanged = YES;
+    [self remove:lastPosition withObject: obj];
+    [self put:position withObject:obj];
+}
+
 - (NSArray*)getValues {
     if(_hasBeenChanged) {
         [_cachedResult removeAllObjects];
         for (NSNumber *itemPosition in _sortedKeys) {
             NSObject *item = [_dirctionary objectForKey:itemPosition];
             if(item != nil) {
-              [_cachedResult addObject:item];
+                [_cachedResult addObject:item];
             }
         }
         return _cachedResult;

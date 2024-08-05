@@ -5,7 +5,7 @@
 
 
 #ifdef RCT_NEW_ARCH_ENABLED
-#import "A11yOrderSpec/A11yOrderSpec.h"
+#import "RNA11yOrderSpec/RNA11yOrderSpec.h"
 using namespace facebook::react;
 
 #endif

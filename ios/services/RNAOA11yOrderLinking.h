@@ -16,7 +16,8 @@
 - (void)add:(NSNumber*)position withOrderKey:(NSString*)orderKey withObject:(NSObject*)obj;
 - (void)remove:(NSNumber*)position withOrderKey:(NSString*)orderKey;
 - (void)setContainer:(NSString*)orderKey withView:(UIView*) view;
-
+- (void)removeContainer:(NSString*)orderKey;
+- (void)update:(NSNumber*)position lastPosition:(NSNumber*)_position withOrderKey:(NSString*)_orderKey withView:(UIView*) view;
 @end
 
 #endif /* RNAOA11yOrderLinking_h */

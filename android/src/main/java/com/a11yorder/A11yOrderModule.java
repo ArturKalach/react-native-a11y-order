@@ -20,9 +20,10 @@ import com.facebook.react.uimanager.common.ViewUtil;
 
 import java.util.ArrayList;
 
-public class A11yOrderModule extends A11yOrderSpec {
+public class A11yOrderModule extends com.a11yorder.A11yOrderSpec {
   public static final String NAME = "A11yOrder";
   private ReactApplicationContext context;
+
   A11yOrderModule(ReactApplicationContext context) {
     super(context);
     this.context = context;

@@ -23,6 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSNumber* position;
 @property NSString* orderKey;
 
+- (void)updatePosition:(NSNumber *)position;
+
+@end
+
 NS_ASSUME_NONNULL_END
 
 
@@ -34,6 +38,8 @@ NS_ASSUME_NONNULL_END
 
 @property NSNumber* position;
 @property NSString* orderKey;
+
+- (void)updatePosition:(NSNumber *)position;
 
 @end
 

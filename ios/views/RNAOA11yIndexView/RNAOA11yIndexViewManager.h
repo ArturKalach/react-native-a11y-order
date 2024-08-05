@@ -6,11 +6,12 @@
 //  Copyright © 2024 Facebook. All rights reserved.
 //
 
-#ifndef RNAOIndexViewManager_h
-#define RNAOIndexViewManager_h
-
+#ifndef RNAOA11yIndexViewManager_h
+#define RNAOA11yIndexViewManager_h
 
 #import <React/RCTViewManager.h>
+#import <React/RCTUIManager.h>
+
 @interface RNAOA11yIndexViewManager : RCTViewManager
 @end
 
