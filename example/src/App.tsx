@@ -1,27 +1,31 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { A11yOrder, useFocusOrder } from 'react-native-a11y-order';
+import { StyleSheet, View } from 'react-native';
+import { SliderExample } from './components/SliderExample';
+import { CircleExample } from './components/CircleExample';
+import { ReorderExample } from './components/ReorderExample';
+import { Button } from 'react-native';
+
+enum Examples {
+  Circle = 'circle',
+  Slider = 'slider',
+  Shuffle = 'shiffle',
+}
 
 export default function App() {
-  const { a11yOrder, refs } = useFocusOrder<Text>(3);
+  const [example, setExample] = React.useState(Examples.Circle);
 
   return (
     <View style={styles.container}>
-      <A11yOrder a11yOrder={a11yOrder}>
-        <Text style={styles.font} ref={refs[0]}>
-          First
-        </Text>
-        <Text style={styles.font} ref={refs[2]}>
-          Third
-        </Text>
-        <Text style={styles.font} ref={refs[1]}>
-          Second
-        </Text>
-      </A11yOrder>
-      <Text style={styles.font}>Four</Text>
-      <Text style={styles.font}>Five</Text>
-      <Text style={styles.font}>Six</Text>
+      {example === Examples.Circle && <CircleExample />}
+      {example === Examples.Slider && <SliderExample />}
+      {example === Examples.Shuffle && <ReorderExample />}
+
+      <View style={styles.btns}>
+        <Button title="Circle" onPress={() => setExample(Examples.Circle)} />
+        <Button title="Slider" onPress={() => setExample(Examples.Slider)} />
+        <Button title="Shuffle" onPress={() => setExample(Examples.Shuffle)} />
+      </View>
     </View>
   );
 }
@@ -38,4 +42,5 @@ const styles = StyleSheet.create({
     height: 60,
     marginVertical: 20,
   },
+  btns: { flexDirection: 'row', marginTop: 10 },
 });
