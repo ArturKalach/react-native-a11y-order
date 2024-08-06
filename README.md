@@ -8,6 +8,7 @@ Setting the right reading order can be a challenge, but there is a way to do it.
 | --------------------------------------------------------- | ------------------------------------------------------------- |
 | <img src="/.github/images/ios-reader.gif" height="500" /> | <img src="/.github/images/android-reader.gif" height="500" /> |
 
+- Bridgeless
 - New architecture
 - Backward compatibility
 
