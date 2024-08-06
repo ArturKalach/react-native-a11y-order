@@ -1,6 +1,6 @@
 {
   "name": "react-native-a11y-order",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "test",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -32,6 +32,7 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepack": "bob build",
     "release": "release-it",
+    "release-no-increment": "release-it --no-increment",
     "example": "yarn --cwd example",
     "bootstrap": "yarn example && yarn install && yarn example pods",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
@@ -83,7 +84,6 @@
   "engines": {
     "node": ">= 16.0.0"
   },
-  "packageManager": "^yarn@1.22.15",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
@@ -159,7 +159,7 @@
   },
   "codegenConfig": {
     "name": "RNA11yOrderSpec",
-    "type": "modules",
+    "type": "all",
     "jsSrcsDir": "src/nativeSpecs"
   }
 }
