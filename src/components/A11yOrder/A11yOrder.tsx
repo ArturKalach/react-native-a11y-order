@@ -1,6 +1,6 @@
 import React, { useCallback, useId } from 'react';
 import { View, LayoutChangeEvent } from 'react-native';
-import type { A11yOrderProps } from './A11yOrder.types';
+import type { A11yOrderProps } from '../../types/A11yOrder.types';
 
 /**
  * @deprecated The method should not be used

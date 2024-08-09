@@ -8,9 +8,9 @@ export {
   useA11yOrderManager,
 } from './hooks';
 
-export { A11yOrder } from './components';
-export type { A11yOrderProps } from './components';
-export type { IndexCommands } from './components/A11yIndex/A11yIndex';
+export { A11yOrder } from './components/A11yOrder/A11yOrder';
+export type { A11yOrderProps } from './types/A11yOrder.types';
+export type { IndexCommands } from './types/A11yIndex.types';
 
 export const A11y = {
   Order: A11yIndexSequence,

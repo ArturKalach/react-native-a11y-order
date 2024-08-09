@@ -1,13 +1,7 @@
-import type { RefObject } from 'react';
-import type { View } from 'react-native';
 import { findNodeHandle } from 'react-native';
 
 import { setA11yOrder } from './module';
-
-export type A11yOrderInfo<T> = {
-  tag?: RefObject<View>;
-  views: (T | null)[];
-};
+import { A11yOrderInfo } from '../types/A11yModule.types';
 
 export const setA11yElementsOrder = <T extends React.Component>({
   tag,
