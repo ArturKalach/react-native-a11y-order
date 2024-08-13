@@ -12,16 +12,4 @@ import com.facebook.react.views.view.ReactViewGroup;
 import com.facebook.react.views.view.ReactViewManager;
 
 public abstract class A11yIndexViewManagerSpec<T extends ReactViewGroup> extends ReactViewManager implements A11yIndexViewManagerInterface<T> {
-//
-//  private final ViewManagerDelegate<T> mDelegate;
-//
-//  public A11yIndexViewManagerSpec() {
-//    mDelegate = new A11yIndexViewManagerDelegate(this);
-//  }
-//
-//  @Nullable
-//  @Override
-//  protected ViewManagerDelegate<T> getDelegate() {
-//    return mDelegate;
-//  }
 }
