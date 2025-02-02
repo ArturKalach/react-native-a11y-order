@@ -4,6 +4,10 @@ React Native A11y Order Library: Advanced control of screen reader order.
 
 Setting the right reading order can be a challenge, but there is a way to do it. The react-native-a11y-order is a native-first library designed to solve problems with the ordering of screen readers on both Android and iOS platforms.
 
+## Breaking Changes !!!
+> The `A11yModule` and hooks `useFocusOrder`, `useDynamicFocusOrder`, and `useA11yOrderManager` have been removed. This API was deprecated and did not work properly with the new architecture. You can refer to the migration guide to update it.
+
+
 | iOS reader                                                | Android reader                                                |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
 | <img src="/.github/images/ios-reader.gif" height="500" /> | <img src="/.github/images/android-reader.gif" height="500" /> |
