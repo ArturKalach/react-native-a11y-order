@@ -1,7 +1,7 @@
 {
   "name": "react-native-a11y-order",
-  "version": "0.2.0",
-  "description": "test",
+  "version": "0.2.3",
+  "description": "ReactNative library for managing screen reader focus ordering",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
@@ -39,8 +39,15 @@
   },
   "keywords": [
     "react-native",
+    "accessibility",
+    "screen reader",
+    "focus order",
+    "VoiceOver",
+    "TalkBack",
     "ios",
-    "android"
+    "android",
+    "WCAG",
+    "a11y"
   ],
   "repository": "https://github.com/ArturKalach/react-native-a11y-order",
   "author": "Artur Kalach <artur.kalach.andreevich@gmail.com> (https://github.com/ArturKalach)",
@@ -53,8 +60,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@evilmartians/lefthook": "^1.2.2",
     "@commitlint/config-conventional": "^17.0.2",
+    "@evilmartians/lefthook": "^1.2.2",
     "@react-native-community/eslint-config": "^3.0.2",
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/jest": "^28.1.2",

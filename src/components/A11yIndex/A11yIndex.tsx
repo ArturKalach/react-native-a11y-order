@@ -1,16 +1,10 @@
 import React, { useImperativeHandle, useRef } from 'react';
-import { View, ViewProps } from 'react-native';
+import { View } from 'react-native';
 import { A11ySequenceOrderContext } from '../../context/A11ySequenceOrderContext';
 import A11yIndexView, {
   Commands,
 } from '../../nativeSpecs/A11yIndexNativeComponent';
-
-export type IndexCommands = { focus: () => void };
-
-export type A11yIndexProps = {
-  children: React.ReactNode;
-  index: number;
-} & ViewProps;
+import { A11yIndexProps, IndexCommands } from '../../types/A11yIndex.types';
 
 export const A11yIndex = React.memo(
   React.forwardRef<IndexCommands, A11yIndexProps>(
