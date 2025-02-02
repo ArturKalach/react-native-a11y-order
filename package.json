@@ -1,6 +1,6 @@
 {
   "name": "react-native-a11y-order",
-  "version": "0.2.3-rc2",
+  "version": "0.2.3",
   "description": "ReactNative library for managing screen reader focus ordering",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
