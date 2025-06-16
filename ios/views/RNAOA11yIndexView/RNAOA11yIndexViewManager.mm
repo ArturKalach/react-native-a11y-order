@@ -6,6 +6,8 @@
 //  Copyright © 2024 Facebook. All rights reserved.
 //
 
+#if (!defined(RCT_NEW_ARCH_ENABLED) || RCT_NEW_ARCH_ENABLED == 0) || (defined(RCT_VIEW_MANAGER_ENABLED) && RCT_VIEW_MANAGER_ENABLED == 1)
+
 #import <React/RCTViewManager.h>
 #import <React/RCTUIManager.h>
 #import "RNAOA11yIndexView.h"
@@ -44,3 +46,5 @@ RCT_EXPORT_METHOD(focus:(nonnull NSNumber *)reactTag)
 }
 
 @end
+
+#endif
