@@ -6,8 +6,9 @@
 //  Copyright © 2024 Facebook. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#if (!defined(RCT_NEW_ARCH_ENABLED) || RCT_NEW_ARCH_ENABLED == 0) || (defined(RCT_VIEW_MANAGER_ENABLED) && RCT_VIEW_MANAGER_ENABLED == 1)
 
+#import <Foundation/Foundation.h>
 
 #import <React/RCTViewManager.h>
 #import <React/RCTUIManager.h>
@@ -30,3 +31,5 @@ RCT_CUSTOM_VIEW_PROPERTY(orderKey, NSString, RNAOA11yOrderView)
 }
 
 @end
+
+#endif
