@@ -4,10 +4,6 @@ React Native A11y Order Library: Advanced control of screen reader order.
 
 Setting the right reading order can be a challenge, but there is a way to do it. The react-native-a11y-order is a native-first library designed to solve problems with the ordering of screen readers on both Android and iOS platforms.
 
-## Breaking Changes !!!
-> The `A11yModule` and hooks `useFocusOrder`, `useDynamicFocusOrder`, and `useA11yOrderManager` have been removed. This API was deprecated and did not work properly with the new architecture. You can refer to the migration guide to update it.
-
-
 | iOS reader                                                | Android reader                                                |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
 | <img src="/.github/images/ios-reader.gif" height="500" /> | <img src="/.github/images/android-reader.gif" height="500" /> |
@@ -25,6 +21,25 @@ npm install react-native-a11y-order
 ```sh
 yarn add react-native-a11y-order
 ```
+
+### For React Native Below Version 0.74.x
+If you are using a React Native version below `0.74.x` with NewArch enabled, you may encounter an error with component registration. To resolve this issue, add the following code to your `ios/Podfile` file. 
+
+
+
+```
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << "RCT_VIEW_MANAGER_ENABLED=1"
+    end
+  end
+end
+```
+
+You can also use version `react-native-a11y-order@0.2.3`. Version `0.3.0` is released solely to support React Native versions `0.79.x to 0.80.x`.
+
 
 ## Usage
 
