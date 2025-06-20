@@ -656,7 +656,7 @@ PODS:
   - React-jsinspector (0.71.8)
   - React-logger (0.71.8):
     - glog
-  - react-native-a11y-order (0.3.0):
+  - react-native-a11y-order (0.2.4-rc):
     - RCT-Folly (= 2021.07.22.00)
     - RCTRequired
     - RCTTypeSafety
@@ -952,24 +952,21 @@ SPEC CHECKSUMS:
   RCTTypeSafety: bee9dd161c175896c680d47ef1d9eaacf2b587f4
   React: d850475db9ba8006a8b875d79e1e0d6ac8a0f8b6
   React-callinvoker: 6a0c75475ddc17c9ed54e4ff0478074a18fd7ab5
-  React-Codegen: 9519534b2429b743c33907a5c827929b72ab46a5
+  React-Codegen: 8e3371223851ff56a09ba0f1f6e5180950f109a1
   React-Core: 3b0433f72a348aa2aad467aa0f2eeac1969e37f3
   React-CoreModules: 466626cb377904938cc6028f4f6aae2255031338
   React-cxxreact: 066a5bb6a5f4c5e7c2d1e338af886aeee9c35f7c
-  React-Fabric: d8e4453650bd4556db793afd1402c4e95b805330
-  React-graphics: 8bb5f3820341c00e9d7c866f15cd099a2e0eb0ee
   React-hermes: eb39fa1db908de6a8af5e7b4504f8229765374ea
   React-jsi: dd63c94ad2e5cba7285a1e2e48b84092178a7c53
   React-jsiexecutor: 2b4113065758e68d1b78e174cb888c83b860cd90
   React-jsinspector: c712f9e3bb9ba4122d6b82b4f906448b8a281580
   React-logger: cafb56c6b9f574643711b9f3c0d4285623c5fb13
-  react-native-a11y-order: beb36ea1392acc344765f9c3a88f22cdab1ce682
+  react-native-a11y-order: 8831acc9c44a006b1ef69267192061c5176f8e5e
   React-perflogger: d21f182895de9d1b077f8a3cd00011095c8c9100
   React-RCTActionSheet: 0151f83ef92d2a7139bba7dfdbc8066632a6d47b
   React-RCTAnimation: 5ec9c0705bb2297549c120fe6473aa3e4a01e215
-  React-RCTAppDelegate: 8185f2c531a3b36349044459acb1695bc973ec05
+  React-RCTAppDelegate: 395d47dfa5ac4164b7531704f222cd8b812b92a5
   React-RCTBlob: efbeea22011e53c023e93cedbd4adeb96cfa134f
-  React-RCTFabric: b64c9b843c59d353742d2497f36ae53bffb7898f
   React-RCTImage: 3c12cb32dec49549ae62ed6cba4018db43841ffc
   React-RCTLinking: 310e930ee335ef25481b4a173d9edb64b77895f9
   React-RCTNetwork: b6837841fe88303b0c04c1e3c01992b30f1f5498
