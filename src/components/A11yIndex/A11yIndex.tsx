@@ -1,4 +1,5 @@
 import React, { useImperativeHandle, useRef } from 'react';
+import { View } from 'react-native';
 import { A11ySequenceOrderContext } from '../../context/A11ySequenceOrderContext';
 import A11yIndexView, {
   Commands,
@@ -25,14 +26,18 @@ export const A11yIndex = React.memo(
         },
       }));
 
+      const isSingleChild = React.Children.count(children) === 1;
+
       return (
         <A11yIndexView
           ref={indexRef}
           orderIndex={index}
           orderKey={orderKey}
-          children={children}
           {...props}
-        />
+        >
+          {isSingleChild && children}
+          {!isSingleChild && <View collapsable={false}>{children}</View>}
+        </A11yIndexView>
       );
     }
   )
