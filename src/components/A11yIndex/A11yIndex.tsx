@@ -36,7 +36,7 @@ export const A11yIndex = React.memo(
           {...props}
         >
           {isSingleChild && children}
-          {!isSingleChild && <View nativeID={orderKey}>{children}</View>}
+          {!isSingleChild && <View collapsable={false}>{children}</View>}
         </A11yIndexView>
       );
     }
