@@ -15,8 +15,9 @@ export const GroupOrder = ({ onClose }: { onClose: () => void }) => {
       <A11y.Order style={styles.order}>
         <A11y.Index index={1}>
           <View
-            accessible={Platform.OS === 'android'}
+            accessible={Platform.OS === 'android' ? true : undefined}
             accessibilityLabel="Header Group"
+            collapsable={false}
             style={styles.headerGroup}
           >
             <Button onPress={onClose} title="Back" />
