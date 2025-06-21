@@ -38,7 +38,7 @@ post_install do |installer|
 end
 ```
 
-You can also use version `react-native-a11y-order@0.2.3`. Version `0.3.0` is released solely to support React Native versions `0.79.x to 0.80.x`.
+You can also use version `react-native-a11y-order@0.2.5`. Version `0.3.0` is released solely to support React Native versions `0.79.x to 0.80.x`.
 
 
 ## Usage
@@ -107,81 +107,57 @@ export default function App() {
 }
 ```
 
-> [!NOTE]
-> Because of its native nature, it is important to wrap all components inside `A11y.Order` with `A11y.Index`. Components not wrapped in `A11y.Index` may be skipped from the reading order on iOS, or read at the end on Android. If you need to manage many elements, try to group them with a view and then control them via the ordering system. You can find an example below.
+**Important:** Order between `elements` and order between `groups`
+Android and iOS have different native implementations, which can result in varying behavior across platforms. This package was originally developed to define a logical order among individual accessible elements. However, there are situations where it's necessary to set an order for groups of elements. While this is relatively simple to achieve on iOS, it can be more complicated on Android.
 
+To resolve this on Android, you can define a View with the accessible property and use the accessibleLabel attribute to describe the group.
 
-Don't: 
-
-```js
-export default function App() {
-  return (
-    <Viw style={styles.container}>
-      <A11y.Order>
-        <A11y.Index index={1}>
-          <Text style={styles.font}>
-            First
-          </Text>
-        </A11y.Index>
-        <Text style={styles.font}>
-          Third
-        </Text> // <===== Do not leave components unwrapped
-        <A11y.Index index={2}>
-          <Text style={styles.font}>
-            Second
-          </Text>
-        </A11y.Index>
-        <Text style={styles.font}>Fourth</Text>  // <===== This is also incorrect
-        <Text style={styles.font}>Fifth</Text>
-      </A11y.Order>
-      <Text style={styles.font}>Sixth</Text> // <===== This is correct because it is outside of `A11y.Order`
-    </View>
-  );
-}
+For example:
+```tsx
+<View style={{flex: 1, position: 'relative'}}>
+  <A11y.Order style={{flex: 1}}>
+    <A11y.Index index={1}>
+      <View
+        accessible={Platform.OS = 'android'} // It helps to create a group to maintain the correct order for Android.
+        accessibilityLabel="Header Group" 
+      >
+        ...
+      </View>
+    </A11y.Index>
+    <A11y.Index
+      index={2} // For a single element, we don't need anything extra.
+      style={{ position: "absolute", right: 20, bottom: 50, zIndex: 1}}
+    >
+      <Button title="Chat" />
+    </A11y.Index>
+    <A11y.Index 
+      index={3} // We don't need a group for ScrollView; it creates its own scope.
+    >
+      <ScrollView>
+        <View
+          accessible
+          accessibilityLabel="Mindaro"
+          style={{width: '100%', height: 200, backgroundColor: '#CEEC97'}}
+        />
+        <View
+          accessible
+          accessibilityLabel="Peach"
+          style={{width: '100%', height: 200, backgroundColor: '#F4B393'}}
+        />
+      </ScrollView>
+    </A11y.Index>
+  </A11y.Order>
+</View>
 ```
 
-Do
+Additionally, it would be better to wrap every component inside `A11y.Order` with `A11y.Index`; the order of unwrapped components is not predictable.
 
-```js
-export default function App() {
-  return (
-    <Viw style={styles.container}>
-      <A11y.Order>
-        <A11y.Index index={1}>
-          <Text style={styles.font}>
-            First
-          </Text>
-        </A11y.Index>
-        <A11y.Index index={3}>
-          <Text style={styles.font}>
-            Third
-          </Text> 
-        </A11y.Index>
-        <A11y.Index index={4}>  // <===== attention here, we group four and five to manage correct order flow
-          <View>
-            <Text style={styles.font}>Four</Text> 
-          </View>
-          <View>
-            <Text style={styles.font}>Five</Text>
-          </View>
-        </A11y.Index>
-        <A11y.Index index={2}>
-          <Text style={styles.font}>
-            Second
-          </Text>
-        </A11y.Index>
-      </A11y.Order>
-      <Text style={styles.font}>Six</Text>
-    </View>
-  );
-}
-```
 
 A11y.Index Props:
 
 | Props          | Description                                      |
 | -------------- | ------------------------------------------------ |
-| ViewProps      | Default View props includin style, testID, etc   |
+| ViewProps      | Default View props including style, testID, etc   |
 | index          | `number`, position in order                      |
 | ref: focus     | focus command for setting accessibility focus    |
 
@@ -220,7 +196,7 @@ export default function App() {
           <Text>Title: 1</Text>
         </View>
         <View>
-          <Text>Desctiption: 1</Text>
+          <Text>Description: 1</Text>
         </View>
       </A11y.Group>
       <A11y.Group style={styles.slide}>
@@ -228,7 +204,7 @@ export default function App() {
           <Text>Title: 2</Text>
         </View>
         <View>
-          <Text>Desctiption: 2</Text>
+          <Text>Description: 2</Text>
         </View>
       </A11y.Group>
     </ScrollView>
@@ -239,7 +215,7 @@ export default function App() {
 
 | Props          | Description                                      |
 | -------------- | ------------------------------------------------ |
-| ViewProps      | Default View props includin style, testID, etc   |
+| ViewProps      | Default View props including style, testID, etc   |
 
 
 ## Migration
@@ -288,6 +264,12 @@ The new approach is better: we no longer need to manage refs, worry about attach
 4. Remove deprecated hooks and utilities: `useFocusOrder`, `useDynamicFocusOrder`, `useA11yOrderManager`.
 
 That's all. The index changes, removals, etc., should work out of the box.
+
+## Roadmap
+* Add order links for better focus control
+* Add preferred focus logic for focus "return" functionality
+* Refactor and optimize performance
+* Add documentation and descriptive examples
 
 ## Contributing
 

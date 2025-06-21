@@ -12,7 +12,7 @@ export const A11yIndex = React.memo(
       const orderKey = React.useContext(A11ySequenceOrderContext);
       if (!orderKey) {
         throw new Error(
-          'A11ySequence.Index should be used inside of A11ySequence.Container'
+          '<A11y.Index> element should be used inside of <A11y.Order> container'
         );
       }
 
@@ -36,7 +36,7 @@ export const A11yIndex = React.memo(
           {...props}
         >
           {isSingleChild && children}
-          {!isSingleChild && <View nativeID={orderKey}>{children}</View>}
+          {!isSingleChild && <View collapsable={false}>{children}</View>}
         </A11yIndexView>
       );
     }

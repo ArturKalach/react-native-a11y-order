@@ -5,15 +5,21 @@ import { SliderExample } from './components/SliderExample';
 import { CircleExample } from './components/CircleExample';
 import { ReorderExample } from './components/ReorderExample';
 import { Button } from 'react-native';
+import { GroupOrder } from './components/GroupOrder';
 
 enum Examples {
   Circle = 'circle',
   Slider = 'slider',
-  Shuffle = 'shiffle',
+  Shuffle = 'shuffle',
+  GOrder = 'groupOrder',
 }
 
 export default function App() {
   const [example, setExample] = React.useState(Examples.Circle);
+
+  if (example === Examples.GOrder) {
+    return <GroupOrder onClose={() => setExample(Examples.Circle)} />;
+  }
 
   return (
     <View style={styles.container}>
@@ -25,6 +31,10 @@ export default function App() {
         <Button title="Circle" onPress={() => setExample(Examples.Circle)} />
         <Button title="Slider" onPress={() => setExample(Examples.Slider)} />
         <Button title="Shuffle" onPress={() => setExample(Examples.Shuffle)} />
+        <Button
+          title="Group Order"
+          onPress={() => setExample(Examples.GOrder)}
+        />
       </View>
     </View>
   );
