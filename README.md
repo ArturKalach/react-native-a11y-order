@@ -38,7 +38,7 @@ post_install do |installer|
 end
 ```
 
-You can also use version `react-native-a11y-order@0.2.3`. Version `0.3.0` is released solely to support React Native versions `0.79.x to 0.80.x`.
+You can also use version `react-native-a11y-order@0.2.5`. Version `0.3.0` is released solely to support React Native versions `0.79.x to 0.80.x`.
 
 
 ## Usage
@@ -264,6 +264,12 @@ The new approach is better: we no longer need to manage refs, worry about attach
 4. Remove deprecated hooks and utilities: `useFocusOrder`, `useDynamicFocusOrder`, `useA11yOrderManager`.
 
 That's all. The index changes, removals, etc., should work out of the box.
+
+## Roadmap
+* Add order links for better focus control
+* Add preferred focus logic for focus "return" functionality
+* Refactor and optimize performance
+* Add documentation and descriptive examples
 
 ## Contributing
 
