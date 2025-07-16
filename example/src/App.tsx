@@ -6,6 +6,7 @@ import { CircleExample } from './components/CircleExample';
 import { ReorderExample } from './components/ReorderExample';
 import { Button } from 'react-native';
 import { GroupOrder } from './components/GroupOrder';
+import { A11y } from 'react-native-a11y-order';
 
 enum Examples {
   Circle = 'circle',
@@ -28,13 +29,18 @@ export default function App() {
       {example === Examples.Shuffle && <ReorderExample />}
 
       <View style={styles.btns}>
-        <Button title="Circle" onPress={() => setExample(Examples.Circle)} />
-        <Button title="Slider" onPress={() => setExample(Examples.Slider)} />
-        <Button title="Shuffle" onPress={() => setExample(Examples.Shuffle)} />
-        <Button
-          title="Group Order"
-          onPress={() => setExample(Examples.GOrder)}
-        />
+        <A11y.Group>
+          <Button title="Circle" onPress={() => setExample(Examples.Circle)} />
+          <Button title="Slider" onPress={() => setExample(Examples.Slider)} />
+          <Button
+            title="Shuffle"
+            onPress={() => setExample(Examples.Shuffle)}
+          />
+          <Button
+            title="Group Order"
+            onPress={() => setExample(Examples.GOrder)}
+          />
+        </A11y.Group>
       </View>
     </View>
   );

@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.a11yorder.services.FocusUtil;
+import com.a11yorder.services.AccessibilityUtils;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -56,12 +56,17 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
   }
 
   @Override
+  public void setOrderFocusType(A11yIndexView viewGroup, int value) {
+    viewGroup.setOrderFocusType(value);
+  }
+
+  @Override
   public void focus(A11yIndexView view) {
     this.focus((ReactViewGroup) view);
   }
 
   private  <T extends ReactViewGroup> void focus(T view) {
-    FocusUtil.focus(view);
+    AccessibilityUtils.focus(view);
   }
 
   @Override

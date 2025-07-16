@@ -8,5 +8,7 @@ public abstract class A11yIndexViewManagerSpec<T extends A11yIndexView> extends 
 
   public abstract void setOrderKey(T viewGroup, String value);
 
+  public abstract void setOrderFocusType(T viewGroup, int value);
+
   public abstract void focus(T view);
 }

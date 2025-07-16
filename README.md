@@ -22,22 +22,6 @@ npm install react-native-a11y-order
 yarn add react-native-a11y-order
 ```
 
-### For React Native Below Version 0.74.x
-If you are using a React Native version below `0.74.x` with NewArch enabled, you may encounter an error with component registration. To resolve this issue, add the following code to your `ios/Podfile` file. 
-
-
-
-```
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << "RCT_VIEW_MANAGER_ENABLED=1"
-    end
-  end
-end
-```
-
 You can also use version `react-native-a11y-order@0.2.5`. Version `0.3.0` is released solely to support React Native versions `0.79.x to 0.80.x`.
 
 
@@ -45,7 +29,7 @@ You can also use version `react-native-a11y-order@0.2.5`. Version `0.3.0` is rel
 
 #### A11y.Order, A11y.Index
 
-There is always a question about how to set the focus order for a screen reader in React Native. `A11y.Order` and `A11y.Index` are designed to assist with this task. `A11y.Order` is a container component that defines an ordering group, while `A11y.Index` is a wrapper component that helps define a position within the order. 
+There is always a question about how to set the focus order for a screen reader in React Native. `A11y.Order` and `A11y.Index` are designed to assist with this task. `A11y.Order` is a container component that defines an ordering group, while `A11y.Index` is a wrapper component that helps define a position within the order.
 
 To illustrate, let's look at an example:
 
@@ -119,7 +103,7 @@ For example:
     <A11y.Index index={1}>
       <View
         accessible={Platform.OS = 'android'} // It helps to create a group to maintain the correct order for Android.
-        accessibilityLabel="Header Group" 
+        accessibilityLabel="Header Group"
       >
         ...
       </View>
@@ -130,7 +114,7 @@ For example:
     >
       <Button title="Chat" />
     </A11y.Index>
-    <A11y.Index 
+    <A11y.Index
       index={3} // We don't need a group for ScrollView; it creates its own scope.
     >
       <ScrollView>

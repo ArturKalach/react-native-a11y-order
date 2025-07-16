@@ -7,6 +7,7 @@ import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativ
 export interface A11yIndexNativeComponentProps extends ViewProps {
   orderIndex: Int32;
   orderKey: string;
+  orderFocusType: Int32;
 }
 
 export interface NativeCommands {
