@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useMemo, useRef } from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import { A11ySequenceOrderContext } from '../../context/A11ySequenceOrderContext';
 import A11yIndexView, {
   Commands,
@@ -29,18 +29,9 @@ export const A11yIndex = React.memo(
         },
       }));
 
-      const isSingleChild = React.Children.count(children) === 1;
-      const orderFocusType = useMemo(() => {
-        if (orderType !== 'default') {
-          return A11yOrderTypeEnum[orderType];
-        }
-
-        return A11yOrderTypeEnum[isSingleChild ? 'firstChild' : 'group'];
-      }, [orderType, isSingleChild]);
-
       return (
         <A11yIndexView
-          orderFocusType={orderFocusType}
+          orderFocusType={A11yOrderTypeEnum[orderType]}
           ref={indexRef}
           orderIndex={index}
           orderKey={orderKey}

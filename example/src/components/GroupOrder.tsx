@@ -6,7 +6,7 @@ export const GroupOrder = ({ onClose }: { onClose: () => void }) => {
   return (
     <View style={styles.container}>
       <A11y.Order style={styles.order}>
-        <A11y.Index orderType="group" index={1}>
+        <A11y.Index index={1}>
           <Button onPress={onClose} title="Back" />
           <View accessible>
             <Text>Header</Text>
