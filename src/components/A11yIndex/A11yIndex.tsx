@@ -4,8 +4,8 @@ import A11yIndexView, {
   Commands,
 } from '../../nativeSpecs/A11yIndexNativeComponent';
 import {
-  A11yFocusType,
   A11yIndexProps,
+  A11yOrderTypeEnum,
   IndexCommands,
 } from '../../types/A11yIndex.types';
 
@@ -32,10 +32,10 @@ export const A11yIndex = React.memo(
       const isSingleChild = React.Children.count(children) === 1;
       const orderFocusType = useMemo(() => {
         if (orderType !== 'default') {
-          return A11yFocusType[orderType];
+          return A11yOrderTypeEnum[orderType];
         }
 
-        return A11yFocusType[isSingleChild ? 'firstChild' : 'group'];
+        return A11yOrderTypeEnum[isSingleChild ? 'firstChild' : 'group'];
       }, [orderType, isSingleChild]);
 
       return (

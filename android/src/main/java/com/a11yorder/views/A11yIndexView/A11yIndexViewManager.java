@@ -56,6 +56,7 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
   }
 
   @Override
+  @ReactProp(name = "orderFocusType")
   public void setOrderFocusType(A11yIndexView viewGroup, int value) {
     viewGroup.setOrderFocusType(value);
   }

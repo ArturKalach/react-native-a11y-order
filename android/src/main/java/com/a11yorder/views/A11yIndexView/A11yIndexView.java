@@ -14,8 +14,9 @@ public class A11yIndexView extends ReactViewGroup {
   private Integer index;
   private String orderKey;
   private View firstChild;
+  private boolean isLinked = false;
 
-  private int focusType = 0;
+  private Integer focusType = 0;
 
   private View getFocusView(View firstChild) {
     if((focusType == 3 || focusType == 0) && firstChild != null) {
@@ -39,7 +40,7 @@ public class A11yIndexView extends ReactViewGroup {
       this.index = index;
       View view = getFocusView(firstChild);
       if(orderKey != null && view != null) {
-        A11yOrderLinking.getInstance().refreshIndexes(firstChild, orderKey, index);
+        A11yOrderLinking.getInstance().refreshIndexes(view, orderKey, index);
       }
     }
   }
@@ -53,10 +54,12 @@ public class A11yIndexView extends ReactViewGroup {
       View view = getFocusView(firstChild);
       if(view != null) {
         A11yOrderLinking.getInstance().addViewRelationship(view, orderKey, index);
+        isLinked = true;
       }
     }
     if(removeFromOrderQueue && orderKey != null && index != null) {
       A11yOrderLinking.getInstance().removeRelationship(orderKey, index);
+      isLinked = false;
     }
   }
 
@@ -77,9 +80,18 @@ public class A11yIndexView extends ReactViewGroup {
   }
 
   public void setOrderFocusType(int focusType) {
+    int prevFocusType =  this.focusType;
     this.focusType = focusType;
+
     if(focusType == 1) {
       this.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
+    }
+
+    if(isLinked && prevFocusType != focusType) {
+       View view = getFocusView(firstChild);
+       if(index != null && orderKey != null && view != null) {
+         A11yOrderLinking.getInstance().refreshIndexes(view, orderKey, index);
+       }
     }
   }
 

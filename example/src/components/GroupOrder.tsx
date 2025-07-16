@@ -1,30 +1,16 @@
 import React from 'react';
-import {
-  Button,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
 export const GroupOrder = ({ onClose }: { onClose: () => void }) => {
   return (
     <View style={styles.container}>
       <A11y.Order style={styles.order}>
-        <A11y.Index index={1}>
-          <View
-            accessible={Platform.OS === 'android' ? true : undefined}
-            accessibilityLabel="Header Group"
-            collapsable={false}
-            style={styles.headerGroup}
-          >
-            <Button onPress={onClose} title="Back" />
-            <View accessible>
-              <Text>Header</Text>
-              <Text>Subheader</Text>
-            </View>
+        <A11y.Index orderType="group" index={1}>
+          <Button onPress={onClose} title="Back" />
+          <View accessible>
+            <Text>Header</Text>
+            <Text>Subheader</Text>
           </View>
         </A11y.Index>
         <A11y.Index index={2} style={styles.chatBtn}>
