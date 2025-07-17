@@ -7,4 +7,5 @@ export const A11y = {
   Order: View,
   Group: View,
   Index: A11yIndex,
+  Container: View,
 };
