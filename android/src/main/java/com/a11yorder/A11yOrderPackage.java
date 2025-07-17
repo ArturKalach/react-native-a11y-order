@@ -2,6 +2,7 @@ package com.a11yorder;
 
 import androidx.annotation.Nullable;
 
+import com.a11yorder.views.A11yContainerView.A11yContainerViewManager;
 import com.a11yorder.views.A11yGroupView.A11yGroupViewManager;
 import com.a11yorder.views.A11yIndexView.A11yIndexViewManager;
 import com.a11yorder.views.A11yOrderView.A11yOrderViewManager;
@@ -26,6 +27,7 @@ public class A11yOrderPackage implements ReactPackage {
         viewManagers.add(new A11yIndexViewManager());
         viewManagers.add(new A11yOrderViewManager());
         viewManagers.add(new A11yGroupViewManager());
+        viewManagers.add(new A11yContainerViewManager());
 
         return viewManagers;
     }

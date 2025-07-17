@@ -12,7 +12,7 @@ Setting the right reading order can be a challenge, but there is a way to do it.
 ## New Release: Updated Focus Order with Groups and Elements
 We’ve improved and fixed the accessibility focus order logic for Android and iOS.
 
-The `A11y.Index` component has been updated. The definition of `accessible components` is now controlled by the `orderType` property. You can choose from the following options: `default`, `legacy`, or `search` to configure the desired behavior.
+The `A11y.Index` component has been updated. The definition of `accessible components` is now controlled by the `orderType` property. It should resolve problem with android order between groups. You can choose from the following options: `default`, `legacy`, or `search` to configure the desired behavior.
 
 | Prop: orderType | Description |
 | :-- | :-- |

@@ -29,7 +29,7 @@ export default function App() {
       {example === Examples.Shuffle && <ReorderExample />}
 
       <View style={styles.btns}>
-        <A11y.Group>
+        <A11y.Container type="group">
           <Button title="Circle" onPress={() => setExample(Examples.Circle)} />
           <Button title="Slider" onPress={() => setExample(Examples.Slider)} />
           <Button
@@ -40,7 +40,7 @@ export default function App() {
             title="Group Order"
             onPress={() => setExample(Examples.GOrder)}
           />
-        </A11y.Group>
+        </A11y.Container>
       </View>
     </View>
   );
