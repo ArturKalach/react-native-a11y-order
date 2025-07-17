@@ -29,8 +29,14 @@ export const A11yIndex = React.memo(
         },
       }));
 
+      const importantForAccessibility =
+        orderType === 'default' ? 'yes' : undefined;
+
       return (
         <A11yIndexView
+          importantForAccessibility={
+            props.importantForAccessibility ?? importantForAccessibility
+          }
           orderFocusType={A11yOrderTypeEnum[orderType]}
           ref={indexRef}
           orderIndex={index}

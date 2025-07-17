@@ -75,22 +75,9 @@ public class A11yIndexView extends ReactViewGroup {
     }
   }
 
-  @Override
-  public void setImportantForAccessibility(int mode) {
-    if (focusType == ORDER_FOCUS_TYPE_DEFAULT && mode != IMPORTANT_FOR_AUTOFILL_NO) {
-      super.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
-    } else {
-      super.setImportantForAccessibility(mode);
-    }
-  }
-
   public void setOrderFocusType(int focusType) {
     int prevFocusType = this.focusType;
     this.focusType = focusType;
-
-    if (focusType == ORDER_FOCUS_TYPE_DEFAULT) {
-      this.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
-    }
 
     if (isLinked && prevFocusType != focusType) {
       View view = getFocusView(firstChild);

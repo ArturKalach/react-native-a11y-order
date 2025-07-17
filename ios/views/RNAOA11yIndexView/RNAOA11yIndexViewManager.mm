@@ -29,7 +29,7 @@ RCT_CUSTOM_VIEW_PROPERTY(orderIndex, int, RNAOA11yIndexView)
 RCT_CUSTOM_VIEW_PROPERTY(orderFocusType, int, RNAOA11yIndexView)
 {
     int value = json ? [RCTConvert int:json] : 0;
-    [view setOrderFocusType: @(value)];
+    [view updateOrderFocusType: @(value)];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(orderKey, NSString, RNAOA11yIndexView)

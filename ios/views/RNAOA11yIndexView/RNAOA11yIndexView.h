@@ -41,6 +41,7 @@ NS_ASSUME_NONNULL_END
 @property NSString* orderKey;
 @property NSNumber* orderFocusType;
 
+- (void)updateOrderFocusType:(NSNumber *)orderFocusType;
 - (void)updatePosition:(NSNumber *)position;
 
 @end
