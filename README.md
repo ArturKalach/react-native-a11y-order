@@ -8,6 +8,20 @@ Setting the right reading order can be a challenge, but there is a way to do it.
 | --------------------------------------------------------- | ------------------------------------------------------------- |
 | <img src="/.github/images/ios-reader.gif" height="500" /> | <img src="/.github/images/android-reader.gif" height="500" /> |
 
+
+## New Release: Updated Focus Order with Groups and Elements
+We’ve improved and fixed the accessibility focus order logic for Android and iOS.
+
+The `A11y.Index` component has been updated. The definition of `accessible components` is now controlled by the `orderType` property. You can choose from the following options: `default`, `legacy`, or `search` to configure the desired behavior.
+
+| Prop: orderType | Description |
+| :-- | :-- |
+| `default` | Defines the root component as an order element. It can be a group of elements or a single element. If there are multiple elements inside, navigation goes through the inner elements and proceeds to the next index. |
+| `legacy` | Uses the previous implementation of the element search, retrieving the first child as the accessibility element for order. |
+| `search` | Searches for the first accessible element in the child tree. |
+
+
+
 - Bridgeless
 - New architecture
 - Backward compatibility
@@ -90,69 +104,6 @@ export default function App() {
   );
 }
 ```
-
-**Important:** Order between `elements` and order between `groups`
-Android and iOS have different native implementations, which can result in varying behavior across platforms. This package was originally developed to define a logical order among individual accessible elements. However, there are situations where it's necessary to set an order for groups of elements. While this is relatively simple to achieve on iOS, it can be more complicated on Android.
-
-To resolve this on Android, you can define a View with the accessible property and use the accessibleLabel attribute to describe the group.
-
-For example:
-```tsx
-<View style={{flex: 1, position: 'relative'}}>
-  <A11y.Order style={{flex: 1}}>
-    <A11y.Index index={1}>
-      <View
-        accessible={Platform.OS = 'android'} // It helps to create a group to maintain the correct order for Android.
-        accessibilityLabel="Header Group"
-      >
-        ...
-      </View>
-    </A11y.Index>
-    <A11y.Index
-      index={2} // For a single element, we don't need anything extra.
-      style={{ position: "absolute", right: 20, bottom: 50, zIndex: 1}}
-    >
-      <Button title="Chat" />
-    </A11y.Index>
-    <A11y.Index
-      index={3} // We don't need a group for ScrollView; it creates its own scope.
-    >
-      <ScrollView>
-        <View
-          accessible
-          accessibilityLabel="Mindaro"
-          style={{width: '100%', height: 200, backgroundColor: '#CEEC97'}}
-        />
-        <View
-          accessible
-          accessibilityLabel="Peach"
-          style={{width: '100%', height: 200, backgroundColor: '#F4B393'}}
-        />
-      </ScrollView>
-    </A11y.Index>
-  </A11y.Order>
-</View>
-```
-
-Additionally, it would be better to wrap every component inside `A11y.Order` with `A11y.Index`; the order of unwrapped components is not predictable.
-
-
-A11y.Index Props:
-
-| Props          | Description                                      |
-| -------------- | ------------------------------------------------ |
-| ViewProps      | Default View props including style, testID, etc   |
-| index          | `number`, position in order                      |
-| ref: focus     | focus command for setting accessibility focus    |
-
-
-A11y.Order Props:
-
-| Props          | Description                                      |
-| -------------- | ------------------------------------------------ |
-| ViewProps      | Default View props includin style, testID, etc   |
-
-
 
 
 #### A11y.Group
