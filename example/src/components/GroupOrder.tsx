@@ -1,30 +1,24 @@
 import React from 'react';
-import {
-  Button,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
+
+const colorItems = [
+  { style: { backgroundColor: '#CEEC97' }, label: 'Mindaro' },
+  { style: { backgroundColor: '#F4B393' }, label: 'Peach' },
+  { style: { backgroundColor: '#FC60A8' }, label: 'Hot Pink' },
+  { style: { backgroundColor: '#7A28CB' }, label: 'French Violet' },
+  { style: { backgroundColor: '#494368' }, label: 'English Violet' },
+];
 
 export const GroupOrder = ({ onClose }: { onClose: () => void }) => {
   return (
     <View style={styles.container}>
       <A11y.Order style={styles.order}>
         <A11y.Index index={1}>
-          <View
-            accessible={Platform.OS === 'android' ? true : undefined}
-            accessibilityLabel="Header Group"
-            collapsable={false}
-            style={styles.headerGroup}
-          >
-            <Button onPress={onClose} title="Back" />
-            <View accessible>
-              <Text>Header</Text>
-              <Text>Subheader</Text>
-            </View>
+          <Button onPress={onClose} title="Back" />
+          <View accessible>
+            <Text>Header</Text>
+            <Text>Subheader</Text>
           </View>
         </A11y.Index>
         <A11y.Index index={2} style={styles.chatBtn}>
@@ -32,31 +26,14 @@ export const GroupOrder = ({ onClose }: { onClose: () => void }) => {
         </A11y.Index>
         <A11y.Index index={3}>
           <ScrollView scrollEventThrottle={1}>
-            <View
-              accessible
-              accessibilityLabel="Mindaro"
-              style={[styles.colorBlock, { backgroundColor: '#CEEC97' }]}
-            />
-            <View
-              accessible
-              accessibilityLabel="Peach"
-              style={[styles.colorBlock, { backgroundColor: '#F4B393' }]}
-            />
-            <View
-              accessible
-              accessibilityLabel="Hot pink"
-              style={[styles.colorBlock, { backgroundColor: '#FC60A8' }]}
-            />
-            <View
-              accessible
-              accessibilityLabel="French Violet"
-              style={[styles.colorBlock, { backgroundColor: '#7A28CB' }]}
-            />
-            <View
-              accessible
-              accessibilityLabel="English Violet"
-              style={[styles.colorBlock, { backgroundColor: '#494368' }]}
-            />
+            {colorItems.map((item) => (
+              <View
+                key={item.label}
+                accessible
+                accessibilityLabel={item.label}
+                style={[styles.colorBlock, item.style]}
+              />
+            ))}
           </ScrollView>
         </A11y.Index>
       </A11y.Order>

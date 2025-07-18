@@ -1,3 +1,5 @@
-import { ViewProps } from 'react-native';
+import { A11yContainerProps } from './A11yContainerView.types';
 
-export type A11yGroupProps = React.PropsWithChildren<ViewProps>;
+export type A11yGroupProps = A11yContainerProps & {
+  type?: A11yContainerProps['type'] & 'legacy';
+};

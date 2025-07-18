@@ -9,7 +9,7 @@ export const Slide = ({ index }: { index: string }) => {
         <Text>Title {index}</Text>
       </View>
       <View>
-        <Text>Desctiption {index}</Text>
+        <Text>Description {index}</Text>
       </View>
     </A11y.Group>
   );

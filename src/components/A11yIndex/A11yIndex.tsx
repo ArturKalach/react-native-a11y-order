@@ -1,14 +1,17 @@
 import React, { useImperativeHandle, useRef } from 'react';
-import { View } from 'react-native';
 import { A11ySequenceOrderContext } from '../../context/A11ySequenceOrderContext';
 import A11yIndexView, {
   Commands,
 } from '../../nativeSpecs/A11yIndexNativeComponent';
-import { A11yIndexProps, IndexCommands } from '../../types/A11yIndex.types';
+import {
+  A11yIndexProps,
+  A11yOrderTypeEnum,
+  IndexCommands,
+} from '../../types/A11yIndex.types';
 
 export const A11yIndex = React.memo(
   React.forwardRef<IndexCommands, A11yIndexProps>(
-    ({ children, index, ...props }, ref) => {
+    ({ children, index, orderType = 'default', ...props }, ref) => {
       const orderKey = React.useContext(A11ySequenceOrderContext);
       if (!orderKey) {
         throw new Error(
@@ -26,17 +29,21 @@ export const A11yIndex = React.memo(
         },
       }));
 
-      const isSingleChild = React.Children.count(children) === 1;
+      const importantForAccessibility =
+        orderType === 'default' ? 'yes' : undefined;
 
       return (
         <A11yIndexView
+          importantForAccessibility={
+            props.importantForAccessibility ?? importantForAccessibility
+          }
+          orderFocusType={A11yOrderTypeEnum[orderType]}
           ref={indexRef}
           orderIndex={index}
           orderKey={orderKey}
           {...props}
         >
-          {isSingleChild && children}
-          {!isSingleChild && <View collapsable={false}>{children}</View>}
+          {children}
         </A11yIndexView>
       );
     }

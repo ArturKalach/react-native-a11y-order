@@ -8,6 +8,31 @@ Setting the right reading order can be a challenge, but there is a way to do it.
 | --------------------------------------------------------- | ------------------------------------------------------------- |
 | <img src="/.github/images/ios-reader.gif" height="500" /> | <img src="/.github/images/android-reader.gif" height="500" /> |
 
+
+## New Release: Updated Focus Order with Groups and Elements
+We’ve improved and fixed the accessibility focus order logic for Android and iOS.
+
+The `A11y.Index` component has been updated. The definition of `accessible components` is now controlled by the `orderType` property. It should resolve problem with android order between groups. You can choose from the following options: `default`, `legacy`, or `search` to configure the desired behavior.
+
+| Prop: orderType | Description |
+| :-- | :-- |
+| `default` | Defines the root component as an order element. It can be a group of elements or a single element. If there are multiple elements inside, navigation goes through the inner elements and proceeds to the next index. |
+| `legacy` | Uses the previous implementation of the element search, retrieving the first child as the accessibility element for order. |
+| `search` | Searches for the first accessible element in the child tree. |
+
+The `A11y.Container` component has been added to support the `UIAccessibilityContainerType` feature on iOS.
+| Props | Description |
+| :-- | :-- |
+| ViewProps | Default view props, including style, testID, etc. |
+| type?: | `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `group`. |
+
+The inner implementation of `A11y.Group` has been replaced by `A11y.Container` with the `none` value as the default for the type prop, as it provides a more appropriate implementation. The previous implementation is now available under the `legacy` option.
+| Props | Description |
+| :-- | :-- |
+| ViewProps | Default view props, including style, testID, etc. |
+| type?: | `legacy` or `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `none`. |
+
+
 - Bridgeless
 - New architecture
 - Backward compatibility
@@ -22,22 +47,6 @@ npm install react-native-a11y-order
 yarn add react-native-a11y-order
 ```
 
-### For React Native Below Version 0.74.x
-If you are using a React Native version below `0.74.x` with NewArch enabled, you may encounter an error with component registration. To resolve this issue, add the following code to your `ios/Podfile` file. 
-
-
-
-```
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << "RCT_VIEW_MANAGER_ENABLED=1"
-    end
-  end
-end
-```
-
 You can also use version `react-native-a11y-order@0.2.5`. Version `0.3.0` is released solely to support React Native versions `0.79.x to 0.80.x`.
 
 
@@ -45,7 +54,7 @@ You can also use version `react-native-a11y-order@0.2.5`. Version `0.3.0` is rel
 
 #### A11y.Order, A11y.Index
 
-There is always a question about how to set the focus order for a screen reader in React Native. `A11y.Order` and `A11y.Index` are designed to assist with this task. `A11y.Order` is a container component that defines an ordering group, while `A11y.Index` is a wrapper component that helps define a position within the order. 
+There is always a question about how to set the focus order for a screen reader in React Native. `A11y.Order` and `A11y.Index` are designed to assist with this task. `A11y.Order` is a container component that defines an ordering group, while `A11y.Index` is a wrapper component that helps define a position within the order.
 
 To illustrate, let's look at an example:
 
@@ -107,116 +116,16 @@ export default function App() {
 }
 ```
 
-**Important:** Order between `elements` and order between `groups`
-Android and iOS have different native implementations, which can result in varying behavior across platforms. This package was originally developed to define a logical order among individual accessible elements. However, there are situations where it's necessary to set an order for groups of elements. While this is relatively simple to achieve on iOS, it can be more complicated on Android.
-
-To resolve this on Android, you can define a View with the accessible property and use the accessibleLabel attribute to describe the group.
-
-For example:
-```tsx
-<View style={{flex: 1, position: 'relative'}}>
-  <A11y.Order style={{flex: 1}}>
-    <A11y.Index index={1}>
-      <View
-        accessible={Platform.OS = 'android'} // It helps to create a group to maintain the correct order for Android.
-        accessibilityLabel="Header Group" 
-      >
-        ...
-      </View>
-    </A11y.Index>
-    <A11y.Index
-      index={2} // For a single element, we don't need anything extra.
-      style={{ position: "absolute", right: 20, bottom: 50, zIndex: 1}}
-    >
-      <Button title="Chat" />
-    </A11y.Index>
-    <A11y.Index 
-      index={3} // We don't need a group for ScrollView; it creates its own scope.
-    >
-      <ScrollView>
-        <View
-          accessible
-          accessibilityLabel="Mindaro"
-          style={{width: '100%', height: 200, backgroundColor: '#CEEC97'}}
-        />
-        <View
-          accessible
-          accessibilityLabel="Peach"
-          style={{width: '100%', height: 200, backgroundColor: '#F4B393'}}
-        />
-      </ScrollView>
-    </A11y.Index>
-  </A11y.Order>
-</View>
-```
-
-Additionally, it would be better to wrap every component inside `A11y.Order` with `A11y.Index`; the order of unwrapped components is not predictable.
-
-
-A11y.Index Props:
-
-| Props          | Description                                      |
-| -------------- | ------------------------------------------------ |
-| ViewProps      | Default View props including style, testID, etc   |
-| index          | `number`, position in order                      |
-| ref: focus     | focus command for setting accessibility focus    |
-
-
-A11y.Order Props:
-
-| Props          | Description                                      |
-| -------------- | ------------------------------------------------ |
-| ViewProps      | Default View props includin style, testID, etc   |
-
-
-
-
-#### A11y.Group
-
-`A11y.Group` can be used to enhance the experience of screen readers navigating through `ScrollView` or `FlatList` with the horizontal property enabled. You can skip this if you are using the new architecture; however, it is the best for applications that have not yet migrated.
-
-| View                                                      | A11y.Group                                                    |
+## A11y.Container
+| View                                                      | A11y.Container                                                    |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
 | <img src="/.github/images/horizontal-scroll-view.gif" height="500" /> | <img src="/.github/images/horizontal-scroll-group.gif" height="500" /> |
 
-```js
-import { A11y, IndexCommands } from 'react-native-a11y-order';
-
-// ...
-
-export default function App() {
-  return (
-    <ScrollView
-      style={styles.slider}
-      contentContainerStyle={styles.sliderContainer}
-      horizontal
-    >
-      <A11y.Group style={styles.slide}>
-        <View>
-          <Text>Title: 1</Text>
-        </View>
-        <View>
-          <Text>Description: 1</Text>
-        </View>
-      </A11y.Group>
-      <A11y.Group style={styles.slide}>
-        <View>
-          <Text>Title: 2</Text>
-        </View>
-        <View>
-          <Text>Description: 2</Text>
-        </View>
-      </A11y.Group>
-    </ScrollView>
-  );
-}
-```
-
-
-| Props          | Description                                      |
-| -------------- | ------------------------------------------------ |
-| ViewProps      | Default View props including style, testID, etc   |
-
+The `A11y.Container` component for configuration `UIAccessibilityContainerType` feature on iOS.
+| Props | Description |
+| :-- | :-- |
+| ViewProps | Default view props, including style, testID, etc. |
+| type?: | `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `group`. |
 
 ## Migration
 
@@ -265,9 +174,57 @@ The new approach is better: we no longer need to manage refs, worry about attach
 
 That's all. The index changes, removals, etc., should work out of the box.
 
+## Legacy
+#### A11y.Group
+
+`A11y.Group` (`A11y.Container`) can be used to enhance the experience of screen readers navigating through `ScrollView` or `FlatList` with the horizontal property enabled. You can skip this if you are using the new architecture; however, it is the best for applications that have not yet migrated.
+
+| View                                                      | A11y.Group                                                    |
+| --------------------------------------------------------- | ------------------------------------------------------------- |
+| <img src="/.github/images/horizontal-scroll-view.gif" height="500" /> | <img src="/.github/images/horizontal-scroll-group.gif" height="500" /> |
+
+```js
+import { A11y, IndexCommands } from 'react-native-a11y-order';
+
+// ...
+
+export default function App() {
+  return (
+    <ScrollView
+      style={styles.slider}
+      contentContainerStyle={styles.sliderContainer}
+      horizontal
+    >
+      <A11y.Group style={styles.slide}>
+        <View>
+          <Text>Title: 1</Text>
+        </View>
+        <View>
+          <Text>Description: 1</Text>
+        </View>
+      </A11y.Group>
+      <A11y.Group style={styles.slide}>
+        <View>
+          <Text>Title: 2</Text>
+        </View>
+        <View>
+          <Text>Description: 2</Text>
+        </View>
+      </A11y.Group>
+    </ScrollView>
+  );
+}
+```
+
+
+| Props | Description |
+| :-- | :-- |
+| ViewProps | Default view props, including style, testID, etc. |
+| type?: | `legacy` or `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `none`. |
+
+
 ## Roadmap
-* Add order links for better focus control
-* Add preferred focus logic for focus "return" functionality
+* Add autofocus prop
 * Refactor and optimize performance
 * Add documentation and descriptive examples
 

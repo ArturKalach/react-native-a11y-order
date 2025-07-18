@@ -6,8 +6,6 @@
 //  Copyright © 2024 Facebook. All rights reserved.
 //
 
-#if (!defined(RCT_NEW_ARCH_ENABLED) || RCT_NEW_ARCH_ENABLED == 0) || (defined(RCT_VIEW_MANAGER_ENABLED) && RCT_VIEW_MANAGER_ENABLED == 1)
-
 #import <React/RCTViewManager.h>
 #import <React/RCTUIManager.h>
 #import "RNAOA11yIndexView.h"
@@ -28,6 +26,12 @@ RCT_CUSTOM_VIEW_PROPERTY(orderIndex, int, RNAOA11yIndexView)
     [view updatePosition: @(value)];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(orderFocusType, int, RNAOA11yIndexView)
+{
+    int value = json ? [RCTConvert int:json] : 0;
+    [view updateOrderFocusType: @(value)];
+}
+
 RCT_CUSTOM_VIEW_PROPERTY(orderKey, NSString, RNAOA11yIndexView)
 {
     NSString *value =  json ? [RCTConvert NSString:json] : @"";
@@ -46,5 +50,3 @@ RCT_EXPORT_METHOD(focus:(nonnull NSNumber *)reactTag)
 }
 
 @end
-
-#endif

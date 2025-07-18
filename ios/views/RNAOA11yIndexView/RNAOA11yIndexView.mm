@@ -32,14 +32,56 @@ using namespace facebook::react;
 #endif
 
 
+typedef NS_ENUM(NSInteger, A11yOrderType) {
+    A11yOrderTypeDefault = 0,
+    A11yOrderTypeChild = 1,
+    A11yOrderTypeLegacy = 2,
+};
 
 @implementation RNAOA11yIndexView {
     BOOL isLinked;
 }
 
+- (UIView *)findFirstAccessibleChild:(UIView *)parentView {
+    if (!parentView) {
+        return nil;
+    }
+    
+    for (UIView *child in parentView.subviews) {
+        if ([self isAccessibleView:child]) {
+            return child;
+        }
+        
+        UIView *accessibleChild = [self findFirstAccessibleChild:child];
+        if (accessibleChild != nil) {
+            return accessibleChild;
+        }
+    }
+    
+    return nil;
+}
+
+- (BOOL)isAccessibleView:(UIView *)view {
+    return view.isAccessibilityElement && view.hidden == NO && view.alpha > 0;
+}
+
+- (UIView *)getFocusView:(UIView *)subview {
+    switch ([_orderFocusType intValue]) {
+        case A11yOrderTypeDefault:
+            return self;
+        case A11yOrderTypeLegacy:
+            return subview;
+        case A11yOrderTypeChild:
+            return [self findFirstAccessibleChild:self];
+        default:
+            return self;
+    }
+}
+
 - (void)linkIndex:(UIView *)subview {
     if(_position != nil && _orderKey != nil && !isLinked) {
-        [[RNAOA11yOrderLinking sharedInstance] add: _position withOrderKey:_orderKey withObject:subview];
+        UIView* view = [self getFocusView: subview];
+        [[RNAOA11yOrderLinking sharedInstance] add: _position withOrderKey:_orderKey withObject:view];
         isLinked = YES;
     }
 }
@@ -60,7 +102,8 @@ using namespace facebook::react;
 - (void)updatePosition:(NSNumber *)position {
     if(_position != nil || _position != position) {
         if(_orderKey != nil && self.subviews.count > 0 && isLinked) {
-            [[RNAOA11yOrderLinking sharedInstance] update:position lastPosition:_position withOrderKey: _orderKey withView: self.subviews[0]];
+          UIView* view = [self getFocusView: self.subviews[0]];
+            [[RNAOA11yOrderLinking sharedInstance] update:position lastPosition:_position withOrderKey: _orderKey withView: view];
         }
         _position = position;
     }
@@ -69,6 +112,21 @@ using namespace facebook::react;
         _position = position;
     }
 }
+
+- (void)updateOrderFocusType:(NSNumber *)orderType {
+  if(_orderFocusType != nil || _orderFocusType != orderType) {
+    if(_orderKey != nil && _position != nil && self.subviews.count > 0 && isLinked) {
+          UIView* view = [self getFocusView: self.subviews[0]];
+            [[RNAOA11yOrderLinking sharedInstance] update:_position lastPosition:_position withOrderKey: _orderKey withView: view];
+        }
+    _orderFocusType = orderType;
+    }
+    
+    if(_orderFocusType == nil && _orderFocusType != orderType) {
+      _orderFocusType = orderType;
+    }
+}
+
 
 #ifdef RCT_NEW_ARCH_ENABLED
 - (instancetype)initWithFrame:(CGRect)frame
@@ -115,6 +173,11 @@ using namespace facebook::react;
     if(isOrderChanged) {
         [self setOrderKey: [NSString stringWithUTF8String:newViewProps.orderKey.c_str()]];
     }
+  
+  BOOL isOrderFocusTypeChanged = oldViewProps.orderFocusType != newViewProps.orderFocusType || _orderFocusType == nil;
+  if(isOrderFocusTypeChanged) {
+      [self updateOrderFocusType: @(newViewProps.orderFocusType)];
+  }
 }
 
 - (void)finalizeUpdates:(RNComponentViewUpdateMask)updateMask {

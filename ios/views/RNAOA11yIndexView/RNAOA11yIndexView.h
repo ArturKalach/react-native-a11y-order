@@ -22,7 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property NSNumber* position;
 @property NSString* orderKey;
+@property NSNumber* orderFocusType;
 
+- (void)updateOrderFocusType:(NSNumber *)orderFocusType;
 - (void)updatePosition:(NSNumber *)position;
 
 @end
@@ -38,7 +40,9 @@ NS_ASSUME_NONNULL_END
 
 @property NSNumber* position;
 @property NSString* orderKey;
+@property NSNumber* orderFocusType;
 
+- (void)updateOrderFocusType:(NSNumber *)orderFocusType;
 - (void)updatePosition:(NSNumber *)position;
 
 @end

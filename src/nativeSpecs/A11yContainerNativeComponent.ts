@@ -1,0 +1,11 @@
+import type { ViewProps } from 'react-native';
+import { Int32 } from 'react-native/Libraries/Types/CodegenTypesNamespace';
+import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
+
+export interface A11yContainerNativeComponentProps extends ViewProps {
+  containerType?: Int32;
+}
+
+export default codegenNativeComponent<A11yContainerNativeComponentProps>(
+  'RNAOA11yContainerView'
+);

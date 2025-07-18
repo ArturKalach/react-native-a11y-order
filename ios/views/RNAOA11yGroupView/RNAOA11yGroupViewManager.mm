@@ -6,8 +6,6 @@
 //  Copyright © 2024 Facebook. All rights reserved.
 //
 
-#if (!defined(RCT_NEW_ARCH_ENABLED) || RCT_NEW_ARCH_ENABLED == 0) || (defined(RCT_VIEW_MANAGER_ENABLED) && RCT_VIEW_MANAGER_ENABLED == 1)
-
 #import <Foundation/Foundation.h>
 
 #import <React/RCTViewManager.h>
@@ -25,5 +23,3 @@ RCT_EXPORT_MODULE(A11yGroupView)
 }
 
 @end
-
-#endif
