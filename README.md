@@ -20,6 +20,17 @@ The `A11y.Index` component has been updated. The definition of `accessible compo
 | `legacy` | Uses the previous implementation of the element search, retrieving the first child as the accessibility element for order. |
 | `search` | Searches for the first accessible element in the child tree. |
 
+The `A11y.Container` component has been added to support the `UIAccessibilityContainerType` feature on iOS.
+| Props | Description |
+| :-- | :-- |
+| ViewProps | Default view props, including style, testID, etc. |
+| type?: | `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `group`. |
+
+The inner implementation of `A11y.Group` has been replaced by `A11y.Container` with the `none` value as the default for the type prop, as it provides a more appropriate implementation. The previous implementation is now available under the `legacy` option.
+| Props | Description |
+| :-- | :-- |
+| ViewProps | Default view props, including style, testID, etc. |
+| type?: | `legacy` or `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `none`. |
 
 
 - Bridgeless
@@ -105,53 +116,16 @@ export default function App() {
 }
 ```
 
-
-#### A11y.Group
-
-`A11y.Group` can be used to enhance the experience of screen readers navigating through `ScrollView` or `FlatList` with the horizontal property enabled. You can skip this if you are using the new architecture; however, it is the best for applications that have not yet migrated.
-
-| View                                                      | A11y.Group                                                    |
+## A11y.Container
+| View                                                      | A11y.Container                                                    |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
 | <img src="/.github/images/horizontal-scroll-view.gif" height="500" /> | <img src="/.github/images/horizontal-scroll-group.gif" height="500" /> |
 
-```js
-import { A11y, IndexCommands } from 'react-native-a11y-order';
-
-// ...
-
-export default function App() {
-  return (
-    <ScrollView
-      style={styles.slider}
-      contentContainerStyle={styles.sliderContainer}
-      horizontal
-    >
-      <A11y.Group style={styles.slide}>
-        <View>
-          <Text>Title: 1</Text>
-        </View>
-        <View>
-          <Text>Description: 1</Text>
-        </View>
-      </A11y.Group>
-      <A11y.Group style={styles.slide}>
-        <View>
-          <Text>Title: 2</Text>
-        </View>
-        <View>
-          <Text>Description: 2</Text>
-        </View>
-      </A11y.Group>
-    </ScrollView>
-  );
-}
-```
-
-
-| Props          | Description                                      |
-| -------------- | ------------------------------------------------ |
-| ViewProps      | Default View props including style, testID, etc   |
-
+The `A11y.Container` component for configuration `UIAccessibilityContainerType` feature on iOS.
+| Props | Description |
+| :-- | :-- |
+| ViewProps | Default view props, including style, testID, etc. |
+| type?: | `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `group`. |
 
 ## Migration
 
@@ -200,9 +174,57 @@ The new approach is better: we no longer need to manage refs, worry about attach
 
 That's all. The index changes, removals, etc., should work out of the box.
 
+## Legacy
+#### A11y.Group
+
+`A11y.Group` (`A11y.Container`) can be used to enhance the experience of screen readers navigating through `ScrollView` or `FlatList` with the horizontal property enabled. You can skip this if you are using the new architecture; however, it is the best for applications that have not yet migrated.
+
+| View                                                      | A11y.Group                                                    |
+| --------------------------------------------------------- | ------------------------------------------------------------- |
+| <img src="/.github/images/horizontal-scroll-view.gif" height="500" /> | <img src="/.github/images/horizontal-scroll-group.gif" height="500" /> |
+
+```js
+import { A11y, IndexCommands } from 'react-native-a11y-order';
+
+// ...
+
+export default function App() {
+  return (
+    <ScrollView
+      style={styles.slider}
+      contentContainerStyle={styles.sliderContainer}
+      horizontal
+    >
+      <A11y.Group style={styles.slide}>
+        <View>
+          <Text>Title: 1</Text>
+        </View>
+        <View>
+          <Text>Description: 1</Text>
+        </View>
+      </A11y.Group>
+      <A11y.Group style={styles.slide}>
+        <View>
+          <Text>Title: 2</Text>
+        </View>
+        <View>
+          <Text>Description: 2</Text>
+        </View>
+      </A11y.Group>
+    </ScrollView>
+  );
+}
+```
+
+
+| Props | Description |
+| :-- | :-- |
+| ViewProps | Default view props, including style, testID, etc. |
+| type?: | `legacy` or `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `none`. |
+
+
 ## Roadmap
-* Add order links for better focus control
-* Add preferred focus logic for focus "return" functionality
+* Add autofocus prop
 * Refactor and optimize performance
 * Add documentation and descriptive examples
 
