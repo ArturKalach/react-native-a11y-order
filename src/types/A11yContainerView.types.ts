@@ -1,4 +1,4 @@
-import { ViewProps } from 'react-native';
+import type { ViewProps } from 'react-native';
 
 export enum A11yContainerTypeEnum {
   none = 0,

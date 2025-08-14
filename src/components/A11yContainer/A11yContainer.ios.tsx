@@ -2,7 +2,7 @@ import React from 'react';
 
 import { default as A11yContainerViewNative } from '../../nativeSpecs/A11yContainerNativeComponent';
 import {
-  A11yContainerProps,
+  type A11yContainerProps,
   A11yContainerTypeEnum,
 } from '../../types/A11yContainerView.types';
 

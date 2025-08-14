@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { IndexCommands, A11y } from 'react-native-a11y-order';
+import { type IndexCommands, A11y } from 'react-native-a11y-order';
 import { CircleNode } from './CircleNode';
 import { CIRCLE_RADIUS } from '../constants/circle';
 

@@ -1,6 +1,6 @@
-import { ComponentType } from 'react';
+import type { ComponentType } from 'react';
 import type { ViewProps } from 'react-native';
-import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
+import type { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 
