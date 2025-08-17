@@ -5,6 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 public class AccessibilityUtils {
 
   public static View findFirstAccessibleElement(ViewGroup viewGroup) {
@@ -46,5 +49,21 @@ public class AccessibilityUtils {
 
   private static boolean isAccessibleView(View view) {
     return view != null && view.isFocusable() && view.getVisibility() == View.VISIBLE;
+  }
+
+  public static void runOnFirstAccessibilityFocus(@NonNull final View rootView, @NonNull final Runnable onFocusAction) {
+    rootView.setAccessibilityDelegate(new View.AccessibilityDelegate() {
+      private boolean hasAlreadyRun = false;
+
+      @Override
+      public boolean onRequestSendAccessibilityEvent(@Nullable final ViewGroup host, @Nullable final View child, @Nullable final AccessibilityEvent event) {
+        if (!hasAlreadyRun && event != null && event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
+          hasAlreadyRun = true;
+          rootView.setAccessibilityDelegate(null);
+          onFocusAction.run();
+        }
+        return super.onRequestSendAccessibilityEvent(host, child, event);
+      }
+    });
   }
 }
