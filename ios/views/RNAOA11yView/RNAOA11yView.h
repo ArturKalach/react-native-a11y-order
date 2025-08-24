@@ -18,7 +18,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RNAOA11yView : RCTViewComponentView
-
+@property BOOL autoFocus;
 @end
 
 NS_ASSUME_NONNULL_END
@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_END
 
 #import <React/RCTView.h>
 @interface RNAOA11yView : RCTView
-
+@property BOOL autoFocus;
 @end
 
 #endif

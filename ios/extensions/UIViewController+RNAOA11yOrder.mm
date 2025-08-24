@@ -37,6 +37,7 @@
 
 - (void)rnaoViewWillAppear:(BOOL)animated {
   [self rnaoViewWillAppear:animated];
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"RNAOViewControllerWillAppearNotification" object:self];
 }
 
 @end

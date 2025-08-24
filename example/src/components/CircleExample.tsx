@@ -1,17 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { type IndexCommands, A11y } from 'react-native-a11y-order';
 import { CircleNode } from './CircleNode';
 import { CIRCLE_RADIUS } from '../constants/circle';
 
 export const CircleExample = () => {
   const ref0 = React.useRef<IndexCommands>(null);
+
   return (
     <>
       <View style={styles.titleBox}>
         <Text style={styles.title}>Focus Order</Text>
       </View>
-
       <A11y.Order style={styles.circle}>
         <CircleNode ref={ref0} angle={0} index={1} />
         <CircleNode angle={30} index={2} />
@@ -21,6 +21,11 @@ export const CircleExample = () => {
         <CircleNode angle={180} index={6} />
         <CircleNode angle={270} index={7} />
       </A11y.Order>
+      <View style={styles.buttons}>
+        <View style={styles.button}>
+          <Button title="Focus 0" onPress={() => ref0.current?.focus()} />
+        </View>
+      </View>
     </>
   );
 };

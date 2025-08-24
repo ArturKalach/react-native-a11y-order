@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, Button } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { View, Button, Text, Modal } from 'react-native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { A11y } from 'react-native-a11y-order';
 import { CircleExample } from './components/CircleExample';
@@ -8,95 +8,132 @@ import { SliderExample } from './components/SliderExample';
 import { ReorderExample } from './components/ReorderExample';
 import { GroupOrder } from './components/GroupOrder';
 
-function CircleScreen({
-  navigation,
-}: {
-  navigation: { navigate: (screen: string) => void };
-}) {
+const navigationButtons = [
+  {
+    id: 'AutoFocus',
+    label: 'Auto Focus',
+  },
+  {
+    id: 'Circle',
+    label: 'Circle',
+  },
+  {
+    id: 'Slider',
+    label: 'Slider',
+  },
+  {
+    id: 'Reorder',
+    label: 'Reorder',
+  },
+  {
+    id: 'Group',
+    label: 'Group',
+  },
+];
+
+function groupByTwo<T>(array: T[]) {
+  const result = [];
+  for (let i = 0; i < array.length; i += 2) {
+    result.push(array.slice(i, i + 2));
+  }
+  return result;
+}
+
+export const NavigationButtons = ({ ignore }: { ignore: string }) => {
+  const navigation = useNavigation();
+  const btns = groupByTwo(navigationButtons.filter((i) => i.id !== ignore));
+  const navigate = navigation.navigate as (value: string) => void;
+  return (
+    <View>
+      {btns.map((group, rindex) => (
+        <View key={rindex} style={{ flexDirection: 'row', gap: 20 }}>
+          {group.map((btn, index) => (
+            <A11y.View key={btn.id} autoFocus={rindex === 0 && index === 0}>
+              <Button title={btn.label} onPress={() => navigate(btn.id)} />
+            </A11y.View>
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+};
+
+function CircleScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <A11y.ScreenChange title="Circle Screen" />
       <CircleExample />
-      <Button title="Slider" onPress={() => navigation.navigate('Slider')} />
-      <A11y.View autoFocus>
-        <Button
-          title="Shuffle"
-          onPress={() => navigation.navigate('Reorder')}
-        />
-      </A11y.View>
-      <Button
-        title="Group Order"
-        onPress={() => navigation.navigate('Group')}
-      />
+      <NavigationButtons ignore="Circle" />
     </View>
   );
 }
 
-function SliderScreen({
-  navigation,
-}: {
-  navigation: { navigate: (screen: string) => void };
-}) {
+function SliderScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <A11y.ScreenChange title="Slider Screen" />
       <SliderExample />
-      <Button title="Circle" onPress={() => navigation.navigate('Circle')} />
-      <A11y.View autoFocus>
-        <Button
-          title="Shuffle"
-          onPress={() => navigation.navigate('Reorder')}
-        />
-      </A11y.View>
-      <Button
-        title="Group Order"
-        onPress={() => navigation.navigate('Group')}
-      />
+      <NavigationButtons ignore="Slider" />
     </View>
   );
 }
 
-function ReorderScreen({
-  navigation,
-}: {
-  navigation: { navigate: (screen: string) => void };
-}) {
+function AutoFocusScreen() {
+  const [showModal, setShowModal] = React.useState(false);
+  const [showMessage, setShowMessage] = React.useState(false);
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <A11y.ScreenChange title="Auto Focus Screen" />
+      <Text> Auto Focus</Text>
+      <A11y.View autoFocus>
+        <Button
+          title="Open Modal"
+          onPress={() => setShowModal((v: boolean) => !v)}
+        />
+      </A11y.View>
+      <Button
+        title="Show Message"
+        onPress={() => setShowMessage((v: boolean) => !v)}
+      />
+      {showMessage && (
+        <A11y.View autoFocus>
+          <Button title="Message for auto focus" />
+        </A11y.View>
+      )}
+      <Modal visible={showModal}>
+        <A11y.ScreenChange title="Auto Focus Modal" />
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Text>Modal Content</Text>
+          <A11y.View autoFocus>
+            <Button title="Close" onPress={() => setShowModal(false)} />
+          </A11y.View>
+        </View>
+      </Modal>
+
+      <NavigationButtons ignore="AutoFocus" />
+    </View>
+  );
+}
+
+function ReorderScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <A11y.ScreenChange title="Reorder Screen" />
       <ReorderExample />
-      <Button title="Circle" onPress={() => navigation.navigate('Circle')} />
-      <A11y.View autoFocus>
-        <Button title="Slider" onPress={() => navigation.navigate('Slider')} />
-      </A11y.View>
-      <Button
-        title="Group Order"
-        onPress={() => navigation.navigate('Group')}
-      />
+      <NavigationButtons ignore="Reorder" />
     </View>
   );
 }
 
-function GroupScreen({
-  navigation,
-}: {
-  navigation: { navigate: (screen: string) => void };
-}) {
+function GroupScreen() {
   return (
     <View style={{ flex: 1 }}>
       <A11y.ScreenChange title="Group Screen" />
       <GroupOrder>
-        <Button title="Circle" onPress={() => navigation.navigate('Circle')} />
-        <A11y.View autoFocus>
-          <Button
-            title="Slider"
-            onPress={() => navigation.navigate('Slider')}
-          />
-        </A11y.View>
-        <Button
-          title="Shuffle"
-          onPress={() => navigation.navigate('Reorder')}
-        />
+        <NavigationButtons ignore="Group" />
       </GroupOrder>
     </View>
   );
@@ -113,15 +150,18 @@ function RootStack() {
     <Stack.Navigator>
       <Stack.Screen
         name="Circle"
-        options={{
-          header: () => null,
-        }}
+        options={HEADER_OPTIONS}
         component={CircleScreen}
       />
       <Stack.Screen
         options={HEADER_OPTIONS}
         name="Slider"
         component={SliderScreen}
+      />
+      <Stack.Screen
+        options={HEADER_OPTIONS}
+        name="AutoFocus"
+        component={AutoFocusScreen}
       />
       <Stack.Screen
         options={HEADER_OPTIONS}
