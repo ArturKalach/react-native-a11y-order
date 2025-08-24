@@ -3,7 +3,7 @@ package com.a11yorder.views.A11yIndexView;
 import android.content.Context;
 import android.view.View;
 
-import com.a11yorder.services.AccessibilityUtils;
+import com.a11yorder.utils.A11yHelper;
 import com.a11yorder.views.A11yIndexView.Linking.A11yOrderLinking;
 import com.facebook.react.views.view.ReactViewGroup;
 
@@ -32,7 +32,7 @@ public class A11yIndexView extends ReactViewGroup {
     }
 
     if (focusType == ORDER_FOCUS_TYPE_CHILD) {
-      return AccessibilityUtils.findFirstAccessibleElement(this);
+      return A11yHelper.findFirstAccessible(this, true);
     }
 
     return null;

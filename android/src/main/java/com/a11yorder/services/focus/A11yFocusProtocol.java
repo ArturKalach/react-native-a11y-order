@@ -1,6 +1,5 @@
-package com.a11yorder.services.A11yFocusDelegate;
+package com.a11yorder.services.focus;
 
-import android.view.View;
 import android.view.ViewManager;
 import android.view.ViewParent;
 

@@ -1,4 +1,4 @@
-package com.a11yorder.services.A11yFocusService;
+package com.a11yorder.services.focus;
 
 import android.util.Log;
 import android.view.View;
@@ -12,8 +12,8 @@ import com.a11yorder.utils.A11yHelper;
 import java.lang.ref.WeakReference;
 
 public final class A11yFocusService {
-  private static final int DEFAULT_DELAY = 300; // Default retry delay
-  private static final int DEFAULT_RETRIES = 3; // Default retry count
+  private static final int DEFAULT_DELAY = 300;
+  private static final int DEFAULT_RETRIES = 3;
 
   private static volatile A11yFocusService instance;
   private WeakReference<ViewGroup> viewRef = new WeakReference<>(null);
@@ -41,6 +41,13 @@ public final class A11yFocusService {
 
   public void requestFocus(@NonNull ViewGroup targetView) {
     requestFocus(targetView, DEFAULT_DELAY);
+  }
+
+  public void requestFocus(@NonNull ViewGroup targetView, int delay, int times) {
+    cancelPendingRetry();
+    lock = true;
+    storeViewReference(targetView);
+    attemptFocus(delay, times);
   }
 
   public void requestFocus(@NonNull ViewGroup targetView, int delay) {
@@ -75,15 +82,19 @@ public final class A11yFocusService {
     pendingRetryTask = null;
   }
 
-  private void attemptFocus(int delay) {
+  private void attemptFocus(int delay, int retry) {
     lock = false;
     ViewGroup targetViewGroup = getStoredView();
     if (targetViewGroup == null) return;
 
     View accessibleView = A11yHelper.findFirstAccessible(targetViewGroup);
     if (accessibleView != null) {
-      attemptFocusRetry(accessibleView, DEFAULT_RETRIES, delay);
+      attemptFocusRetry(accessibleView, retry, delay);
     }
+  }
+
+  private void attemptFocus(int delay) {
+    this.attemptFocus(delay, DEFAULT_RETRIES);
   }
 
   private void attemptFocusRetry(@NonNull View targetView, int retries, int delay) {
@@ -99,8 +110,6 @@ public final class A11yFocusService {
     pendingRetryTask = () -> {
       if (lock) return;
 
-      Log.d("AUTO_FOCUS_FEATURE_RETRY", "Retrying focus for view ID: " + targetView.getId() + " | Retries left: " + retries + " | Delay: " + delay);
-
       focusOnPost(targetView);
       attemptFocusRetry(targetView, retries - 1, delay);
     };
@@ -110,8 +119,6 @@ public final class A11yFocusService {
 
   private void focusOnPost(@NonNull View targetView) {
     if (shouldAbortFocus(targetView)) return;
-
-    Log.d("AUTO_FOCUS_FEATURE", "Focusing view ID: " + targetView.getId());
 
     targetView.post(() -> {
       if (shouldAbortFocus(targetView)) return;

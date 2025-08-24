@@ -1,4 +1,4 @@
-package com.a11yorder.services.A11yFocusDelegate;
+package com.a11yorder.services.focus;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,11 +10,13 @@ import android.view.accessibility.AccessibilityEvent;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.a11yorder.services.A11yFocusService.A11yFocusService;
+import com.a11yorder.utils.A11yHelper;
 import com.a11yorder.utils.FragmentUtils;
 import com.facebook.react.bridge.ReactContext;
 
 public class A11yFocusDelegate {
+  private static final int DEFAULT_DELAY = 300;
+  private static final int DEFAULT_RETRIES = 3;
 
   private final A11yFocusProtocol delegate;
   private final Context context;
@@ -25,12 +27,10 @@ public class A11yFocusDelegate {
   }
 
   private void focus() {
-    Log.d("AUTO_FOCUS_FEATURE: DEFAULT FOCUS FIRE", String.valueOf(((ViewGroup)delegate).getId()));
-    A11yFocusService.getInstance().requestFocus((ViewGroup) delegate, 300);
+    A11yFocusService.getInstance().requestFocus((ViewGroup) delegate, DEFAULT_DELAY, DEFAULT_RETRIES);
   }
 
   private void simpleFocus() {
-    Log.d("AUTO_FOCUS_FEATURE: SIMPLE FOCUS FIRE", String.valueOf(((ViewGroup)delegate).getId()));
     A11yFocusService.getInstance().simpleFocus((ViewGroup) delegate);
   }
 
@@ -49,25 +49,21 @@ public class A11yFocusDelegate {
   }
 
   public void requestFocus() {
-    Log.d("AUTO_FOCUS_FEATURE: REQUEST", String.valueOf(((ViewGroup)delegate).getId()));
+    if(!A11yHelper.isA11yServiceEnabled(context)) return;
 
     Fragment currentFragment = FragmentUtils.findFragmentSafely((View) delegate);
 
     if (currentFragment != null && currentFragment.isResumed()) {
-      Log.d("AUTO_FOCUS_FEATURE: SIMPLE FOCUS", String.valueOf(((ViewGroup)delegate).getId()));
-
       this.simpleFocus();
       return;
     }
 
     if(currentFragment != null) {
-      Log.d("AUTO_FOCUS_FEATURE: FRAGMENT FOCUS", String.valueOf(((ViewGroup)delegate).getId()));
       Activity activity = getCurrentActivityFromContext();
       FragmentUtils.waitForFragment(activity, currentFragment, this::focus);
       return;
     }
 
-    Log.d("AUTO_FOCUS_FEATURE: UNHANDLED FOCUS", String.valueOf(((ViewGroup)delegate).getId()));
     this.focus();
   }
 }

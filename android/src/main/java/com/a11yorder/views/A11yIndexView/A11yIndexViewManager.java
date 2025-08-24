@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.a11yorder.services.AccessibilityUtils;
+import com.a11yorder.utils.A11yHelper;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -67,7 +67,8 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
   }
 
   private  <T extends ReactViewGroup> void focus(T view) {
-    AccessibilityUtils.focus(view);
+    View firstAccessible = A11yHelper.findFirstAccessible(view);
+    A11yHelper.focus(firstAccessible);
   }
 
   @Override

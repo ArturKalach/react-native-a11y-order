@@ -41,13 +41,6 @@ public class A11yViewManager extends com.a11yorder.A11yViewSpec<A11yView> {
 
   @Override
   public void focus(A11yView view) {
-    if (view.isFocusable()) {
-      view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
-    } else {
-      View child = view.getChildAt(0);
-      if (child != null && child.isFocusable()) {
-        child.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
-      }
-    }
+    view.focus();
   }
 }
