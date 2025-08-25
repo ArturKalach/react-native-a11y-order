@@ -1,6 +1,6 @@
 {
   "name": "react-native-a11y-order",
-  "version": "0.5.0-rc",
+  "version": "0.5.0-rc1",
   "description": "ReactNative library for managing screen reader focus ordering",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -173,7 +173,8 @@
         "A11yIndexView": "RNAOA11yIndexView",
         "A11yOrderView": "RNAOA11yOrderView",
         "A11yContainerView": "RNAOA11yContainerView",
-        "A11yPaneTitle": "RNAOA11yPaneTitle"
+        "A11yPaneTitle": "RNAOA11yPaneTitleView",
+        "A11yView": "RNAOA11yView"
       }
     }
   }
