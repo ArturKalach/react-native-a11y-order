@@ -33,5 +33,10 @@ RCT_EXPORT_METHOD(focus:(nonnull NSNumber *)reactTag)
     }];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(autoFocus, BOOL, RNAOA11yView)
+{
+  BOOL value = json ? [RCTConvert BOOL:json] : NO;
+  [view setAutoFocus: value];
+}
 
 @end

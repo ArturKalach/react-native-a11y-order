@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTViewManager.h>
 #import "RNAOA11yPaneTitleView.h"
+#import "UIViewController+RNAOA11yOrder.h"
 
 #ifdef RCT_NEW_ARCH_ENABLED
 
@@ -40,6 +41,7 @@ using namespace facebook::react;
   [super prepareForRecycle];
   _title = nil;
   _detachMessage = nil;
+  _withFocusRestore = NO;
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
@@ -53,7 +55,7 @@ using namespace facebook::react;
     static const auto defaultProps = std::make_shared<const RNAOA11yContainerViewProps>();
     _props = defaultProps;
   }
-  
+
   return self;
 }
 
@@ -63,13 +65,17 @@ using namespace facebook::react;
   const auto &newViewProps = *std::static_pointer_cast<A11yPaneTitleProps const>(props);
   [super updateProps
    :props oldProps:oldProps];
-  
+
   if ([RNAOPropsHelper isPropChanged: _title stringValue: newViewProps.title]) {
     [self setTitle: [RNAOPropsHelper unwrapStringValue: newViewProps.title]];
   }
-  
+
   if ([RNAOPropsHelper isPropChanged: _detachMessage stringValue: newViewProps.detachMessage]) {
     [self setDetachMessage: [RNAOPropsHelper unwrapStringValue: newViewProps.detachMessage]];
+  }
+
+  if (oldViewProps.withFocusRestore != newViewProps.withFocusRestore) {
+    [self setWithFocusRestore: newViewProps.withFocusRestore];
   }
 }
 
@@ -80,11 +86,19 @@ Class<RCTComponentViewProtocol> A11yPaneTitleCls(void)
 
 #endif
 
-- (void)didMoveToSuperview {
-  [super didMoveToSuperview];
-  NSString *message = self.superview ? _title : _detachMessage;
+- (void)didMoveToWindow {
+  [super didMoveToWindow];
+
+  NSString *message = self.window ? _title : _detachMessage;
   if(message) {
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, message);
+  }
+  
+  if (self.window) {
+    if(self.withFocusRestore) {
+      UIViewController* viewController = self.reactViewController;
+      [viewController setRnaoFocusRestore: true];
+    }
   }
 }
 

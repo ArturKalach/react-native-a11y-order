@@ -10,4 +10,6 @@ public abstract class A11yPaneTitleSpec<T extends A11yPaneTitle> extends ReactVi
   public abstract void setDetachMessage(T view, @androidx.annotation.Nullable String value);
 
   public abstract void setType(A11yPaneTitle view, int value);
+
+  public abstract void setWithFocusRestore(A11yPaneTitle view, boolean withFocusRestore);
 }

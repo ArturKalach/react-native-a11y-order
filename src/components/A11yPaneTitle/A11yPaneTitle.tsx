@@ -14,6 +14,7 @@ type A11yPaneTitleType = React.PropsWithChildren<{
   title?: string;
   detachMessage?: string;
   type?: PaneType;
+  withFocusRestore?: boolean;
 }>;
 
 export const A11yPaneTitle = ({
@@ -21,6 +22,7 @@ export const A11yPaneTitle = ({
   detachMessage,
   type = 'pane',
   children,
+  withFocusRestore = true,
 }: ViewProps & A11yPaneTitleType) => {
   return (
     <A11yPaneTitleNative
@@ -28,6 +30,7 @@ export const A11yPaneTitle = ({
       detachMessage={detachMessage}
       type={PaneEnum[type]}
       children={children}
+      withFocusRestore={withFocusRestore}
     />
   );
 };

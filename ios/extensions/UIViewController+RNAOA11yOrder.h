@@ -11,6 +11,7 @@
 #import <UIKit/UIKit.h>
 
 @interface UIViewController (RNAOA11yOrder)
+- (void)setRnaoFocusRestore:(BOOL)focusRestore;
 @end
 
 

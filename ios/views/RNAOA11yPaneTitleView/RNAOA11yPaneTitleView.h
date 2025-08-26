@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property NSString* title;
 @property NSString* detachMessage;
+@property BOOL withFocusRestore;
 
 @end
 
@@ -34,6 +35,7 @@ NS_ASSUME_NONNULL_END
 
 @property NSString* title;
 @property NSString* detachMessage;
+@property BOOL withFocusRestore;
 
 @end
 

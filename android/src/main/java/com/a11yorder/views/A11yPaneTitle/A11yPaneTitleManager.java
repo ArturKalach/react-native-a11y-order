@@ -37,4 +37,10 @@ public class A11yPaneTitleManager extends com.a11yorder.A11yPaneTitleSpec<A11yPa
   public void setType(A11yPaneTitle view, int value) {
     view.setType(value);
   }
+
+  @Override
+  @ReactProp(name = "withFocusRestore")
+  public void setWithFocusRestore(A11yPaneTitle view, boolean withFocusRestore) {
+    //to-do
+  }
 }

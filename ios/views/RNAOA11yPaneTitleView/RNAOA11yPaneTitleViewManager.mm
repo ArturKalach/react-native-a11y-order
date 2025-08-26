@@ -33,4 +33,10 @@ RCT_CUSTOM_VIEW_PROPERTY(detachMessage, NSString, RNAOA11yPaneTitleView)
   [view setDetachMessage: value];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(withFocusRestore, BOOL, RNAOA11yPaneTitleView)
+{
+  BOOL value = json ? [RCTConvert BOOL:json] : NO;
+  [view setWithFocusRestore: value];
+}
+
 @end
