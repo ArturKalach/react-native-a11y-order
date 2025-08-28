@@ -74,7 +74,7 @@ using namespace facebook::react;
     [self setDetachMessage: [RNAOPropsHelper unwrapStringValue: newViewProps.detachMessage]];
   }
 
-  if (oldViewProps.withFocusRestore != newViewProps.withFocusRestore) {
+  if (_withFocusRestore != newViewProps.withFocusRestore) {
     [self setWithFocusRestore: newViewProps.withFocusRestore];
   }
 }
@@ -93,7 +93,7 @@ Class<RCTComponentViewProtocol> A11yPaneTitleCls(void)
   if(message) {
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, message);
   }
-  
+
   if (self.window) {
     if(self.withFocusRestore) {
       UIViewController* viewController = self.reactViewController;
