@@ -67,7 +67,7 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
   }
 
   private  <T extends ReactViewGroup> void focus(T view) {
-    View firstAccessible = A11yHelper.findFirstAccessible(view);
+    View firstAccessible = A11yHelper.findFirstAccessible(view, true);
     A11yHelper.focus(firstAccessible);
   }
 

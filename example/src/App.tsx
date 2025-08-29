@@ -47,10 +47,12 @@ export const NavigationButtons = ({ ignore }: { ignore: string }) => {
     <View>
       {btns.map((group, rindex) => (
         <View key={rindex} style={{ flexDirection: 'row', gap: 20 }}>
-          {group.map((btn, index) => (
-            <A11y.View key={btn.id} autoFocus={rindex === 0 && index === 0}>
-              <Button title={btn.label} onPress={() => navigate(btn.id)} />
-            </A11y.View>
+          {group.map((btn) => (
+            <Button
+              key={btn.id}
+              title={btn.label}
+              onPress={() => navigate(btn.id)}
+            />
           ))}
         </View>
       ))}
@@ -141,9 +143,7 @@ function GroupScreen() {
 
 const Stack = createNativeStackNavigator();
 
-const HEADER_OPTIONS = {
-  header: () => null,
-};
+const HEADER_OPTIONS = {};
 
 function RootStack() {
   return (
