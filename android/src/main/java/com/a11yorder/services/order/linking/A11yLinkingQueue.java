@@ -1,17 +1,15 @@
-package com.a11yorder.views.A11yIndexView.Linking;
+package com.a11yorder.services.order.linking;
 
 import android.os.Build;
 import android.view.View;
 
+import java.lang.ref.WeakReference;
 import java.util.Map;
-import java.util.NavigableMap;
 import java.util.NavigableSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class LinkingQueue {
-  public NavigableSet<Integer> positions = new TreeSet<>();
-  public NavigableMap<Integer, View> viewMap = new TreeMap<>();
+public class A11yLinkingQueue {
+  public WeakTreeMap viewMap = new WeakTreeMap();
 
 
   private void linkPosition(View prev, View next) {
@@ -25,35 +23,34 @@ public class LinkingQueue {
 
   private void addWithLinking(int position, View currentView) {
     viewMap.put(position, currentView);
-    Map.Entry<Integer, View> nextView = viewMap.higherEntry(position);
-    Map.Entry<Integer, View> prevView = viewMap.lowerEntry(position);
+    View nextView = viewMap.getNext(position);
+    View prevView = viewMap.getPrev(position);
 
     if (prevView != null) {
-      this.linkPosition(prevView.getValue(), currentView);
+      this.linkPosition(prevView, currentView);
     }
 
     if (nextView != null) {
-      this.linkPosition(currentView, nextView.getValue());
+      this.linkPosition(currentView, nextView);
     }
   }
 
   private void unlinkLast() {
-    Map.Entry<Integer, View> lastView = viewMap.lastEntry();
+    View lastView = viewMap.last();
     if (lastView != null) {
-      lastView.getValue().setNextFocusForwardId(View.NO_ID);
+      lastView.setNextFocusForwardId(View.NO_ID);
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-        lastView.getValue().setAccessibilityTraversalBefore(View.NO_ID);
+        lastView.setAccessibilityTraversalBefore(View.NO_ID);
       }
     }
   }
 
-
   private void reLinkWithRemove(int position) {
-    Map.Entry<Integer, View> nextView = viewMap.higherEntry(position);
-    Map.Entry<Integer, View> prevView = viewMap.lowerEntry(position);
+    View nextView = viewMap.getNext(position);
+    View prevView = viewMap.getPrev(position);
 
     if (prevView != null && nextView != null) {
-      this.linkPosition(prevView.getValue(), nextView.getValue());
+      this.linkPosition(prevView, nextView);
     }
 
     boolean shouldUnlinkLast = nextView == null;
@@ -65,32 +62,33 @@ public class LinkingQueue {
   }
 
   public void addPosition(View view, int position) {
-    if (this.viewMap.get(position) == view) {
-      return;
-    }
-
+    if (this.viewMap.get(position) == view) return;
     this.addWithLinking(position, view);
   }
 
   public void removeFromOrder(int position) {
-    if (!this.positions.contains(position)) return;
+    if (!this.viewMap.containsKey(position)) return;
     this.reLinkWithRemove(position);
   }
 
   public void refreshIndexes(View view, int position) {
     this.viewMap.put(position, view);
 
-    for (Map.Entry<Integer, View> positionEntry : this.viewMap.entrySet()) {
-      if (positionEntry != null) {
-        View currentView = positionEntry.getValue();
-        Map.Entry<Integer, View> nextEntry = this.viewMap.higherEntry(positionEntry.getKey());
+    for (Map.Entry<Integer, WeakReference<View>> positionEntry : this.viewMap.entrySet()) {
+      View currentView = WeakTreeMap.unwrapViewRef(positionEntry);
+      if (currentView != null) {
+        View nextEntry = this.viewMap.getNext(positionEntry.getKey());
 
         if (nextEntry != null) {
-          linkPosition(currentView, nextEntry.getValue());
+          linkPosition(currentView, nextEntry);
         }
       }
     }
 
     unlinkLast();
+  }
+
+  public boolean isEmpty () {
+    return this.viewMap.isEmpty();
   }
 }

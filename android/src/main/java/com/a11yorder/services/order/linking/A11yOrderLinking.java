@@ -1,4 +1,4 @@
-package com.a11yorder.views.A11yIndexView.Linking;
+package com.a11yorder.services.order.linking;
 
 
 import android.view.View;
@@ -9,7 +9,7 @@ import java.util.Map;
 public class A11yOrderLinking {
 
   private static A11yOrderLinking instance;
-  private final Map<String, LinkingQueue> relationships;
+  private final Map<String, A11yLinkingQueue> relationships;
 
   private A11yOrderLinking() {
     relationships = new HashMap<>();
@@ -21,18 +21,11 @@ public class A11yOrderLinking {
     }
     return instance;
   }
-
-  public void refreshIndexes(View view, String key, int position) {
-    LinkingQueue queue = relationships.get(key);
-    if (queue != null) {
-      queue.refreshIndexes(view, position);
-    }
-  }
-
   public void addViewRelationship(View view, String key, int position) {
-    LinkingQueue queue = relationships.get(key);
+    A11yLinkingQueue queue = relationships.get(key);
+
     if (queue == null) {
-      queue = new LinkingQueue();
+      queue = new A11yLinkingQueue();
       relationships.put(key, queue);
     }
 
@@ -41,9 +34,19 @@ public class A11yOrderLinking {
 
 
   public void removeRelationship(String key, int index) {
-    LinkingQueue queue = relationships.get(key);
+    A11yLinkingQueue queue = relationships.get(key);
     if (queue == null) return;
 
     queue.removeFromOrder(index);
+    if(queue.isEmpty()) {
+      relationships.remove(key);
+    }
+  }
+
+  public void refreshIndexes(View view, String key, int position) {
+    A11yLinkingQueue queue = relationships.get(key);
+    if (queue != null) {
+      queue.refreshIndexes(view, position);
+    }
   }
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Button, Text, Modal } from 'react-native';
+import { View, Button, Text, Modal, StyleSheet } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { A11y } from 'react-native-a11y-order';
@@ -7,6 +7,7 @@ import { CircleExample } from './components/CircleExample';
 import { SliderExample } from './components/SliderExample';
 import { ReorderExample } from './components/ReorderExample';
 import { GroupOrder } from './components/GroupOrder';
+import { CustomHeader } from './components/CustomHeader';
 
 const navigationButtons = [
   {
@@ -45,8 +46,8 @@ export const NavigationButtons = ({ ignore }: { ignore: string }) => {
   const navigate = navigation.navigate as (value: string) => void;
   return (
     <View>
-      {btns.map((group, rindex) => (
-        <View key={rindex} style={{ flexDirection: 'row', gap: 20 }}>
+      {btns.map((group, index) => (
+        <View key={index} style={styles.buttons}>
           {group.map((btn) => (
             <Button
               key={btn.id}
@@ -62,7 +63,7 @@ export const NavigationButtons = ({ ignore }: { ignore: string }) => {
 
 function CircleScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={styles.screen}>
       <A11y.ScreenChange title="Circle Screen" />
       <CircleExample />
       <NavigationButtons ignore="Circle" />
@@ -72,7 +73,7 @@ function CircleScreen() {
 
 function SliderScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={styles.screen}>
       <A11y.ScreenChange title="Slider Screen" />
       <SliderExample />
       <NavigationButtons ignore="Slider" />
@@ -85,7 +86,7 @@ function AutoFocusScreen() {
   const [showMessage, setShowMessage] = React.useState(false);
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={styles.screen}>
       <A11y.ScreenChange title="Auto Focus Screen" />
       <Text> Auto Focus</Text>
       <A11y.View autoFocus>
@@ -105,9 +106,7 @@ function AutoFocusScreen() {
       )}
       <Modal visible={showModal}>
         <A11y.ScreenChange title="Auto Focus Modal" />
-        <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-        >
+        <View style={styles.screen}>
           <Text>Modal Content</Text>
           <A11y.View autoFocus>
             <Button title="Close" onPress={() => setShowModal(false)} />
@@ -122,7 +121,7 @@ function AutoFocusScreen() {
 
 function ReorderScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={styles.screen}>
       <A11y.ScreenChange title="Reorder Screen" />
       <ReorderExample />
       <NavigationButtons ignore="Reorder" />
@@ -132,7 +131,7 @@ function ReorderScreen() {
 
 function GroupScreen() {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.flex}>
       <A11y.ScreenChange title="Group Screen" />
       <GroupOrder>
         <NavigationButtons ignore="Group" />
@@ -143,7 +142,9 @@ function GroupScreen() {
 
 const Stack = createNativeStackNavigator();
 
-const HEADER_OPTIONS = {};
+const HEADER_OPTIONS = {
+  header: CustomHeader,
+};
 
 function RootStack() {
   return (
@@ -184,3 +185,9 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  buttons: { flexDirection: 'row', gap: 20 },
+  flex: { flex: 1 },
+});
