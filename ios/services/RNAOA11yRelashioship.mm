@@ -11,7 +11,7 @@
 #import "RNAOSortedMap.h"
 
 @implementation RNAOA11yRelashioship {
-    UIView *_container;
+    __weak UIView *_container;
     RNAOSortedMap *_positions;
 }
 

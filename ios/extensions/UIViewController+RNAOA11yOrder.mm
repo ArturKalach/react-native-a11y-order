@@ -61,12 +61,8 @@ static char kRnaoFocusRestoreKey;
   if(![self isRnaoFocusRestore]) return;
   id viewToFocus = [self rnaoFocusViewRef];
   if (viewToFocus) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      dispatch_async(dispatch_get_main_queue(), ^{
-        UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, viewToFocus);
-        [self setRnaoFocusViewRef: nil];
-      });
-    });
+    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, viewToFocus);
+    [self setRnaoFocusViewRef: nil];
   }
 }
 
