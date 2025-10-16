@@ -7,5 +7,5 @@ export interface A11yContainerNativeComponentProps extends ViewProps {
 }
 
 export default codegenNativeComponent<A11yContainerNativeComponentProps>(
-  'RNAOA11yContainerView'
+  'A11yContainerView'
 );

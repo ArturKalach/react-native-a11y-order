@@ -23,7 +23,7 @@
 
 using namespace facebook::react;
 
-@interface RNAOA11yContainerView () <RCTRNAOA11yContainerViewViewProtocol>
+@interface RNAOA11yContainerView () <RCTA11yContainerViewViewProtocol>
 
 @end
 
@@ -37,13 +37,13 @@ using namespace facebook::react;
 #ifdef RCT_NEW_ARCH_ENABLED
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-    return concreteComponentDescriptorProvider<RNAOA11yContainerViewComponentDescriptor>();
+    return concreteComponentDescriptorProvider<A11yContainerViewComponentDescriptor>();
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        static const auto defaultProps = std::make_shared<const RNAOA11yContainerViewProps>();
+        static const auto defaultProps = std::make_shared<const A11yContainerViewProps>();
         _props = defaultProps;
     }
 
@@ -52,8 +52,8 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    const auto &oldViewProps = *std::static_pointer_cast<RNAOA11yContainerViewProps const>(_props);
-    const auto &newViewProps = *std::static_pointer_cast<RNAOA11yContainerViewProps const>(props);
+    const auto &oldViewProps = *std::static_pointer_cast<A11yContainerViewProps const>(_props);
+    const auto &newViewProps = *std::static_pointer_cast<A11yContainerViewProps const>(props);
 
 
     if (oldViewProps.containerType != newViewProps.containerType) {
@@ -65,7 +65,7 @@ using namespace facebook::react;
 }
 
 
-Class<RCTComponentViewProtocol> RNAOA11yContainerViewCls(void)
+Class<RCTComponentViewProtocol> A11yContainerViewCls(void)
 {
     return RNAOA11yContainerView.class;
 }

@@ -52,7 +52,7 @@ using namespace facebook::react;
 - (instancetype)initWithFrame:(CGRect)frame
 {
   if (self = [super initWithFrame:frame]) {
-    static const auto defaultProps = std::make_shared<const RNAOA11yContainerViewProps>();
+    static const auto defaultProps = std::make_shared<const A11yPaneTitleProps>();
     _props = defaultProps;
   }
 
