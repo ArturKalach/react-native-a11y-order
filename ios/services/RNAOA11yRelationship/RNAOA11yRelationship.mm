@@ -1,5 +1,5 @@
 //
-//  RNAOA11yRelashioship.m
+//  RNAOA11yRelationship.m
 //  A11yOrder
 //
 //  Created by Artur Kalach on 13/07/2024.
@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RNAOA11yRelashioship.h"
+#import "RNAOA11yRelationship.h"
 #import "RNAOSortedMap.h"
+#import "RNAODebouncer.h"
 
-@implementation RNAOA11yRelashioship {
+@implementation RNAOA11yRelationship {
     __weak UIView *_container;
     RNAOSortedMap *_positions;
+    BOOL _debounced;
 }
 
 - (instancetype)init {
@@ -20,12 +22,25 @@
     if (self) {
         _positions = [[RNAOSortedMap alloc] init];
         _container = nil;
+        _debounced = false;
+        self.debouncer = [[RNAODebouncer alloc] initWithInterval: 0.01];
     }
     return self;
 }
 
 - (void)add:(NSNumber*)position withObject:(NSObject*)obj {
     [_positions put:position withObject:obj];
+    if(_debounced) {
+      [self.debouncer debounceAction:^{
+        [self updateAccessibilityElements];
+      }];
+    }
+}
+
+- (void)updateAccessibilityElements {
+  if(_container != nil) {
+    [_container setAccessibilityElements: [_positions getValues]];
+  }
 }
 
 -(void)remove:(NSNumber*)position {
@@ -34,14 +49,17 @@
 
 -(void)setContainer:(UIView*)view {
     _container = view;
-    [view setAccessibilityElements: [_positions getValues]];
+    [self updateAccessibilityElements];
+}
+
+- (void)setContainer:(UIView*)view withDebounce:(BOOL)debounced {
+  [self setContainer: view];
+  _debounced = debounced;
 }
 
 - (void)update:(NSNumber*)lastPosition withPosition:(NSNumber*)position withObject:(NSObject*)obj {
     [_positions update:lastPosition withPosition:position withObject:obj];
-    if(_container != nil) {
-        [_container setAccessibilityElements: [_positions getValues]];
-    }
+    [self updateAccessibilityElements];
 }
 
 -(void)clear {

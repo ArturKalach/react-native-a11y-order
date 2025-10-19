@@ -16,7 +16,7 @@
 - (void)update:(NSNumber*)position withPosition:(NSNumber*)position withObject:(NSObject*)obj;
 - (void)clear;
 - (NSArray*)getValues;
-    
+
 @end
 
 #endif /* RNAOSortedMap_h */

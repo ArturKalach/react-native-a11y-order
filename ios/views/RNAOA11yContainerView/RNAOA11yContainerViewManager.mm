@@ -7,14 +7,15 @@
 
 #import <Foundation/Foundation.h>
 #import "RNAOA11yContainerViewManager.h"
+#import "RNAOA11yContainerView.h"
 
 @implementation RNAOA11yContainerViewManager
 
-RCT_EXPORT_MODULE(RNAOA11yContainerView)
+RCT_EXPORT_MODULE(A11yContainerView)
 
 - (UIView *)view
 {
-  return [[UIView alloc] init];
+  return [[RNAOA11yContainerView alloc] init];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(containerType, NSInteger, UIView)

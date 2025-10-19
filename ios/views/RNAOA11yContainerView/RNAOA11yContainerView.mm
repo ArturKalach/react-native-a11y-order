@@ -69,7 +69,11 @@ Class<RCTComponentViewProtocol> A11yContainerViewCls(void)
 {
     return RNAOA11yContainerView.class;
 }
-
+#else
+- (BOOL)shouldGroupAccessibilityChildren
+{
+  return YES;
+}
 #endif
 
 @end

@@ -35,11 +35,23 @@ using namespace facebook::react;
 
 @implementation RNAOA11yOrderView
 
+- (void)setOrderKey:(NSString *)orderKey {
+  _orderKey = orderKey;
+}
+
+- (void)setContainer {
+  if(_orderKey != nil) {
+#ifdef RCT_NEW_ARCH_ENABLED
+      [[RNAOA11yOrderLinking sharedInstance] setContainer:_orderKey withView:self];
+#else
+      [[RNAOA11yOrderLinking sharedInstance] setContainer:_orderKey withView:self withDebounce: YES];
+#endif
+  }
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
-    if(_orderKey != nil) {
-        [[RNAOA11yOrderLinking sharedInstance] setContainer:_orderKey withView:self];
-    }
+    [self setContainer];
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED
@@ -71,7 +83,7 @@ using namespace facebook::react;
         static const auto defaultProps = std::make_shared<const A11yOrderViewProps>();
         _props = defaultProps;
     }
-    
+
     return self;
 }
 
@@ -81,7 +93,7 @@ using namespace facebook::react;
     const auto &newViewProps = *std::static_pointer_cast<A11yOrderViewProps const>(props);
     [super updateProps
      :props oldProps:oldProps];
-    
+
     if(oldViewProps.orderKey != newViewProps.orderKey) {
           [self setOrderKey:  [NSString stringWithUTF8String:newViewProps.orderKey.c_str()]];
          }
