@@ -8,8 +8,10 @@
 #ifndef RNAOA11yView_h
 #define RNAOA11yView_h
 
-
 #import <UIKit/UIKit.h>
+#import "RNAOScreenReaderFocusDelegate.h"
+#import "RNAOViewItemProtocol.h"
+
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTViewComponentView.h>
@@ -17,7 +19,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNAOA11yView : RCTViewComponentView
+@interface RNAOA11yView : RCTViewComponentView<RNAOScreenReaderFocusDelegate, RNAOViewItemProtocol>
 @property BOOL autoFocus;
 @end
 
@@ -28,8 +30,9 @@ NS_ASSUME_NONNULL_END
 
 
 #import <React/RCTView.h>
-@interface RNAOA11yView : RCTView
+@interface RNAOA11yView : RCTView<RNAOScreenReaderFocusDelegate, RNAOViewItemProtocol>
 @property BOOL autoFocus;
+@property (nonatomic, copy) RCTDirectEventBlock onScreenReaderFocusChange;
 @end
 
 #endif

@@ -39,4 +39,6 @@ RCT_CUSTOM_VIEW_PROPERTY(autoFocus, BOOL, RNAOA11yView)
   [view setAutoFocus: value];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(onScreenReaderFocusChange, RCTDirectEventBlock)
+
 @end

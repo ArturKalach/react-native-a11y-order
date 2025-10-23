@@ -8,10 +8,12 @@
 #ifndef RNAOA11yItemDelegate_h
 #define RNAOA11yItemDelegate_h
 
+#import "RNAOViewItemProtocol.h"
+
 @interface RNAOA11yItemDelegate : NSObject
 
 - (instancetype _Nonnull)initWithView:
-(UIView *_Nonnull)delegate;
+(UIView<RNAOViewItemProtocol> *_Nonnull)delegate;
 
 @property (nonatomic, weak) UIView *linkView;
 @property (atomic, strong) NSNumber* position;

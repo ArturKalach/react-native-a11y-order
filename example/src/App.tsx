@@ -8,6 +8,7 @@ import { SliderExample } from './components/SliderExample';
 import { ReorderExample } from './components/ReorderExample';
 import { GroupOrder } from './components/GroupOrder';
 import { CustomHeader } from './components/CustomHeader';
+import { ScreenReaderFocus } from './components/ScreenReaderFocus';
 
 const navigationButtons = [
   {
@@ -29,6 +30,10 @@ const navigationButtons = [
   {
     id: 'Group',
     label: 'Group',
+  },
+  {
+    id: 'ScreenReaderFocus',
+    label: 'Screen Reader Focus',
   },
 ];
 
@@ -140,6 +145,14 @@ function GroupScreen() {
   );
 }
 
+function ScreenReaderFocusScreen() {
+  return (
+    <ScreenReaderFocus>
+      <NavigationButtons ignore="ScreenReaderFocus" />
+    </ScreenReaderFocus>
+  );
+}
+
 const Stack = createNativeStackNavigator();
 
 const HEADER_OPTIONS = {
@@ -173,6 +186,11 @@ function RootStack() {
         options={HEADER_OPTIONS}
         name="Reorder"
         component={ReorderScreen}
+      />
+      <Stack.Screen
+        options={HEADER_OPTIONS}
+        name="ScreenReaderFocus"
+        component={ScreenReaderFocusScreen}
       />
     </Stack.Navigator>
   );

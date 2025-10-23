@@ -21,6 +21,8 @@ export type {
   A11yContainerProps,
 } from './types/A11yContainerView.types';
 
+export type { A11yViewProps } from './types/A11yView.types';
+
 export const A11y = {
   Order: A11yIndexSequence,
   Index: A11yIndex,

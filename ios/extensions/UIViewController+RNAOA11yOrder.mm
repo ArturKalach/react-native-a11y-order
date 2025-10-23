@@ -7,9 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-
-#import <Foundation/Foundation.h>
-
 #import "UIViewController+RNAOA11yOrder.h"
 #import "RNAOSwizzleInstanceMethod.h"
 #import <objc/runtime.h>

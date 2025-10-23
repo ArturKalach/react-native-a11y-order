@@ -2,16 +2,21 @@ package com.a11yorder.views.A11yIndexView;
 
 import android.content.Context;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 
+import com.a11yorder.events.EventHelper;
 import com.a11yorder.services.order.A11yOrderService;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.views.view.ReactViewGroup;
 
 
 public class A11yIndexView extends ReactViewGroup {
+  private final Context context;
   private final A11yOrderService orderService;
 
   public A11yIndexView(Context context) {
     super(context);
+    this.context = context;
     this.orderService = new A11yOrderService(this);
   }
 
@@ -49,5 +54,19 @@ public class A11yIndexView extends ReactViewGroup {
   protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
     this.orderService.detach();
+  }
+
+
+  @Override
+  public boolean onRequestSendAccessibilityEvent(View child, AccessibilityEvent event) {
+    if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
+      EventHelper.screenReaderFocusChanged((ReactContext) context, this.getId(), true);
+    }
+
+    if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED) {
+      EventHelper.screenReaderFocusChanged((ReactContext) context, this.getId(), false);
+    }
+
+    return super.onRequestSendAccessibilityEvent(child, event);
   }
 }

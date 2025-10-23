@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.a11yorder.events.EventHelper;
 import com.a11yorder.services.focus.A11yFocusDelegate;
 import com.a11yorder.services.focus.A11yFocusProtocol;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.views.view.ReactViewGroup;
 
 public class A11yView extends ReactViewGroup implements A11yFocusProtocol {
+  private final Context context;
   private final A11yFocusDelegate a11yFocusDelegate;
   private Boolean autoFocus = false;
 
@@ -20,6 +22,7 @@ public class A11yView extends ReactViewGroup implements A11yFocusProtocol {
 
   public A11yView(Context context) {
     super(context);
+    this.context = context;
     this.a11yFocusDelegate = new A11yFocusDelegate((ReactContext) context, this);
   }
 
@@ -43,6 +46,14 @@ public class A11yView extends ReactViewGroup implements A11yFocusProtocol {
       hasBeenFocused = true;
       a11yFocusDelegate.onAccessibilityEvent(child, event);
     }
+    if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
+      EventHelper.screenReaderFocusChanged((ReactContext) context, this.getId(), true);
+    }
+
+    if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED) {
+      EventHelper.screenReaderFocusChanged((ReactContext) context, this.getId(), false);
+    }
+
     return super.onRequestSendAccessibilityEvent(child, event);
   }
 

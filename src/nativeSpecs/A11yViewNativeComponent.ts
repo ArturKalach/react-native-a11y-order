@@ -1,10 +1,16 @@
 import type { ComponentType } from 'react';
 import type { ViewProps } from 'react-native';
+import type { DirectEventHandler } from 'react-native/Libraries/Types/CodegenTypes';
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
 
+export type ScreenReaderFocusChange = Readonly<{
+  isFocused: boolean;
+}>;
+
 export interface A11yViewProps extends ViewProps {
   autoFocus?: boolean;
+  onScreenReaderFocusChange?: DirectEventHandler<ScreenReaderFocusChange>;
 }
 
 export interface NativeCommands {

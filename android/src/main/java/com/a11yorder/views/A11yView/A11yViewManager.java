@@ -3,10 +3,15 @@ package com.a11yorder.views.A11yView;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.a11yorder.events.EventHelper;
+import com.a11yorder.events.ScreenReaderFocusEvent;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -42,5 +47,14 @@ public class A11yViewManager extends com.a11yorder.A11yViewSpec<A11yView> {
   @Override
   public void focus(A11yView view) {
     view.focus();
+  }
+
+  @Nullable
+  @Override
+  public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+    Map<String, Object> export = new HashMap<>();
+    export.put(ScreenReaderFocusEvent.EVENT_NAME, EventHelper.buildDirectEventMap("onScreenReaderFocusChange"));
+
+    return export;
   }
 }

@@ -14,4 +14,7 @@ export type A11yIndexProps = {
   children: React.ReactNode;
   index: number;
   orderType?: A11yOrderType;
+  onScreenReaderFocusChange?: (isFocused: boolean) => void;
+  onScreenReaderFocus?: () => void;
+  onScreenReaderBlur?: () => void;
 } & ViewProps;
