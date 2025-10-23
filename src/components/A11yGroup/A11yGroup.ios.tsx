@@ -1,6 +1,6 @@
 import React from 'react';
 import { A11yContainer } from '../A11yContainer/A11yContainer';
-import { A11yGroupProps } from '../../types/A11yGroup.types';
+import type { A11yGroupProps } from '../../types/A11yGroup.types';
 import A11yDirectionView from '../../nativeSpecs/A11yGroupNativeComponent';
 
 export const A11yGroup = (props: A11yGroupProps) => {

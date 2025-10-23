@@ -1,6 +1,9 @@
 import React from 'react';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
-import { IndexCommands, A11yIndexProps } from '../../types/A11yIndex.types';
+import type {
+  IndexCommands,
+  A11yIndexProps,
+} from '../../types/A11yIndex.types';
 import { UIManager } from 'react-native';
 import { View } from 'react-native';
 

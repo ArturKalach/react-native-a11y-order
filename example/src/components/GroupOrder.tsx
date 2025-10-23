@@ -10,12 +10,11 @@ const colorItems = [
   { style: { backgroundColor: '#494368' }, label: 'English Violet' },
 ];
 
-export const GroupOrder = ({ onClose }: { onClose: () => void }) => {
+export const GroupOrder = ({ children }: React.PropsWithChildren<{}>) => {
   return (
     <View style={styles.container}>
       <A11y.Order style={styles.order}>
         <A11y.Index index={1}>
-          <Button onPress={onClose} title="Back" />
           <View accessible>
             <Text>Header</Text>
             <Text>Subheader</Text>
@@ -34,6 +33,7 @@ export const GroupOrder = ({ onClose }: { onClose: () => void }) => {
                 style={[styles.colorBlock, item.style]}
               />
             ))}
+            {children}
           </ScrollView>
         </A11y.Index>
       </A11y.Order>
@@ -42,7 +42,7 @@ export const GroupOrder = ({ onClose }: { onClose: () => void }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, position: 'relative' },
+  container: { flex: 1, paddingVertical: 20 },
   order: { flex: 1 },
   headerGroup: { flexDirection: 'row', gap: 10, padding: 5 },
   chatBtn: { position: 'absolute', right: 20, bottom: 50, zIndex: 1 },

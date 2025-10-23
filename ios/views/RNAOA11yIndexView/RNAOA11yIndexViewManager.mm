@@ -23,13 +23,13 @@ RCT_EXPORT_MODULE(A11yIndexView)
 RCT_CUSTOM_VIEW_PROPERTY(orderIndex, int, RNAOA11yIndexView)
 {
     int value = json ? [RCTConvert int:json] : 0;
-    [view updatePosition: @(value)];
+    [view setPosition: @(value)];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(orderFocusType, int, RNAOA11yIndexView)
 {
     int value = json ? [RCTConvert int:json] : 0;
-    [view updateOrderFocusType: @(value)];
+    [view setOrderFocusType: @(value)];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(orderKey, NSString, RNAOA11yIndexView)

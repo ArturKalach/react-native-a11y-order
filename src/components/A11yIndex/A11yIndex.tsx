@@ -4,9 +4,9 @@ import A11yIndexView, {
   Commands,
 } from '../../nativeSpecs/A11yIndexNativeComponent';
 import {
-  A11yIndexProps,
+  type A11yIndexProps,
   A11yOrderTypeEnum,
-  IndexCommands,
+  type IndexCommands,
 } from '../../types/A11yIndex.types';
 
 export const A11yIndex = React.memo(

@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.a11yorder.services.AccessibilityUtils;
+import com.a11yorder.utils.A11yHelper;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -27,20 +27,7 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
   @NonNull
   @Override
   public A11yIndexView createViewInstance(@NonNull ThemedReactContext context) {
-    A11yIndexView viewGroup = new A11yIndexView(context);
-
-    viewGroup.setOnHierarchyChangeListener(new A11yIndexView.OnHierarchyChangeListener() {
-      @Override
-      public void onChildViewAdded(View parent, View child) {
-        viewGroup.linkAddView(child);
-      }
-
-      @Override
-      public void onChildViewRemoved(View parent, View child) {
-        viewGroup.linkRemoveView(child);
-      }
-    });
-    return viewGroup;
+    return new A11yIndexView(context);
   }
 
   @Override
@@ -67,7 +54,8 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
   }
 
   private  <T extends ReactViewGroup> void focus(T view) {
-    AccessibilityUtils.focus(view);
+    View firstAccessible = A11yHelper.findFirstAccessible(view, true);
+    A11yHelper.focus(firstAccessible);
   }
 
   @Override

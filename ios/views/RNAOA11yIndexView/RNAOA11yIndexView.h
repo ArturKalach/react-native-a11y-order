@@ -20,12 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RNAOA11yIndexView : RCTViewComponentView
 
-@property NSNumber* position;
-@property NSString* orderKey;
-@property NSNumber* orderFocusType;
-
-- (void)updateOrderFocusType:(NSNumber *)orderFocusType;
-- (void)updatePosition:(NSNumber *)position;
+- (void)setPosition: (NSNumber*)position;
+- (void)setOrderKey:(NSString *)orderKey;
+- (void)setOrderFocusType:(NSNumber *)orderFocusType;
 
 @end
 
@@ -38,12 +35,9 @@ NS_ASSUME_NONNULL_END
 #import <React/RCTView.h>
 @interface RNAOA11yIndexView : RCTView
 
-@property NSNumber* position;
-@property NSString* orderKey;
-@property NSNumber* orderFocusType;
-
-- (void)updateOrderFocusType:(NSNumber *)orderFocusType;
-- (void)updatePosition:(NSNumber *)position;
+- (void)setPosition: (NSNumber*)position;
+- (void)setOrderKey:(NSString *)orderKey;
+- (void)setOrderFocusType:(NSNumber *)orderFocusType;
 
 @end
 

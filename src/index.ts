@@ -2,6 +2,11 @@ import { A11yIndex } from './components/A11yIndex/A11yIndex';
 import { A11yIndexSequence } from './components/A11ySequence/A11ySequence';
 import { A11yGroup } from './components/A11yGroup/A11yGroup';
 import { A11yContainer } from './components/A11yContainer/A11yContainer';
+import {
+  A11yPaneTitle,
+  A11yScreenChange,
+} from './components/A11yPaneTitle/A11yPaneTitle';
+import { A11yView } from './components/A11yView/A11yView';
 
 export type {
   IndexCommands,
@@ -21,4 +26,7 @@ export const A11y = {
   Index: A11yIndex,
   Group: A11yGroup,
   Container: A11yContainer,
+  PaneTitle: A11yPaneTitle,
+  ScreenChange: A11yScreenChange,
+  View: A11yView,
 };

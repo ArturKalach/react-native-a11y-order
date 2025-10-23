@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { IndexCommands, A11y } from 'react-native-a11y-order';
+import { type IndexCommands, A11y } from 'react-native-a11y-order';
 import { getPosition } from '../constants/circle';
 
 export const CircleNode = React.forwardRef(
