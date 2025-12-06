@@ -12,15 +12,20 @@ public class A11yOrderService {
   public static final int ORDER_FOCUS_TYPE_DEFAULT = 0;
   public static final int ORDER_FOCUS_TYPE_CHILD = 1;
   public static final int ORDER_FOCUS_TYPE_LEGACY = 2;
-
+  private final ViewGroup delegate;
   public String orderKey;
   private Integer index;
   private Integer focusType = ORDER_FOCUS_TYPE_DEFAULT;
-
   private WeakReference<View> orderViewRef;
-  private final ViewGroup delegate;
-
   private boolean isLinked = false;
+
+  public A11yOrderService(ViewGroup delegate) {
+    this.delegate = delegate;
+  }
+
+  public View getStoredView() {
+    return orderViewRef != null ? orderViewRef.get() : null;
+  }
 
   public View getFocusView() {
     if (focusType == ORDER_FOCUS_TYPE_LEGACY) {
@@ -42,15 +47,11 @@ public class A11yOrderService {
     return null;
   }
 
-  public A11yOrderService(ViewGroup delegate) {
-    this.delegate = delegate;
-  }
-
   public void setIndex(int index) {
     boolean hasBeenChanged = this.index != null;
 
     this.index = index;
-    if(hasBeenChanged) {
+    if (hasBeenChanged) {
       this.refresh();
     }
   }
@@ -70,9 +71,9 @@ public class A11yOrderService {
 
   public void link(View view) {
     if (orderViewRef == null || orderViewRef.get() == null) {
-      orderViewRef =  new WeakReference<>(view);
+      orderViewRef = new WeakReference<>(view);
 
-      if(!this.getIsReady()) return;
+      if (!this.getIsReady()) return;
 
       View target = getFocusView();
       if (target != null) {
@@ -83,7 +84,7 @@ public class A11yOrderService {
   }
 
   public void refresh() {
-    if(!getIsReady()) return;
+    if (!getIsReady()) return;
 
     View view = getFocusView();
     if (view != null) {
@@ -110,7 +111,7 @@ public class A11yOrderService {
   }
 
   private void remove() {
-    if(orderKey != null && index != null) {
+    if (orderKey != null && index != null) {
       A11yOrderLinking.getInstance().removeRelationship(orderKey, index);
     }
 
@@ -119,10 +120,10 @@ public class A11yOrderService {
 
 
   public void attach() {
-    if(!getIsReady() || isLinked) return;
+    if (!getIsReady() || isLinked) return;
 
     View child = delegate.getChildAt(0);
-    if(child == null) return;
+    if (child == null) return;
 
     this.link(child);
   }

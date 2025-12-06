@@ -4,11 +4,11 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
 
-public class ScreenReaderFocusEvent extends Event<ScreenReaderFocusEvent>  {
+public class ScreenReaderFocusChangedEvent extends Event<ScreenReaderFocusChangedEvent> {
   public static String EVENT_NAME = "topScreenReaderFocusChange";
   public WritableMap payload;
 
-  public ScreenReaderFocusEvent(int surfaceId, int id, Boolean hasFocus) {
+  public ScreenReaderFocusChangedEvent(int surfaceId, int id, Boolean hasFocus) {
     super(surfaceId, id);
     payload = Arguments.createMap();
     payload.putBoolean("isFocused", hasFocus);

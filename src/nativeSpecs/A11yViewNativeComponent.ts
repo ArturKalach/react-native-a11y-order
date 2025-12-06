@@ -8,8 +8,17 @@ export type ScreenReaderFocusChange = Readonly<{
   isFocused: boolean;
 }>;
 
+export type ScreenReaderDescendantFocusChanged = Readonly<{
+  status: string;
+  nativeId?: string;
+}>;
+
 export interface A11yViewProps extends ViewProps {
   autoFocus?: boolean;
+  descendantFocusChangedEnabled?: boolean;
+
+  onScreenReaderFocused?: DirectEventHandler<{}>;
+  onScreenReaderDescendantFocusChanged?: DirectEventHandler<ScreenReaderDescendantFocusChanged>;
   onScreenReaderFocusChange?: DirectEventHandler<ScreenReaderFocusChange>;
 }
 

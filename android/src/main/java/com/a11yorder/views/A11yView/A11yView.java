@@ -2,17 +2,16 @@ package com.a11yorder.views.A11yView;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.a11yorder.core.A11yViewGroup;
 import com.a11yorder.events.EventHelper;
 import com.a11yorder.services.focus.A11yFocusDelegate;
 import com.a11yorder.services.focus.A11yFocusProtocol;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.views.view.ReactViewGroup;
 
-public class A11yView extends ReactViewGroup implements A11yFocusProtocol {
+public class A11yView extends A11yViewGroup implements A11yFocusProtocol {
   private final Context context;
   private final A11yFocusDelegate a11yFocusDelegate;
   private Boolean autoFocus = false;
@@ -26,9 +25,18 @@ public class A11yView extends ReactViewGroup implements A11yFocusProtocol {
     this.a11yFocusDelegate = new A11yFocusDelegate((ReactContext) context, this);
   }
 
+  public static String getNativeIdSafe(View view) {
+    try {
+      Object tag = view.getTag(com.facebook.react.R.id.view_tag_native_id);
+      return (tag instanceof String) ? (String) tag : null;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
   public boolean isViewFocused() {
     View focusTarget = this.isFocusable() ? this : this.getChildAt(0);
-    if(focusTarget == null) return false;
+    if (focusTarget == null) return false;
     return focusTarget.isAccessibilityFocused();
   }
 
@@ -41,17 +49,40 @@ public class A11yView extends ReactViewGroup implements A11yFocusProtocol {
   }
 
   @Override
+  public void onPopulateAccessibilityEvent(AccessibilityEvent event) {
+    super.onPopulateAccessibilityEvent(event);
+    int eventType = event.getEventType();
+    if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
+      EventHelper.screenReaderFocused((ReactContext) context, this.getId());
+    }
+  }
+
+  @Override
   public boolean onRequestSendAccessibilityEvent(View child, AccessibilityEvent event) {
-    if (autoFocus && event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED && !hasBeenFocused) {
+    int eventType = event.getEventType();
+    boolean isSubChild = (child == this.getSubChild());
+
+    if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED && autoFocus && !hasBeenFocused) {
       hasBeenFocused = true;
       a11yFocusDelegate.onAccessibilityEvent(child, event);
     }
-    if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
+
+    if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED && isSubChild) {
       EventHelper.screenReaderFocusChanged((ReactContext) context, this.getId(), true);
     }
 
-    if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED) {
+    if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED && isSubChild) {
       EventHelper.screenReaderFocusChanged((ReactContext) context, this.getId(), false);
+    }
+
+    if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED) {
+      String nativeId = getNativeIdSafe(child);
+      EventHelper.screenReaderDescendantFocusChanged((ReactContext) context, this.getId(), "blurred", nativeId);
+    }
+
+    if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
+      String nativeId = getNativeIdSafe(child);
+      EventHelper.screenReaderDescendantFocusChanged((ReactContext) context, this.getId(), "focused", nativeId);
     }
 
     return super.onRequestSendAccessibilityEvent(child, event);
@@ -69,5 +100,4 @@ public class A11yView extends ReactViewGroup implements A11yFocusProtocol {
       }
     }
   }
-
 }

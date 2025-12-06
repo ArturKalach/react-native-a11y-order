@@ -11,6 +11,7 @@
 #import <React/RCTViewManager.h>
 #import "RNAOA11yPaneTitleView.h"
 #import "UIViewController+RNAOA11yOrder.h"
+#import "RNAOA11yAnnounceService.h"
 
 #ifdef RCT_NEW_ARCH_ENABLED
 
@@ -32,7 +33,9 @@ using namespace facebook::react;
 
 
 
-@implementation RNAOA11yPaneTitleView
+@implementation RNAOA11yPaneTitleView {
+  BOOL _announced;
+}
 
 
 #ifdef RCT_NEW_ARCH_ENABLED
@@ -42,6 +45,7 @@ using namespace facebook::react;
   _title = nil;
   _detachMessage = nil;
   _withFocusRestore = NO;
+  _announced = NO;
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
@@ -54,6 +58,7 @@ using namespace facebook::react;
   if (self = [super initWithFrame:frame]) {
     static const auto defaultProps = std::make_shared<const A11yPaneTitleProps>();
     _props = defaultProps;
+    _announced = NO;
   }
 
   return self;
@@ -86,12 +91,18 @@ Class<RCTComponentViewProtocol> A11yPaneTitleCls(void)
 
 #endif
 
+
+
 - (void)didMoveToWindow {
   [super didMoveToWindow];
 
-  NSString *message = self.window ? _title : _detachMessage;
-  if(message) {
-    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, message);
+
+  if(self.window && !_announced) {
+    _announced = YES;
+    [[RNAOA11yAnnounceService shared] announce: _title];
+  }
+  if(!self.window && _announced && _detachMessage) {
+    [[RNAOA11yAnnounceService shared] announce: _detachMessage];
   }
 
   if (self.window) {
@@ -101,5 +112,6 @@ Class<RCTComponentViewProtocol> A11yPaneTitleCls(void)
     }
   }
 }
+
 
 @end

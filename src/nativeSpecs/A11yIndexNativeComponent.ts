@@ -11,10 +11,15 @@ export type ScreenReaderFocusChange = Readonly<{
   isFocused: boolean;
 }>;
 
+export type ScreenReaderDescendantFocusChanged = Readonly<{
+  status: string;
+}>;
+
 export interface A11yIndexNativeComponentProps extends ViewProps {
   orderIndex: Int32;
   orderKey: string;
   orderFocusType: Int32;
+
   onScreenReaderFocusChange?: DirectEventHandler<ScreenReaderFocusChange>;
 }
 

@@ -16,27 +16,33 @@ export const A11yIndex = React.memo(
         children,
         index,
         orderType = 'default',
-        onScreenReaderFocusChange,
-        onScreenReaderBlur,
-        onScreenReaderFocus,
+        onScreenReaderSubViewFocusChange,
+        onScreenReaderSubViewFocused,
+        onScreenReaderSubViewBlurred,
         ...props
       },
       ref
     ) => {
       const hasHandler = Boolean(
-        onScreenReaderFocusChange || onScreenReaderBlur || onScreenReaderFocus
+        onScreenReaderSubViewBlurred ||
+          onScreenReaderSubViewFocused ||
+          onScreenReaderSubViewFocusChange
       );
 
       const onScreenReaderChangeHandler = React.useCallback(
         (event: { nativeEvent: { isFocused: boolean } }) => {
-          onScreenReaderFocusChange?.(event.nativeEvent.isFocused);
+          onScreenReaderSubViewFocusChange?.(event.nativeEvent.isFocused);
           if (event.nativeEvent.isFocused) {
-            onScreenReaderFocus?.();
+            onScreenReaderSubViewFocused?.();
           } else {
-            onScreenReaderBlur?.();
+            onScreenReaderSubViewBlurred?.();
           }
         },
-        [onScreenReaderFocusChange, onScreenReaderBlur, onScreenReaderFocus]
+        [
+          onScreenReaderSubViewFocusChange,
+          onScreenReaderSubViewBlurred,
+          onScreenReaderSubViewFocused,
+        ]
       );
 
       const onScreenReaderHandlerProp = hasHandler
@@ -72,8 +78,8 @@ export const A11yIndex = React.memo(
           ref={indexRef}
           orderIndex={index}
           orderKey={orderKey}
-          onScreenReaderFocusChange={onScreenReaderHandlerProp}
           {...props}
+          onScreenReaderFocusChange={onScreenReaderHandlerProp}
         >
           {children}
         </A11yIndexView>

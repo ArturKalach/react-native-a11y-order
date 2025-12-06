@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ViewProps } from 'react-native';
+import { type ViewProps } from 'react-native';
 import A11yPaneTitleNative from '../../nativeSpecs/A11yPaneTitleNativeComponent';
 
 enum PaneEnum {
@@ -15,6 +15,7 @@ type A11yPaneTitleType = React.PropsWithChildren<{
   detachMessage?: string;
   type?: PaneType;
   withFocusRestore?: boolean;
+  displayed?: boolean;
 }>;
 
 export const A11yPaneTitle = ({
@@ -22,8 +23,11 @@ export const A11yPaneTitle = ({
   detachMessage,
   type = 'pane',
   children,
+  displayed,
   withFocusRestore = true,
 }: ViewProps & A11yPaneTitleType) => {
+  if (displayed === false) return null;
+
   return (
     <A11yPaneTitleNative
       title={title}
@@ -39,6 +43,7 @@ export const A11yScreenChange = (props: Omit<A11yPaneTitleType, 'type'>) => (
   <A11yPaneTitle
     title={props.title}
     detachMessage={props.detachMessage}
+    displayed={props.displayed}
     type="activity"
   />
 );

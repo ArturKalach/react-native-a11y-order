@@ -23,14 +23,14 @@ RCT_EXPORT_MODULE(A11yView)
 
 RCT_EXPORT_METHOD(focus:(nonnull NSNumber *)reactTag)
 {
-    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
-        UIView *view = viewRegistry[reactTag];
-        if (!view || ![view isKindOfClass:[UIView class]]) {
-            return;
-        }
-      
-        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, view);
-    }];
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
+    UIView *view = viewRegistry[reactTag];
+    if (!view || ![view isKindOfClass:[UIView class]]) {
+      return;
+    }
+    
+    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, view);
+  }];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(autoFocus, BOOL, RNAOA11yView)
@@ -39,6 +39,15 @@ RCT_CUSTOM_VIEW_PROPERTY(autoFocus, BOOL, RNAOA11yView)
   [view setAutoFocus: value];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(descendantFocusChangedEnabled, BOOL, RNAOA11yView)
+{
+  BOOL value = json ? [RCTConvert BOOL:json] : NO;
+  [view setDescendantFocusChangedEnabled: value];
+}
+
+RCT_EXPORT_VIEW_PROPERTY(onScreenReaderFocused, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onScreenReaderFocusChange, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onScreenReaderDescendantFocusChanged, RCTDirectEventBlock)
+
 
 @end

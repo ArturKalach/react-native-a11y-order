@@ -56,14 +56,16 @@ public class A11yIndexView extends ReactViewGroup {
     this.orderService.detach();
   }
 
-
   @Override
   public boolean onRequestSendAccessibilityEvent(View child, AccessibilityEvent event) {
-    if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
+    int eventType = event.getEventType();
+    boolean isSubChild = (child == orderService.getStoredView());
+
+    if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED && isSubChild) {
       EventHelper.screenReaderFocusChanged((ReactContext) context, this.getId(), true);
     }
 
-    if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED) {
+    if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED && isSubChild) {
       EventHelper.screenReaderFocusChanged((ReactContext) context, this.getId(), false);
     }
 
