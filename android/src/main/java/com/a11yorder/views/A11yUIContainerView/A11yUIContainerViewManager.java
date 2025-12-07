@@ -1,15 +1,15 @@
-package com.a11yorder.views.A11yContainerView;
+package com.a11yorder.views.A11yUIContainerView;
 
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.a11yorder.A11yContainerViewManagerSpec;
+import com.a11yorder.A11yUIContainerViewManagerSpec;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.views.view.ReactViewGroup;
 
-public class A11yContainerViewManager extends A11yContainerViewManagerSpec<ViewGroup> {
-  public static final String REACT_CLASS = "RNAOA11yContainerView";
+public class A11yUIContainerViewManager extends A11yUIContainerViewManagerSpec<ViewGroup> {
+  public static final String REACT_CLASS = "A11yUIContainer";
 
   @NonNull
   @Override

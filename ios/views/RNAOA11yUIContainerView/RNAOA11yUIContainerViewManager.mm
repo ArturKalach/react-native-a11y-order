@@ -1,21 +1,21 @@
 //
-//  RNAOA11yContainerViewManager.m
+//  RNAOA11yUIContainerViewManager.m
 //  react-native-a11y-order
 //
 //  Created by Artur Kalach on 17/07/2025.
 //
 
 #import <Foundation/Foundation.h>
-#import "RNAOA11yContainerViewManager.h"
-#import "RNAOA11yContainerView.h"
+#import "RNAOA11yUIContainerViewManager.h"
+#import "RNAOA11yUIContainerView.h"
 
-@implementation RNAOA11yContainerViewManager
+@implementation RNAOA11yUIContainerViewManager
 
-RCT_EXPORT_MODULE(A11yContainerView)
+RCT_EXPORT_MODULE(A11yUIContainer)
 
 - (UIView *)view
 {
-  return [[RNAOA11yContainerView alloc] init];
+  return [[RNAOA11yUIContainerView alloc] init];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(containerType, NSInteger, UIView)

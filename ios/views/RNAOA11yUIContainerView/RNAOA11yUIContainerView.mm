@@ -1,6 +1,6 @@
 //
-//  RNAOA11yContainerView.m
-//  RNAOA11yContainerView
+//  RNAOA11yUIContainerView.m
+//  RNAOA11yUIContainerView
 //
 //  Created by Artur Kalach on 17/07/2025.
 //
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "RNAOA11yContainerView.h"
+#import "RNAOA11yUIContainerView.h"
 #import <UIKit/UIKit.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
@@ -23,7 +23,7 @@
 
 using namespace facebook::react;
 
-@interface RNAOA11yContainerView () <RCTA11yContainerViewViewProtocol>
+@interface RNAOA11yUIContainerView () <RCTA11yUIContainerViewProtocol>
 
 @end
 
@@ -31,19 +31,19 @@ using namespace facebook::react;
 
 
 
-@implementation RNAOA11yContainerView
+@implementation RNAOA11yUIContainerView
 
 
 #ifdef RCT_NEW_ARCH_ENABLED
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-    return concreteComponentDescriptorProvider<A11yContainerViewComponentDescriptor>();
+    return concreteComponentDescriptorProvider<A11yUIContainerComponentDescriptor>();
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        static const auto defaultProps = std::make_shared<const A11yContainerViewProps>();
+        static const auto defaultProps = std::make_shared<const A11yUIContainerProps>();
         _props = defaultProps;
     }
 
@@ -52,8 +52,8 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    const auto &oldViewProps = *std::static_pointer_cast<A11yContainerViewProps const>(_props);
-    const auto &newViewProps = *std::static_pointer_cast<A11yContainerViewProps const>(props);
+    const auto &oldViewProps = *std::static_pointer_cast<A11yUIContainerProps const>(_props);
+    const auto &newViewProps = *std::static_pointer_cast<A11yUIContainerProps const>(props);
 
 
     if (oldViewProps.containerType != newViewProps.containerType) {
@@ -65,9 +65,9 @@ using namespace facebook::react;
 }
 
 
-Class<RCTComponentViewProtocol> A11yContainerViewCls(void)
+Class<RCTComponentViewProtocol> A11yUIContainerCls(void)
 {
-    return RNAOA11yContainerView.class;
+    return RNAOA11yUIContainerView.class;
 }
 #else
 - (BOOL)shouldGroupAccessibilityChildren
