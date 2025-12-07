@@ -13,6 +13,8 @@
 #import "UIView+RNAOA11yOrder.h"
 #import "RNAOScreenReaderFocusDelegate.h"
 #import "RNAOViewItemDelegate.h"
+#import "RNAOA11yFocusService.h"
+#import <React/UIView+React.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
 
@@ -27,7 +29,7 @@
 
 using namespace facebook::react;
 
-@interface RNAOA11yView () <RCTA11yPaneTitleViewProtocol>
+@interface RNAOA11yView () <RCTA11yViewViewProtocol>
 
 @end
 
@@ -38,8 +40,24 @@ using namespace facebook::react;
 @implementation RNAOA11yView {
   BOOL _needsAutoFocus;
   RNAOViewItemDelegate* _viewDelegate;
+  BOOL _descendantFocusChangedEnabled;
 }
 
+
+- (void)setDescendantFocusChangedEnabled: (BOOL)descendantFocusChangedEnabled {
+  _descendantFocusChangedEnabled = descendantFocusChangedEnabled;
+  if (_descendantFocusChangedEnabled) {
+    if (self.superview) {
+      [[RNAOA11yFocusService sharedService] subscribe:self];
+    }
+  } else {
+    [[RNAOA11yFocusService sharedService] unsubscribe:self];
+  }
+}
+
+- (BOOL)descendantFocusChangedEnabled {
+  return _descendantFocusChangedEnabled;
+}
 
 #ifdef RCT_NEW_ARCH_ENABLED
 - (void)prepareForRecycle
@@ -66,6 +84,7 @@ using namespace facebook::react;
     static const auto defaultProps = std::make_shared<const A11yViewProps>();
     _props = defaultProps;
     _needsAutoFocus = YES;
+    _descendantFocusChangedEnabled = NO;
     _viewDelegate = [[RNAOViewItemDelegate alloc] initWithView: self];
   }
   
@@ -81,6 +100,9 @@ using namespace facebook::react;
   
   if (_autoFocus != newViewProps.autoFocus) {
     [self setAutoFocus: newViewProps.autoFocus];
+  }
+  if (_descendantFocusChangedEnabled != newViewProps.descendantFocusChangedEnabled) {
+    [self setDescendantFocusChangedEnabled: newViewProps.descendantFocusChangedEnabled];
   }
   
 }
@@ -125,11 +147,47 @@ Class<RCTComponentViewProtocol> A11yViewCls(void)
 }
 #endif
 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (void)onScreenReaderDescendantFocusChangedHandler:(BOOL)isFocused withId:(NSString*) nativeId{
+  NSString* status = isFocused ? @"focused" : @"blurred";
+  [RNAOFabricEventHelper onA11yViewScreenReaderDescendantFocusChanged:status withId:nativeId withEmitter:_eventEmitter];
+}
+#else
+- (void)onScreenReaderDescendantFocusChangedHandler:(BOOL)isFocused withId:(NSString*) nativeId{
+  if (self.onScreenReaderDescendantFocusChanged) {
+    NSString* status = isFocused ? @"focused" : @"blurred";
+    self.onScreenReaderDescendantFocusChanged(@{@"status": status, @"nativeId": nativeId});
+  }
+}
+#endif
+
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (void)onScreenReaderFocusedHandler {
+  [RNAOFabricEventHelper onA11yViewFocused: _eventEmitter];
+}
+#else
+- (void)onScreenReaderFocusedHandler {
+  if (self.onScreenReaderFocused) {
+    self.onScreenReaderFocused(@{});
+  }
+}
+#endif
+
+- (void)accessibilityElementDidBecomeFocused {
+  [super accessibilityElementDidBecomeFocused];
+  [self onScreenReaderFocusedHandler];
+}
+
 - (void)focusView {
   dispatch_async(dispatch_get_main_queue(), ^{
     UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
   });
   
+}
+
+- (void)focus {
+  [self focusView];
 }
 
 - (void)didMoveToWindow {
@@ -144,6 +202,48 @@ Class<RCTComponentViewProtocol> A11yViewCls(void)
     }
   }
 }
+
+- (void)didMoveToSuperview {
+  [super didMoveToSuperview];
+  if (self.descendantFocusChangedEnabled && self.superview) {
+    [[RNAOA11yFocusService sharedService] subscribe:self];
+  }
+}
+
+- (void)removeFromSuperview {
+  [[RNAOA11yFocusService sharedService] unsubscribe:self];
+  [super removeFromSuperview];
+}
+
+
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (NSString*)getNativeId:(UIView*)element {
+  NSString* nativeId = nil;
+  @try {
+    nativeId = [element valueForKey:@"_nativeId"];
+  } @catch (NSException *exception) {
+    nativeId = nil;
+  }
+  
+  return nativeId;
+}
+#else
+- (NSString*)getNativeId:(UIView*)element {
+  return element.nativeID;
+}
+#endif
+
+- (void)accessibilityElementDidBecomeFocused:(UIView*)element {
+  NSString* nativeId = [self getNativeId: element];
+  [self onScreenReaderDescendantFocusChangedHandler: true withId:nativeId];
+}
+
+- (void)accessibilityElementDidUnfocused:(UIView*)element {
+  NSString* nativeId = [self getNativeId: element];
+  [self onScreenReaderDescendantFocusChangedHandler: false withId:nativeId];
+}
+
 
 - (void)willRemoveSubview:(UIView *)subview {
   [super willRemoveSubview:subview];

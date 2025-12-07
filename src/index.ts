@@ -7,6 +7,8 @@ import {
   A11yScreenChange,
 } from './components/A11yPaneTitle/A11yPaneTitle';
 import { A11yView } from './components/A11yView/A11yView';
+import { A11yFocusFrame } from './components/A11yLock/A11yFocusFrame/A11yFocusFrame';
+import { A11yFocusTrap } from './components/A11yLock/A11yFocusTrap/A11yFocusTrap';
 
 export type {
   IndexCommands,
@@ -31,4 +33,8 @@ export const A11y = {
   PaneTitle: A11yPaneTitle,
   ScreenChange: A11yScreenChange,
   View: A11yView,
+  FocusFrame: A11yFocusFrame,
+  FocusTrap: A11yFocusTrap,
 };
+
+export { A11yModule } from './modules/A11yAnnounceModule';

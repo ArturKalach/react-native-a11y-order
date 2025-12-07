@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { View, Button, Text, Modal, StyleSheet } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { A11y } from 'react-native-a11y-order';
 import { CircleExample } from './components/CircleExample';
@@ -9,6 +13,12 @@ import { ReorderExample } from './components/ReorderExample';
 import { GroupOrder } from './components/GroupOrder';
 import { CustomHeader } from './components/CustomHeader';
 import { ScreenReaderFocus } from './components/ScreenReaderFocus';
+import { FocusLockExample } from './components/FocusLockExample';
+
+const ScreenChangeAnnounce = ({ title }: { title: string }) => {
+  const isFocused = useIsFocused();
+  return <A11y.ScreenChange title={title} displayed={isFocused} />;
+};
 
 const navigationButtons = [
   {
@@ -35,6 +45,10 @@ const navigationButtons = [
     id: 'ScreenReaderFocus',
     label: 'Screen Reader Focus',
   },
+  {
+    id: 'FocusLock',
+    label: 'Focus Lock',
+  },
 ];
 
 function groupByTwo<T>(array: T[]) {
@@ -50,7 +64,7 @@ export const NavigationButtons = ({ ignore }: { ignore: string }) => {
   const btns = groupByTwo(navigationButtons.filter((i) => i.id !== ignore));
   const navigate = navigation.navigate as (value: string) => void;
   return (
-    <View>
+    <View style={styles.btnContainer}>
       {btns.map((group, index) => (
         <View key={index} style={styles.buttons}>
           {group.map((btn) => (
@@ -69,7 +83,7 @@ export const NavigationButtons = ({ ignore }: { ignore: string }) => {
 function CircleScreen() {
   return (
     <View style={styles.screen}>
-      <A11y.ScreenChange title="Circle Screen" />
+      <ScreenChangeAnnounce title="Circle Screen" />
       <CircleExample />
       <NavigationButtons ignore="Circle" />
     </View>
@@ -79,7 +93,7 @@ function CircleScreen() {
 function SliderScreen() {
   return (
     <View style={styles.screen}>
-      <A11y.ScreenChange title="Slider Screen" />
+      <ScreenChangeAnnounce title="Slider Screen" />
       <SliderExample />
       <NavigationButtons ignore="Slider" />
     </View>
@@ -92,7 +106,7 @@ function AutoFocusScreen() {
 
   return (
     <View style={styles.screen}>
-      <A11y.ScreenChange title="Auto Focus Screen" />
+      <ScreenChangeAnnounce title="Auto Focus Screen" />
       <Text> Auto Focus</Text>
       <A11y.View autoFocus>
         <Button
@@ -110,7 +124,7 @@ function AutoFocusScreen() {
         </A11y.View>
       )}
       <Modal visible={showModal}>
-        <A11y.ScreenChange title="Auto Focus Modal" />
+        <ScreenChangeAnnounce title="Auto Focus Modal" />
         <View style={styles.screen}>
           <Text>Modal Content</Text>
           <A11y.View autoFocus>
@@ -127,7 +141,7 @@ function AutoFocusScreen() {
 function ReorderScreen() {
   return (
     <View style={styles.screen}>
-      <A11y.ScreenChange title="Reorder Screen" />
+      <ScreenChangeAnnounce title="Reorder Screen" />
       <ReorderExample />
       <NavigationButtons ignore="Reorder" />
     </View>
@@ -137,10 +151,21 @@ function ReorderScreen() {
 function GroupScreen() {
   return (
     <View style={styles.flex}>
-      <A11y.ScreenChange title="Group Screen" />
+      <ScreenChangeAnnounce title="Group Screen" />
       <GroupOrder>
         <NavigationButtons ignore="Group" />
       </GroupOrder>
+    </View>
+  );
+}
+
+function FocusLockScreen() {
+  return (
+    <View collapsable={false} style={styles.flex}>
+      <ScreenChangeAnnounce title="Focus Lock Screen" />
+      <FocusLockExample>
+        <NavigationButtons ignore="FocusLock" />
+      </FocusLockExample>
     </View>
   );
 }
@@ -192,6 +217,11 @@ function RootStack() {
         name="ScreenReaderFocus"
         component={ScreenReaderFocusScreen}
       />
+      <Stack.Screen
+        options={HEADER_OPTIONS}
+        name="FocusLock"
+        component={FocusLockScreen}
+      />
     </Stack.Navigator>
   );
 }
@@ -208,4 +238,10 @@ const styles = StyleSheet.create({
   screen: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   buttons: { flexDirection: 'row', gap: 20 },
   flex: { flex: 1 },
+  btnContainer: {
+    gap: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
 });

@@ -1,10 +1,9 @@
 package com.a11yorder.views.A11yView;
 
-import android.view.View;
-import android.view.accessibility.AccessibilityEvent;
-
 import com.a11yorder.events.EventHelper;
-import com.a11yorder.events.ScreenReaderFocusEvent;
+import com.a11yorder.events.ScreenReaderDescendantFocusChangedEvent;
+import com.a11yorder.events.ScreenReaderFocusChangedEvent;
+import com.a11yorder.events.ScreenReaderFocusedEvent;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -45,6 +44,11 @@ public class A11yViewManager extends com.a11yorder.A11yViewSpec<A11yView> {
   }
 
   @Override
+  public void setDescendantFocusChangedEnabled(A11yView view, boolean value) {
+    //stub
+  }
+
+  @Override
   public void focus(A11yView view) {
     view.focus();
   }
@@ -53,7 +57,10 @@ public class A11yViewManager extends com.a11yorder.A11yViewSpec<A11yView> {
   @Override
   public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
     Map<String, Object> export = new HashMap<>();
-    export.put(ScreenReaderFocusEvent.EVENT_NAME, EventHelper.buildDirectEventMap("onScreenReaderFocusChange"));
+
+    export.put(ScreenReaderFocusedEvent.EVENT_NAME, EventHelper.buildDirectEventMap("onScreenReaderFocused"));
+    export.put(ScreenReaderFocusChangedEvent.EVENT_NAME, EventHelper.buildDirectEventMap("onScreenReaderFocusChange"));
+    export.put(ScreenReaderDescendantFocusChangedEvent.EVENT_NAME, EventHelper.buildDirectEventMap("onScreenReaderDescendantFocusChanged"));
 
     return export;
   }

@@ -9,33 +9,11 @@ Setting the right reading order can be a challenge, but there is a way to do it.
 | <img src="/.github/images/ios-reader.gif" height="500" /> | <img src="/.github/images/android-reader.gif" height="500" /> |
 
 
-## New Release: Updated Focus Order with Groups and Elements
-We’ve improved and fixed the accessibility focus order logic for Android and iOS.
-
-The `A11y.Index` component has been updated. The definition of `accessible components` is now controlled by the `orderType` property. It should resolve problem with android order between groups. You can choose from the following options: `default`, `legacy`, or `search` to configure the desired behavior.
-
-| Prop: orderType | Description |
-| :-- | :-- |
-| `default` | Defines the root component as an order element. It can be a group of elements or a single element. If there are multiple elements inside, navigation goes through the inner elements and proceeds to the next index. |
-| `legacy` | Uses the previous implementation of the element search, retrieving the first child as the accessibility element for order. |
-| `search` | Searches for the first accessible element in the child tree. |
-
-The `A11y.Container` component has been added to support the `UIAccessibilityContainerType` feature on iOS.
-| Props | Description |
-| :-- | :-- |
-| ViewProps | Default view props, including style, testID, etc. |
-| type?: | `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `group`. |
-
-The inner implementation of `A11y.Group` has been replaced by `A11y.Container` with the `none` value as the default for the type prop, as it provides a more appropriate implementation. The previous implementation is now available under the `legacy` option.
-| Props | Description |
-| :-- | :-- |
-| ViewProps | Default view props, including style, testID, etc. |
-| type?: | `legacy` or `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `none`. |
-
-
 - Bridgeless
 - New architecture
+- Old architecture
 - Backward compatibility
+- Compatible with Expo prebuild
 
 ## Installation
 
@@ -46,9 +24,6 @@ npm install react-native-a11y-order
 ```sh
 yarn add react-native-a11y-order
 ```
-
-You can also use version `react-native-a11y-order@0.2.5`. Version `0.3.0` is released solely to support React Native versions `0.79.x to 0.80.x`.
-
 
 ## Usage
 
@@ -115,6 +90,27 @@ export default function App() {
   );
 }
 ```
+A11y.Index Props:
+| Prop | Description |
+| :-- | :-- |
+| ViewProps | Standard React Native View properties, including style, testID, etc. |
+| index | (number) The position of the component in the order sequence. |
+| ref: focus | Reference to a focus command, used to set accessibility focus programmatically. |
+| orderType | Specifies the algorithm used for view ordering (see details below). |
+
+
+| Value | Description |
+| :-- | :-- |
+| default | Treats the root component as an orderable element. This can be a group or a single element. If multiple elements are present, navigation moves through the inner elements before proceeding to the next index. |
+| legacy | Uses the previous implementation for element search, selecting the first child as the accessibility element for ordering. |
+| search | Searches the child tree for the first accessible element to use in the order. |
+
+
+A11y.Order Props:
+
+| Prop | Description |
+| :-- | :-- |
+| ...ViewProps | Standard React Native View props, including style, testID, etc. |
 
 ## A11y.Container
 | View                                                      | A11y.Container                                                    |

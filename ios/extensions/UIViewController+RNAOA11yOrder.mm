@@ -9,6 +9,7 @@
 
 #import "UIViewController+RNAOA11yOrder.h"
 #import "RNAOSwizzleInstanceMethod.h"
+#import "RNAOA11yAnnounceService.h"
 #import <objc/runtime.h>
 
 
@@ -60,15 +61,41 @@ static char kRnaoFocusRestoreKey;
   if (viewToFocus) {
     UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, viewToFocus);
     [self setRnaoFocusViewRef: nil];
-  }
+  }}
+
+- (BOOL)rnaoIgnoredControllers {
+  NSString *className = NSStringFromClass([self class]);
+  NSArray *ignoredClassNames = @[
+      @"UICompatibilityInputViewController",
+      @"UISystemInputAssistantViewController",
+      @"UIInputWindowController",
+      @"UIPredictionViewController"
+  ];
+
+  return [ignoredClassNames containsObject:className];
 }
 
 - (void)rnaoViewDidAppear:(BOOL)animated {
+    if([self rnaoIgnoredControllers]) {
+      [self rnaoViewDidAppear:animated];
+      return;
+    }
+  
     [self rnaoViewDidAppear:animated];
     [self restoreAccessibilityFocusedView];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)),
+                 dispatch_get_main_queue(), ^{
+      [RNAOA11yAnnounceService shared].announceLock = false;
+    });
 }
 
 - (void)rnaoViewWillDisappear:(BOOL)animated {
+  if([self rnaoIgnoredControllers]) {
+    [self rnaoViewWillDisappear: animated];
+    return;
+  }
+  
+  [RNAOA11yAnnounceService shared].announceLock = true;
   [self rnaoViewWillDisappear: animated];
   [self saveAccessibilityFocusedView];
 }

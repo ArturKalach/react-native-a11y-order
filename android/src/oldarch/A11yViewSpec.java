@@ -13,4 +13,6 @@ public abstract class A11yViewSpec<T extends A11yView> extends ReactViewManager 
   public abstract void focus(T view);
 
   public abstract void receiveCommand(T view, String commandId, @Nullable ReadableArray args);
+
+  public abstract void setDescendantFocusChangedEnabled(A11yView view, boolean value);
 }

@@ -21,24 +21,44 @@ using namespace facebook::react;
 
 @implementation RNAOFabricEventHelper
 + (void)onIndexViewFocusChange:(BOOL)isFocused withEmitter:(facebook::react::SharedViewEventEmitter) _eventEmitter {
-    if (_eventEmitter) {
-        auto viewEventEmitter = std::static_pointer_cast<A11yIndexViewEventEmitter const>(_eventEmitter);
-        facebook::react::A11yIndexViewEventEmitter::OnScreenReaderFocusChange data = {
-            .isFocused = isFocused,
-        };
-        viewEventEmitter->onScreenReaderFocusChange(data);
+  if (_eventEmitter) {
+    auto viewEventEmitter = std::static_pointer_cast<A11yIndexViewEventEmitter const>(_eventEmitter);
+    facebook::react::A11yIndexViewEventEmitter::OnScreenReaderFocusChange data = {
+      .isFocused = isFocused,
     };
+    viewEventEmitter->onScreenReaderFocusChange(data);
+  };
 }
 
 + (void)onA11yViewFocusChange:(BOOL)isFocused withEmitter:(facebook::react::SharedViewEventEmitter) _eventEmitter {
-    if (_eventEmitter) {
-        auto viewEventEmitter = std::static_pointer_cast<A11yViewEventEmitter const>(_eventEmitter);
-        facebook::react::A11yViewEventEmitter::OnScreenReaderFocusChange data = {
-            .isFocused = isFocused,
-        };
-        viewEventEmitter->onScreenReaderFocusChange(data);
+  if (_eventEmitter) {
+    auto viewEventEmitter = std::static_pointer_cast<A11yViewEventEmitter const>(_eventEmitter);
+    facebook::react::A11yViewEventEmitter::OnScreenReaderFocusChange data = {
+      .isFocused = isFocused,
     };
+    viewEventEmitter->onScreenReaderFocusChange(data);
+  };
 }
+
++ (void)onA11yViewFocused:(facebook::react::SharedViewEventEmitter) _eventEmitter {
+  if (_eventEmitter) {
+    auto viewEventEmitter = std::static_pointer_cast<A11yViewEventEmitter const>(_eventEmitter);
+    viewEventEmitter->onScreenReaderFocused({});
+  };
+}
+
++ (void)onA11yViewScreenReaderDescendantFocusChanged:(NSString*)status withId:(NSString*)nativeId withEmitter:(facebook::react::SharedViewEventEmitter) _eventEmitter {
+  if (_eventEmitter) {
+    auto viewEventEmitter = std::static_pointer_cast<A11yViewEventEmitter const>(_eventEmitter);
+    NSString* resultID = nativeId == nil ? @"" :nativeId;
+    facebook::react::A11yViewEventEmitter::OnScreenReaderDescendantFocusChanged data = {
+      .status = [status UTF8String],
+      .nativeId = [resultID UTF8String],
+    };
+    viewEventEmitter->onScreenReaderDescendantFocusChanged(data);
+  };
+}
+
 
 
 @end
