@@ -24,12 +24,12 @@ export const CustomHeader = (props: NativeStackHeaderProps) => {
           <Text>Back</Text>
         </Pressable>
       ) : (
-        <View collapsable={false} style={{ width: 32, height: 17 }} />
+        <View collapsable={false} style={styles.spacer} />
       )}
       <View>
         <Text style={styles.title}>{props.route.name}</Text>
       </View>
-      <View collapsable={false} style={{ width: 32, height: 17 }} />
+      <View collapsable={false} style={styles.spacer} />
     </View>
   );
 };
@@ -44,4 +44,5 @@ const styles = StyleSheet.create({
     marginTop: 14,
   },
   title: { fontWeight: 'bold', fontSize: 20 },
+  spacer: { width: 32, height: 17 },
 });
