@@ -5,6 +5,8 @@
 //  Created by Artur Kalach on 21/10/2025.
 //
 
+#ifdef RCT_NEW_ARCH_ENABLED
+
 #ifndef RNAOFabricEventHelper_h
 #define RNAOFabricEventHelper_h
 
@@ -22,3 +24,5 @@ using namespace facebook::react;
 @end
 
 #endif /* RNCEKVFabricEventHelper_h */
+
+#endif

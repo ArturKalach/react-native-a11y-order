@@ -14,6 +14,8 @@ import { GroupOrder } from './components/GroupOrder';
 import { CustomHeader } from './components/CustomHeader';
 import { ScreenReaderFocus } from './components/ScreenReaderFocus';
 import { FocusLockExample } from './components/FocusLockExample';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AnnounceExample } from './components/AnnounceExample';
 
 const ScreenChangeAnnounce = ({ title }: { title: string }) => {
   const isFocused = useIsFocused();
@@ -107,7 +109,7 @@ function AutoFocusScreen() {
   return (
     <View style={styles.screen}>
       <ScreenChangeAnnounce title="Auto Focus Screen" />
-      <Text> Auto Focus</Text>
+      <Text>Auto Focus</Text>
       <A11y.View autoFocus>
         <Button
           title="Open Modal"
@@ -184,6 +186,16 @@ const HEADER_OPTIONS = {
   header: CustomHeader,
 };
 
+const AnnounceScreen = () => {
+  return (
+    <View style={styles.screen}>
+      <ScreenChangeAnnounce title="Announce Examples Screen" />
+      <AnnounceExample />
+      <NavigationButtons ignore="AnnounceExamples" />
+    </View>
+  );
+};
+
 function RootStack() {
   return (
     <Stack.Navigator>
@@ -191,6 +203,11 @@ function RootStack() {
         name="Circle"
         options={HEADER_OPTIONS}
         component={CircleScreen}
+      />
+      <Stack.Screen
+        name="AnnounceExamples"
+        options={HEADER_OPTIONS}
+        component={AnnounceScreen}
       />
       <Stack.Screen
         options={HEADER_OPTIONS}
@@ -228,9 +245,11 @@ function RootStack() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <RootStack />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 

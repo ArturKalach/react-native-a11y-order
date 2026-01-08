@@ -35,7 +35,7 @@
                       completion:(void (^)(void))completion
 {
     [self rnaoPresentViewController:modalViewController animated:animated completion:completion];
-    [RNAOA11yAnnounceService shared].announceLock = false;
+    [[RNAOA11yAnnounceService shared] temporarilyLockAnnounce: 0.1];
 }
 
 - (void)rnaoDismissViewController:(UIViewController *)modalViewController
@@ -43,7 +43,7 @@
                       completion:(void (^)(void))completion
 {
     [self rnaoDismissViewController:modalViewController animated:animated completion:completion];
-    [RNAOA11yAnnounceService shared].announceLock = false;
+    [[RNAOA11yAnnounceService shared] temporarilyLockAnnounce: 0.1];
 }
 
 @end
@@ -68,13 +68,13 @@
 - (void)rnao_ensurePresentedOnlyIfNeeded
 {
     [self rnao_ensurePresentedOnlyIfNeeded];
-    [RNAOA11yAnnounceService shared].announceLock = false;
+    [[RNAOA11yAnnounceService shared] temporarilyLockAnnounce: 0.1];
 }
 
 - (void)rnao_dismissModalViewController
 {
     [self rnao_dismissModalViewController];
-    [RNAOA11yAnnounceService shared].announceLock = false;
+    [[RNAOA11yAnnounceService shared] temporarilyLockAnnounce: 0.1];
 }
 
 @end

@@ -80,13 +80,10 @@ static char kRnaoFocusRestoreKey;
       [self rnaoViewDidAppear:animated];
       return;
     }
-  
+
     [self rnaoViewDidAppear:animated];
     [self restoreAccessibilityFocusedView];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)),
-                 dispatch_get_main_queue(), ^{
-      [RNAOA11yAnnounceService shared].announceLock = false;
-    });
+    [[RNAOA11yAnnounceService shared] temporarilyLockAnnounce: 0.5];
 }
 
 - (void)rnaoViewWillDisappear:(BOOL)animated {
@@ -94,8 +91,9 @@ static char kRnaoFocusRestoreKey;
     [self rnaoViewWillDisappear: animated];
     return;
   }
-  
-  [RNAOA11yAnnounceService shared].announceLock = true;
+
+  [[RNAOA11yAnnounceService shared] temporarilyLockAnnounce: 1];
+//  [RNAOA11yAnnounceService shared].announceLock = true;
   [self rnaoViewWillDisappear: animated];
   [self saveAccessibilityFocusedView];
 }

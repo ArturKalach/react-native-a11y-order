@@ -9,14 +9,16 @@
 #define RNAOA11yAnnounceService_h
 
 #import <UIKit/UIKit.h>
+#import "RNAOFocusChangeListener.h"
 
-
-@interface RNAOA11yAnnounceService: NSObject
+@interface RNAOA11yAnnounceService: NSObject<RNAOFocusChangeListenerDelegate>
 
 + (instancetype)shared;
-- (void)announce:(NSString *)announcement;
 
-@property (nonatomic, assign) BOOL announceLock;
+- (void)announce:(NSString *)announcement;
+- (void)temporarilyLockAnnounce;
+- (void)temporarilyLockAnnounce:(NSTimeInterval)interval;
+//@property (nonatomic, assign) BOOL announceLock;
 
 @end
 

@@ -7,17 +7,31 @@
 
 #import <Foundation/Foundation.h>
 #import "RNAOA11yAnnounceService.h"
+#import "RNAODebouncer.h"
+#import "RNAOA11yAnnounceQueue.h"
+#import "RNAOFocusChangeListener.h"
+#import "RNAOA11yAnnounceHelper.h"
 
 @interface RNAOA11yAnnounceService ()
 
-@property (nonatomic, copy) void (^debounceBlock)(void);
-@property (nonatomic, strong) NSMutableArray<NSString *> *announceArray;
-@property (nonatomic, assign) BOOL isNulled;
+//@property (nonatomic, copy) void (^debounceBlock)(void);
+
+@property (nonatomic, assign) BOOL isVoiceOverNulled;
+@property (nonatomic, assign) BOOL isAnnounceLocked;
+
+@property (nonatomic, strong) RNAODebouncer *announceDebouncer;
+@property (nonatomic, strong) RNAODebouncer *lockReleaseDebouncer;
+
+@property (nonatomic, strong) RNAOA11yAnnounceQueue *announceQueue;
+@property (strong, nonatomic) RNAOFocusChangeListener *voiceOverFocusListener;
+
+@property (nonatomic, assign, readonly) BOOL canAnnounce;
 
 @end
 
 @implementation RNAOA11yAnnounceService
 
+#pragma mark - Singleton
 + (instancetype)shared {
   static RNAOA11yAnnounceService *sharedInstance = nil;
   static dispatch_once_t onceToken;
@@ -29,94 +43,69 @@
 
 - (instancetype)init {
   if (self) {
-    _announceArray = [[NSMutableArray alloc] init];
-    _isNulled = YES;
-    _announceLock = NO;
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleFocusChange:)
-                                                 name:UIAccessibilityElementFocusedNotification
-                                               object:nil];
+    _isVoiceOverNulled = YES;
+    
+    self.isAnnounceLocked = NO;
+    self.announceDebouncer =  [[RNAODebouncer alloc] initWithInterval: 0.3];
+    self.lockReleaseDebouncer =  [[RNAODebouncer alloc] initWithInterval: 1];
+    self.announceQueue = [[RNAOA11yAnnounceQueue alloc] init];
+    
+    self.voiceOverFocusListener = [[RNAOFocusChangeListener alloc] initWithDelegate: self];
+    [self.voiceOverFocusListener startListening];
   }
   return self;
 }
 
 - (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self.voiceOverFocusListener stopListening];
 }
 
-- (BOOL)getCanBeAnnounced {
-  return !_announceLock && !_isNulled && _announceArray.count != 0;
+- (BOOL)canAnnounce {
+  return !self.announceQueue.isEmpty && !self.isAnnounceLocked && !self.isVoiceOverNulled;
 }
 
-- (void)setAnnounceLock:(BOOL)announceLock {
-  _announceLock = announceLock;
+- (void)voiceOverFocusChanged:(id)focusedElement {
+  self.isVoiceOverNulled = (focusedElement == nil);
   
-  if([self getCanBeAnnounced]) {
-    [self debounceAnnounce];
-  }
+  [self delayedAnnounce];
+}
+
+- (void)temporarilyLockAnnounce {
+    self.isAnnounceLocked = YES;
+    [self.lockReleaseDebouncer debounceAction:^{
+        self.isAnnounceLocked = NO;
+        [self delayedAnnounce];
+    }];
+}
+
+- (void)temporarilyLockAnnounce:(NSTimeInterval)interval {
+    self.lockReleaseDebouncer.debounceInterval = interval;
+    [self temporarilyLockAnnounce];
 }
 
 
-- (void)handleFocusChange:(NSNotification *)notification {
-  id focusedElement = notification.userInfo[UIAccessibilityFocusedElementKey];
-  _isNulled = (focusedElement == nil);
-
-  if([self getCanBeAnnounced]) {
-    [self debounceAnnounce];
-  }
-}
-
-- (void)postNotification {
-  for (NSString *announcement in _announceArray) {
-    NSDictionary *attributes = @{ UIAccessibilitySpeechAttributeQueueAnnouncement : @YES };
-    
-    NSAttributedString *attributedAnnouncement = [[NSAttributedString alloc] initWithString:announcement attributes:attributes];
-    
-    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, attributedAnnouncement);
-  }
+#pragma mark - Announce
+- (void)announce:(NSString *)announcement {
+  [self.announceQueue add: announcement];
   
-  [_announceArray removeAllObjects];
+  [self delayedAnnounce];
 }
 
-- (void)debounceAnnounce {
-  if(![self getCanBeAnnounced]) return;
+- (void)delayedAnnounce {
+  if(!self.canAnnounce) return;
 
-  [self debounceWithDelay:0.3 block:^{
-    if ([self getCanBeAnnounced]) {
-      [self postNotification];
-    } else {
-      [self debounceAnnounce];
-    }
+  [self.announceDebouncer debounceAction:^{
+    [self announceAction];
   }];
 }
 
-- (void)announce:(NSString *)announcement {
-  if (announcement.length == 0) {
-    return;
+- (void)announceAction {
+  if(self.canAnnounce) {
+    [RNAOA11yAnnounceHelper announceWithList: self.announceQueue.list];
+    [self.announceQueue clear];
+  } else {
+    [self delayedAnnounce];
   }
-  
-  [_announceArray addObject:announcement];
-  [self debounceAnnounce];
-}
-
-- (void)debounceWithDelay:(NSTimeInterval)delay block:(void (^)(void))block {
-    self.debounceBlock = nil;
-
-    __weak RNAOA11yAnnounceService *weakSelf = self;
-    self.debounceBlock = ^{
-        if (block) {
-            block();
-        }
-    };
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)),
-                   dispatch_get_main_queue(), ^{
-        if (weakSelf.debounceBlock) {
-            weakSelf.debounceBlock();
-            weakSelf.debounceBlock = nil;
-        }
-    });
 }
 
 @end
