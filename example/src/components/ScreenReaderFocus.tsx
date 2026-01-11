@@ -53,42 +53,45 @@ export const ScreenReaderFocus = ({
             </Text>
           </View>
         </A11y.View>
-        <A11y.Order style={styles.orderContainer}>
-          <A11y.Index
-            onScreenReaderSubViewFocused={() => setFocused(beta)}
-            onScreenReaderSubViewBlurred={() => setBlurred(beta)}
-            onScreenReaderSubViewFocusChange={(focused) =>
-              console.log(`${beta}: `, focused)
-            }
-            index={1}
-          >
-            <Pressable>
-              <Text>{beta}</Text>
-            </Pressable>
-          </A11y.Index>
-          <A11y.Index
-            onScreenReaderSubViewFocused={() => setFocused(alpha)}
-            onScreenReaderSubViewBlurred={() => setBlurred(alpha)}
-            onScreenReaderSubViewFocusChange={(focused) =>
-              console.log(`${alpha}: `, focused)
-            }
-            index={0}
-          >
-            <Button title={alpha} />
-          </A11y.Index>
-          <A11y.Index
-            onScreenReaderSubViewFocused={() => setFocused(gamma)}
-            onScreenReaderSubViewBlurred={() => setBlurred(gamma)}
-            onScreenReaderSubViewFocusChange={(focused) =>
-              console.log(`${gamma}: `, focused)
-            }
-            index={2}
-          >
-            <View accessible>
-              <Text>{gamma}</Text>
-            </View>
-          </A11y.Index>
-        </A11y.Order>
+        <View collapsable={false} style={styles.symbols}>
+          <A11y.Order style={styles.orderContainer}>
+            <A11y.Index
+              onScreenReaderSubViewFocused={() => setFocused(beta)}
+              onScreenReaderSubViewBlurred={() => setBlurred(beta)}
+              onScreenReaderSubViewFocusChange={(focused) =>
+                console.log(`${beta}: `, focused)
+              }
+              index={1}
+            >
+              <Pressable>
+                <Text>{beta}</Text>
+              </Pressable>
+            </A11y.Index>
+            <A11y.Index
+              onScreenReaderSubViewFocused={() => setFocused(alpha)}
+              onScreenReaderSubViewBlurred={() => setBlurred(alpha)}
+              onScreenReaderSubViewFocusChange={(focused) =>
+                console.log(`${alpha}: `, focused)
+              }
+              index={0}
+            >
+              <Button title={alpha} />
+            </A11y.Index>
+            <A11y.Index
+              onScreenReaderSubViewFocused={() => setFocused(gamma)}
+              onScreenReaderSubViewBlurred={() => setBlurred(gamma)}
+              onScreenReaderSubViewFocusChange={(focused) =>
+                console.log(`${gamma}: `, focused)
+              }
+              index={2}
+            >
+              <View accessible>
+                <Text>{gamma}</Text>
+              </View>
+            </A11y.Index>
+          </A11y.Order>
+        </View>
+
         <A11y.View
           onScreenReaderDescendantFocusChanged={
             onScreenReaderDescendantFocusChangedHandler
@@ -163,4 +166,5 @@ const styles = StyleSheet.create({
   colorRed: { width: 40, height: 40, backgroundColor: 'red' },
   colorGreen: { width: 40, height: 40, backgroundColor: 'green' },
   colorBlue: { width: 40, height: 40, backgroundColor: 'blue' },
+  symbols: { alignItems: 'center', width: '100%' },
 });
