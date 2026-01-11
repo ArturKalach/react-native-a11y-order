@@ -145,6 +145,7 @@ The `A11yModule.announce` function has been introduced to improve accessibility 
 <details>
   <summary>More Information</summary>
 Why Use `A11yModule.announce`?
+
 On iOS, the default `AccessibilityInfo.announceForAccessibility` function can be interrupted by focus changes. This means that if you attempt to announce a message, the announcement could be prematurely cut off due to various events, such as screen navigation or the display of a modal.
 
 To address this limitation, `A11yModule.announce` uses a custom solution built on native events to ensure that announcements are made reliably and are less likely to be interrupted.
