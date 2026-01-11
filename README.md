@@ -149,24 +149,12 @@ On iOS, the default `AccessibilityInfo.announceForAccessibility` function can be
 
 To address this limitation, `A11yModule.announce` uses a custom solution built on native events to ensure that announcements are made reliably and are less likely to be interrupted.
 
-Here is a cleaner and more polished version of your description for the A11yModule.announce function:
-
-A11yModule.announce - Alternative Announcement Function
-The A11yModule.announce function has been introduced to improve accessibility announcement behavior on iOS.
-
-Why Use A11yModule.announce?
-On iOS, the default AccessibilityInfo.announceForAccessibility function can be interrupted by focus changes. This means that if you attempt to announce a message, the announcement could be prematurely cut off due to various events, such as screen navigation or the display of a modal.
-
-To address this limitation, A11yModule.announce uses a custom solution built on native events to ensure that announcements are made reliably and are less likely to be interrupted.
-
 A11yModule API:
 | Function | Description |
 | :-- | :-- |
 | announce(message: string): void | Posts a string to be announced by the screen reader, ensuring improved reliability on iOS. |
 
 ```tsx
-import { A11yModule } from 'your-library';
-
 A11yModule.announce('This is a custom announcement, now more reliable on iOS!');
 ```
 </details>
