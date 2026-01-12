@@ -2,7 +2,7 @@
 
 React Native A11y Order Library: Enhance screen reader functionality with advanced control.
 
-Managing screen reader focus order can be challenging, especially in complex or unconventional scenarios. The react-native-a11y-order library is built with a native-first approach to resolve issues related to screen reader focus order and provide additional accessibility features on both Android and iOS platforms.
+Managing screen reader focus order can be challenging, especially in complex or unconventional scenarios. The `react-native-a11y-order` library is built with a native-first approach to resolve issues related to screen reader focus order and provide additional accessibility features on both Android and iOS platforms.
 
 | iOS reader                                                | Android reader                                                |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
@@ -45,7 +45,8 @@ yarn add react-native-a11y-order
 
 <details>
   <summary>More Information</summary>
-To enhance accessibility and provide better focus management, screen reader focus handlers have been added. These handlers allow you to capture and respond to screen reader focus events effectively, enabling features like managing animations, timers, and other interactions based on focus changes.
+
+> To enhance accessibility and provide better focus management, screen reader focus handlers have been added. These handlers allow you to capture and respond to screen reader focus events effectively, enabling features like managing animations, timers, and other interactions based on focus changes.
 
 
 A11y.View Props:
