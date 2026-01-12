@@ -18,6 +18,7 @@ Managing screen reader focus order can be challenging, especially in complex or 
 > [!TIP]
 > If you need to adjust the horizontal or vertical focus order, consider using `<View collapsable={false}>` as a quick fix.
 > By default, React Native optimizes views, which can sometimes impact the focus order unintentionally.
+>
 > While this library is designed to handle complex or unusual focus scenarios, in many cases, using `<View collapsable={false}>` can resolve focus issues without requiring additional work.
 
 > [!IMPORTANT]
@@ -190,7 +191,11 @@ A11yModule.announce('This is a custom announcement, now more reliable on iOS!');
 
 #### A11y.Order, A11y.Index
 
-There is always a question about how to set the focus order for a screen reader in React Native. `A11y.Order` and `A11y.Index` are designed to assist with this task. `A11y.Order` is a container component that defines an ordering group, while `A11y.Index` is a wrapper component that helps define a position within the order.
+To set the focus order for a screen reader in React Native, you can use the following components:
+- `A11y.Order`: A container component that creates an ordering group for focusable elements.
+- `A11y.Index`: A wrapper component that defines the position of an element within the ordering group.
+
+Using these components together simplifies the process of managing focus order in complex UI structures.
 
 To illustrate, let's look at an example:
 
@@ -227,7 +232,7 @@ export default function App() {
 }
 ```
 
-Additionally, for dynamic interaction scenarios, setting focus programmatically can be very useful. This can be achieved using the focus command via a component ref.
+Additionally, for dynamic interaction scenarios, programmatically setting focus can be highly effective. You can achieve this by using the focus method through a component reference.
 
 ```js
 import { A11y, IndexCommands } from 'react-native-a11y-order';
