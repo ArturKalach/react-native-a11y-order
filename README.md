@@ -263,6 +263,9 @@ A11y.Index Props:
 | index | (number) The position of the component in the order sequence. |
 | ref: focus | Reference to a focus command, used to set accessibility focus programmatically. |
 | orderType | Specifies the algorithm used for view ordering (see details below). |
+| onScreenReaderSubViewFocused | Triggered when a subview within the component is focused by the screen reader. |
+| onScreenReaderSubViewBlurred | Triggered when the screen reader focus moves away or is blurred from a subview. |
+| onScreenReaderSubViewFocusChange | Triggered when the focus status of a subview changes (either focused or blurred). |
 
 
 | Value | Description |
