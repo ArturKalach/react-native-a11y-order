@@ -1,8 +1,8 @@
 # React Native A11y Order
 
-React Native A11y Order Library: Advanced control of screen reader order.
+React Native A11y Order Library: Enhance screen reader functionality with advanced control.
 
-Setting the right reading order can be a challenge, but there is a way to do it. The react-native-a11y-order is a native-first library designed to solve problems with the ordering of screen readers on both Android and iOS platforms.
+Managing screen reader focus order can be challenging, especially in complex or unconventional scenarios. The react-native-a11y-order library is built with a native-first approach to resolve issues related to screen reader focus order and provide additional accessibility features on both Android and iOS platforms.
 
 | iOS reader                                                | Android reader                                                |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
@@ -14,6 +14,16 @@ Setting the right reading order can be a challenge, but there is a way to do it.
 - Old architecture
 - Backward compatibility
 - Compatible with Expo prebuild
+
+> [!TIP]
+> If you need to adjust the horizontal or vertical focus order, consider using `<View collapsable={false}>` as a quick fix.
+> By default, React Native optimizes views, which can sometimes impact the focus order unintentionally.
+> While this library is designed to handle complex or unusual focus scenarios, in many cases, using `<View collapsable={false}>` can resolve focus issues without requiring additional work.
+
+> [!IMPORTANT]
+> Starting from React Native v0.8.2, an experimental feature `experimental_accessibilityOrder` is available for setting the correct focus order.
+> You can find more information in the [Accessibility documentation](https://reactnative.dev/docs/accessibility).
+
 
 ## Installation
 
