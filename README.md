@@ -29,6 +29,10 @@ yarn add react-native-a11y-order
 
 #### Screen Reader Focus Events
 
+| iOS | Android |
+| :-- | :-- |
+| <img src="/.github/images/screen-reader-focus-ios.gif" height="500" /> |  <img src="/.github/images/screen-reader-focus-android.gif" height="500" />  |
+
 <details>
   <summary>More Information</summary>
 To enhance accessibility and provide better focus management, screen reader focus handlers have been added. These handlers allow you to capture and respond to screen reader focus events effectively, enabling features like managing animations, timers, and other interactions based on focus changes.
@@ -57,6 +61,10 @@ A11y.View Props:
 
 #### Focus Lock Functionality
 The focus lock functionality has been introduced with two new components: `A11y.FocusFrame` and `A11y.FocusTrap`. These components enable more robust accessibility by managing and restricting focus within specific areas of the screen.
+
+| iOS | Android |
+| :-- | :-- |
+| <img src="/.github/images/focus-lock-ios.gif" height="500" /> |  <img src="/.github/images/focus-lock-android.gif" height="500" />  |
 
 <details>
   <summary>More Information</summary>
@@ -93,6 +101,10 @@ The focus lock functionality should be used as a pair:
 
 #### A11y.PaneTitle and A11y.ScreenChange
 The components `A11y.PaneTitle` and `A11y.ScreenChange` have been introduced to enhance accessibility by providing robust support for announcing screen changes and their states.
+
+| iOS | Android |
+| :-- | :-- |
+| <img src="/.github/images/announce-ios.gif" height="500" /> |  <img src="/.github/images/announce-android.gif" height="500" />  |
 
 <details>
   <summary>More Information</summary>
