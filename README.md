@@ -289,6 +289,107 @@ The `A11y.Container` component for configuration `UIAccessibilityContainerType` 
 | ViewProps | Default view props, including style, testID, etc. |
 | type?: | `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `group`. |
 
+
+## A11y.View
+`The A11y.View` component can be used to handle and track screen reader focus independently of the `A11y.Index` component.
+
+| Prop | Description |
+| :-- | :-- |
+| onScreenReaderFocused | Triggered when the view gets focus from the screen reader. |
+| onScreenReaderSubViewFocused | Triggered when a subview within the component is focused by the screen reader. |
+| onScreenReaderSubViewBlurred | Triggered when the screen reader focus moves away or is blurred from a subview. |
+| onScreenReaderSubViewFocusChange | Triggered when the focus status of a subview changes (either focused or blurred). |
+| onScreenReaderDescendantFocusChanged | Triggered when any descendant subview is focused by the screen reader. Provides an object containing the focus status and the nativeId of the focused subview, if applicable. Example: < { status: string, nativeId?: string } >. |
+
+```tsx
+<A11y.View
+  onScreenReaderDescendantFocusChanged={(e) => console.log(e)}
+  onScreenReaderSubViewFocused={() => console.log('List has been focused')}
+  onScreenReaderSubViewBlurred={() => console.log('List has been blurred')}
+  onScreenReaderFocused={() => console.log('Focused')}
+>
+  ...
+</A11y.View>
+```
+
+## A11y.FocusFrame, A11y.FocusTrap
+
+These components enhance accessibility by providing better control over focus management within specific areas of the screen.
+
+- `A11y.FocusFrame`: Used at the root level of a "screen" to detect and prevent focus leaks, ensuring focus remains contained.
+- `A11y.FocusTrap`: Wraps the content area to explicitly enforce focus confinement within a defined region.
+
+| Prop | Description |
+| :-- | :-- |
+| ViewProps | Includes all standard React Native View properties, such as style, testID, etc. |
+
+```tsx
+<A11y.FocusFrame>
+  ...
+  <A11y.FocusTrap>
+    <Text accessibilityRole="header">Locked Area</Text>
+    <Button
+      title="Confirm"
+      accessibilityLabel="Confirm action"
+    />
+  </A11y.FocusTrap>
+  ...
+</A11y.FocusFrame>
+```
+
+## A11y.PaneTitle, A11y.ScreenChange
+
+Components for screen change announcements
+
+
+React Native currently lacks built-in APIs for announcing modal or screen transitions. To enhance accessibility, you can use A11y.PaneTitle or A11y.ScreenChange:
+- Screen transitions: Announce navigation to a new screen (e.g., "Login Screen").
+- Modal presentations: Announce when a modal appears (e.g., "Confirm Modal").
+
+| Prop | Description |
+| :-- | :-- |
+| title | The title message to be announced for the screen or modal. |
+| detachMessage | The message to be announced when this component is detached (e.g., when leaving the screen). |
+| type | The type of announcement for Android. Options: activity, pane, or announce. |
+| displayed | A trigger for screen focus changes, used to properly update the Android Activity title when switching screens. |
+| withFocusRestore | Ensures that the screen reader focus is preserved and restored appropriately after a screen change. (iOS-specific) |
+
+The `A11y.ScreenChange` component is a simplified version of `A11y.PaneTitle`. It is preconfigured with `type="activity"` to handle screen change announcements on Android. Beyond that, it behaves identically to `A11y.PaneTitle`.
+
+Example:
+```tsx
+export const LoginScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
+  return (
+    <View>
+      <A11y.ScreenChange
+        title="Login Screen"
+        displayed={isFocused}
+      />
+      <View style={styles.container}>
+        <Text>Welcome to the Login Screen</Text>
+        <Button title="Continue" onPress={() => navigation.navigate('Home')} />
+      </View>
+    </View>
+  );
+};
+```
+
+## A11yModule
+`A11yModule` provides an alternative solution for reliably announcing information on iOS.
+
+The default `AccessibilityInfo.announceForAccessibility` function on iOS can often be disrupted by focus changes. For instance, announcements might get interrupted by actions such as navigating between screens or opening a modal.
+
+To overcome this limitation, `A11yModule.announce` is implemented with a custom solution that leverages native events, ensuring that announcements are delivered reliably and are less likely to be interrupted.
+
+| Function | Description |
+| :-- | :-- |
+| announce(message: string): void | Posts a message to be announced by the screen reader with improved reliability on iOS. |
+
+```tsx
+A11yModule.announce('This is a custom announcement, now more reliable on iOS!');
+```
+
 ## Migration
 
 <details>
