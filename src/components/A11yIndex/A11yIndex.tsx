@@ -11,7 +11,44 @@ import {
 
 export const A11yIndex = React.memo(
   React.forwardRef<IndexCommands, A11yIndexProps>(
-    ({ children, index, orderType = 'default', ...props }, ref) => {
+    (
+      {
+        children,
+        index,
+        orderType = 'default',
+        onScreenReaderSubViewFocusChange,
+        onScreenReaderSubViewFocused,
+        onScreenReaderSubViewBlurred,
+        ...props
+      },
+      ref
+    ) => {
+      const hasHandler = Boolean(
+        onScreenReaderSubViewBlurred ||
+          onScreenReaderSubViewFocused ||
+          onScreenReaderSubViewFocusChange
+      );
+
+      const onScreenReaderChangeHandler = React.useCallback(
+        (event: { nativeEvent: { isFocused: boolean } }) => {
+          onScreenReaderSubViewFocusChange?.(event.nativeEvent.isFocused);
+          if (event.nativeEvent.isFocused) {
+            onScreenReaderSubViewFocused?.();
+          } else {
+            onScreenReaderSubViewBlurred?.();
+          }
+        },
+        [
+          onScreenReaderSubViewFocusChange,
+          onScreenReaderSubViewBlurred,
+          onScreenReaderSubViewFocused,
+        ]
+      );
+
+      const onScreenReaderHandlerProp = hasHandler
+        ? onScreenReaderChangeHandler
+        : undefined;
+
       const orderKey = React.useContext(A11ySequenceOrderContext);
       if (!orderKey) {
         throw new Error(
@@ -42,6 +79,7 @@ export const A11yIndex = React.memo(
           orderIndex={index}
           orderKey={orderKey}
           {...props}
+          onScreenReaderFocusChange={onScreenReaderHandlerProp}
         >
           {children}
         </A11yIndexView>

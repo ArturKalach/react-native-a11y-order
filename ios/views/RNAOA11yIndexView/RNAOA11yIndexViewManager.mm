@@ -49,4 +49,6 @@ RCT_EXPORT_METHOD(focus:(nonnull NSNumber *)reactTag)
     }];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(onScreenReaderFocusChange, RCTDirectEventBlock)
+
 @end

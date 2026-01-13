@@ -5,12 +5,17 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.a11yorder.events.EventHelper;
+import com.a11yorder.events.ScreenReaderFocusChangedEvent;
 import com.a11yorder.utils.A11yHelper;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.views.view.ReactViewGroup;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @ReactModule(name = A11yIndexViewManager.NAME)
@@ -53,7 +58,7 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
     this.focus((ReactViewGroup) view);
   }
 
-  private  <T extends ReactViewGroup> void focus(T view) {
+  private <T extends ReactViewGroup> void focus(T view) {
     View firstAccessible = A11yHelper.findFirstAccessible(view, true);
     A11yHelper.focus(firstAccessible);
   }
@@ -65,5 +70,14 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
     } else {
       super.receiveCommand(root, commandId, args);
     }
+  }
+
+  @Override
+  public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+    Map<String, Object> export = new HashMap<>();
+
+    export.put(ScreenReaderFocusChangedEvent.EVENT_NAME, EventHelper.buildDirectEventMap("onScreenReaderFocusChange"));
+
+    return export;
   }
 }

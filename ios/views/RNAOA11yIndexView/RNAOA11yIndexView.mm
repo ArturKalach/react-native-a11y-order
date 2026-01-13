@@ -13,6 +13,8 @@
 #import <React/RCTViewManager.h>
 #import "RNAOA11yOrderLinking.h"
 #import "RNAOA11yItemDelegate.h"
+#import "UIView+RNAOA11yOrder.h"
+#import "RNAOFabricEventHelper.h"
 
 #ifdef RCT_NEW_ARCH_ENABLED
 
@@ -33,7 +35,6 @@ using namespace facebook::react;
 #endif
 
 @implementation RNAOA11yIndexView {
-  BOOL isLinked;
   RNAOA11yItemDelegate* _a11yItemDelegate;
 }
 
@@ -72,7 +73,6 @@ using namespace facebook::react;
   if (self = [super initWithFrame:frame]) {
     static const auto defaultProps = std::make_shared<const A11yIndexViewProps>();
     _props = defaultProps;
-    isLinked = NO;
     _a11yItemDelegate = [[RNAOA11yItemDelegate alloc] initWithView: self];
   }
   
@@ -82,7 +82,6 @@ using namespace facebook::react;
 - (instancetype)initWithFrame:(CGRect)frame
 {
   if (self = [super initWithFrame:frame]) {
-    isLinked = NO;
     _a11yItemDelegate = [[RNAOA11yItemDelegate alloc] initWithView: self];
   }
   
@@ -138,7 +137,6 @@ using namespace facebook::react;
 
 - (void)prepareForRecycle
 {
-  isLinked = NO;
   [_a11yItemDelegate clear];
   [super prepareForRecycle];
 }
@@ -149,5 +147,30 @@ Class<RCTComponentViewProtocol> A11yIndexViewCls(void)
 }
 
 #endif
+
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (void)onScreenReaderFocusChangeHandler:(BOOL)isFocused {
+  [RNAOFabricEventHelper onIndexViewFocusChange:isFocused withEmitter:_eventEmitter];
+}
+#else
+- (void)onScreenReaderFocusChangeHandler:(BOOL)isFocused {
+  if (self.onScreenReaderFocusChange) {
+    self.onScreenReaderFocusChange(@{@"isFocused" : @(isFocused)});
+  }
+}
+#endif
+
+- (void)onFocusItemLinked: (UIView*)view {
+  [view setScreenReaderFocusDelegate: self];
+}
+
+- (void)onFocusItemRemoved: (UIView*)view {
+  [view clearScreenReaderFocusDelegate];
+}
+
+- (void)onScreenReaderFocusChanged:(BOOL)focused {
+  [self onScreenReaderFocusChangeHandler: focused];
+}
 
 @end

@@ -18,12 +18,12 @@ typedef NS_ENUM(NSInteger, A11yOrderType) {
 
 
 @implementation RNAOA11yItemDelegate {
-  __weak UIView *_delegate;
+  __weak UIView<RNAOViewItemProtocol> *_delegate;
   BOOL _isLinked;
 }
 
 - (instancetype _Nonnull)initWithView:
-(UIView<RNAOA11yItemProtocol> *_Nonnull)delegate {
+(UIView<RNAOA11yItemProtocol, RNAOViewItemProtocol> *_Nonnull)delegate {
   self = [super init];
   if (self) {
     _delegate = delegate;
@@ -62,6 +62,10 @@ typedef NS_ENUM(NSInteger, A11yOrderType) {
   _linkView = view;
   
   [self link];
+  UIView* firstAccessible = [self findFirstAccessibleChild: _delegate];
+  if(firstAccessible) {
+    [_delegate onFocusItemLinked: firstAccessible];
+  }
 }
 
 
@@ -69,13 +73,17 @@ typedef NS_ENUM(NSInteger, A11yOrderType) {
   if(!_linkView) {
     _isLinked = false;
     UIView* view = [self getFocusView: subview];
-    _linkView = view;
+    [self setLinkView: view];
   }
 }
 
 - (void)willRemoveSubview:(UIView *)subview {
   if(_linkView == subview) {
     [self clear];
+    UIView* firstAccessible = [self findFirstAccessibleChild: _delegate];
+    if(firstAccessible) {
+      [_delegate onFocusItemRemoved: subview];
+    }
   }
 }
 
