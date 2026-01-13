@@ -1,8 +1,8 @@
-import React, { useId } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import type { ViewProps } from 'react-native';
 
-export const A11yGroup = (props: React.PropsWithChildren<ViewProps>) => {
-  const id = useId();
-  return <View nativeID={id} {...props} />;
+import type { A11yGroupProps } from '../../types/A11yGroup.types';
+
+export const A11yGroup = (props: A11yGroupProps) => {
+  return <View collapsable={false} {...props} />;
 };

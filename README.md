@@ -1,16 +1,30 @@
 # React Native A11y Order
 
-React Native A11y Order Library: Advanced control of screen reader order.
+React Native A11y Order Library: Enhance screen reader functionality with advanced control.
 
-Setting the right reading order can be a challenge, but there is a way to do it. The react-native-a11y-order is a native-first library designed to solve problems with the ordering of screen readers on both Android and iOS platforms.
+Managing screen reader focus order can be challenging, especially in complex or unconventional scenarios. The `react-native-a11y-order` library is built with a native-first approach to resolve issues related to screen reader focus order and provide additional accessibility features on both Android and iOS platforms.
 
 | iOS reader                                                | Android reader                                                |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
 | <img src="/.github/images/ios-reader.gif" height="500" /> | <img src="/.github/images/android-reader.gif" height="500" /> |
 
+
 - Bridgeless
 - New architecture
+- Old architecture
 - Backward compatibility
+- Compatible with Expo prebuild
+
+> [!TIP]
+> If you need to adjust the horizontal or vertical focus order, consider using `<View collapsable={false}>` as a quick fix.
+> By default, React Native optimizes views, which can sometimes impact the focus order unintentionally.
+>
+> While this library is designed to handle complex or unusual focus scenarios, in many cases, using `<View collapsable={false}>` can resolve focus issues without requiring additional work.
+
+> [!IMPORTANT]
+> Starting from React Native v0.8.2, an experimental feature `experimental_accessibilityOrder` is available for setting the correct focus order.
+> You can find more information in the [Accessibility documentation](https://reactnative.dev/docs/accessibility).
+
 
 ## Installation
 
@@ -22,11 +36,166 @@ npm install react-native-a11y-order
 yarn add react-native-a11y-order
 ```
 
+## Recent Updates
+
+#### Screen Reader Focus Events
+
+| iOS | Android |
+| :-- | :-- |
+| <img src="/.github/images/screen-reader-focus-ios.gif" height="500" /> |  <img src="/.github/images/screen-reader-focus-android.gif" height="500" />  |
+
+> To enhance accessibility and provide better focus management, screen reader focus handlers have been added. These handlers allow you to capture and respond to screen reader focus events effectively, enabling features like managing animations, timers, and other interactions based on focus changes.
+
+<details>
+  <summary>More Information</summary>
+
+A11y.View Props:
+| Prop | Description |
+| :-- | :-- |
+| onScreenReaderFocused | Triggered when the view gets focus from the screen reader. |
+| onScreenReaderSubViewFocused | Triggered when a subview within the component is focused by the screen reader. |
+| onScreenReaderSubViewBlurred | Triggered when the screen reader focus moves away or is blurred from a subview. |
+| onScreenReaderSubViewFocusChange | Triggered when the focus status of a subview changes (either focused or blurred). |
+| onScreenReaderDescendantFocusChanged | Triggered when any descendant subview is focused by the screen reader. Provides an object containing the focus status and the nativeId of the focused subview, if applicable. Example: < { status: string, nativeId?: string } >. |
+
+```tsx
+<A11y.View
+  onScreenReaderDescendantFocusChanged={(e) => console.log(e)}
+  onScreenReaderSubViewFocused={() => console.log('List has been focused')}
+  onScreenReaderSubViewBlurred={() => console.log('List has been blurred')}
+  onScreenReaderFocused={() => console.log('Focused')}
+>
+  ...
+</A11y.View>
+```
+</details>
+
+#### Focus Lock Functionality
+
+| iOS | Android |
+| :-- | :-- |
+| <img src="/.github/images/focus-lock-ios.gif" height="500" /> |  <img src="/.github/images/focus-lock-android.gif" height="500" />  |
+
+> The focus lock functionality has been introduced with two new components: `A11y.FocusFrame` and `A11y.FocusTrap`. These components enable more robust accessibility by managing and restricting focus within specific areas of the screen.
+
+<details>
+  <summary>More Information</summary>
+
+- On iOS, `A11y.FocusTrap` uses the native `accessibilityViewIsModal` property to keep the focus within a defined area.
+- On Android, where no equivalent to `accessibilityViewIsModal` exists, custom logic has been implemented as a workaround. By default, Android uses a custom Activity or Modal to limit focus. While using a Modal is considered the best practice for focus locking on Android, some scenarios—such as issues with React Native's Modal or library-specific constraints—may require alternative implementations.
+
+#### How It Works
+
+The focus lock functionality should be used as a pair:
+
+- `A11y.FocusFrame`: This component is used at the root level of a "screen" to detect focus leaks and ensure that focus remains contained.
+- `A11y.FocusTrap`: This component wraps the content area where focus should be explicitly locked.
+
+| Prop | Description |
+| :-- | :-- |
+| ViewProps | Includes all standard React Native View properties, such as style, testID, etc. |
+
+```tsx
+<A11y.FocusFrame>
+  ...
+  <A11y.FocusTrap>
+    <Text accessibilityRole="header">Locked Area</Text>
+    <Button
+      title="Confirm"
+      accessibilityLabel="Confirm action"
+    />
+  </A11y.FocusTrap>
+  ...
+</A11y.FocusFrame>
+```
+
+</details>
+
+#### A11y.PaneTitle and A11y.ScreenChange
+
+| iOS | Android |
+| :-- | :-- |
+| <img src="/.github/images/announce-ios.gif" height="500" /> |  <img src="/.github/images/announce-android.gif" height="500" />  |
+
+> The components `A11y.PaneTitle` and `A11y.ScreenChange` have been introduced to enhance accessibility by providing robust support for announcing screen changes and their states.
+
+<details>
+  <summary>More Information</summary>
+
+Platform-Specific Behavior
+-On Android, `A11y.PaneTitle` and `A11y.ScreenChange` utilize native properties, specifically: `activity.setTitle` and `setAccessibilityPaneTitle`.
+- On iOS, due to the lack of equivalent native functionality, `A11yModule.announce` is used as a workaround to announce screen changes (see the `A11yModule.announce` section for details).
+
+##### When to Use:
+
+Currently, React Native doesn't provide APIs for announcing modal or screen transitions. To address this and improve accessibility, you can use `A11y.PaneTitle` or `A11y.ScreenChange` to announce:
+- Screen transitions, such as navigating to a new screen (e.g., "Login Screen").
+- Modal presentations, such as when a modal appears (e.g., "Confirm Modal").
+
+
+A11y.PaneTitle Props
+| Prop | Description |
+| :-- | :-- |
+| title | The title message to be announced for the screen or modal. |
+| detachMessage | The message to be announced when this component is detached (e.g., when leaving the screen). |
+| type | The type of announcement for Android. Options: activity, pane, or announce. |
+| displayed | A trigger for screen focus changes, used to properly update the Android Activity title when switching screens. |
+| withFocusRestore | Ensures that the screen reader focus is preserved and restored appropriately after a screen change. (iOS-specific) |
+
+The A11y.ScreenChange component is a specialized implementation of A11y.PaneTitle. It is preconfigured with `type="activity"` for screen change announcements on Android and works identically to `A11y.PaneTitle`.
+
+Example:
+```tsx
+export const LoginScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
+  return (
+    <View>
+      <A11y.ScreenChange
+        title="Login Screen"
+        displayed={isFocused}
+      />
+      <View style={styles.container}>
+        <Text>Welcome to the Login Screen</Text>
+        <Button title="Continue" onPress={() => navigation.navigate('Home')} />
+      </View>
+    </View>
+  );
+};
+```
+</details>
+
+#### A11yModule.announce - Alternative Announcement Function
+
+> The `A11yModule.announce` function has been introduced to improve accessibility announcement behavior on iOS.
+
+<details>
+  <summary>More Information</summary>
+Why Use `A11yModule.announce`?
+
+On iOS, the default `AccessibilityInfo.announceForAccessibility` function can be interrupted by focus changes. This means that if you attempt to announce a message, the announcement could be prematurely cut off due to various events, such as screen navigation or the display of a modal.
+
+To address this limitation, `A11yModule.announce` uses a custom solution built on native events to ensure that announcements are made reliably and are less likely to be interrupted.
+
+A11yModule API:
+| Function | Description |
+| :-- | :-- |
+| announce(message: string): void | Posts a string to be announced by the screen reader, ensuring improved reliability on iOS. |
+
+```tsx
+A11yModule.announce('This is a custom announcement, now more reliable on iOS!');
+```
+</details>
+
+
 ## Usage
 
 #### A11y.Order, A11y.Index
 
-There is always a question about how to set the focus order for a screen reader in React Native. `A11y.Order` and `A11y.Index` are designed to assist with this task. `A11y.Order` is a container component that defines an ordering group, while `A11y.Index` is a wrapper component that helps define a position within the order. 
+To set the focus order for a screen reader in React Native, you can use the following components:
+- `A11y.Order`: A container component that creates an ordering group for focusable elements.
+- `A11y.Index`: A wrapper component that defines the position of an element within the ordering group.
+
+Using these components together simplifies the process of managing focus order in complex UI structures.
 
 To illustrate, let's look at an example:
 
@@ -63,7 +232,7 @@ export default function App() {
 }
 ```
 
-Additionally, for dynamic interaction scenarios, setting focus programmatically can be very useful. This can be achieved using the focus command via a component ref.
+Additionally, for dynamic interaction scenarios, programmatically setting focus can be highly effective. You can achieve this by using the focus method through a component reference.
 
 ```js
 import { A11y, IndexCommands } from 'react-native-a11y-order';
@@ -87,141 +256,142 @@ export default function App() {
   );
 }
 ```
-
-> [!NOTE]
-> Because of its native nature, it is important to wrap all components inside `A11y.Order` with `A11y.Index`. Components not wrapped in `A11y.Index` may be skipped from the reading order on iOS, or read at the end on Android. If you need to manage many elements, try to group them with a view and then control them via the ordering system. You can find an example below.
-
-
-Don't: 
-
-```js
-export default function App() {
-  return (
-    <Viw style={styles.container}>
-      <A11y.Order>
-        <A11y.Index index={1}>
-          <Text style={styles.font}>
-            First
-          </Text>
-        </A11y.Index>
-        <Text style={styles.font}>
-          Third
-        </Text> // <===== Do not leave components unwrapped
-        <A11y.Index index={2}>
-          <Text style={styles.font}>
-            Second
-          </Text>
-        </A11y.Index>
-        <Text style={styles.font}>Fourth</Text>  // <===== This is also incorrect
-        <Text style={styles.font}>Fifth</Text>
-      </A11y.Order>
-      <Text style={styles.font}>Sixth</Text> // <===== This is correct because it is outside of `A11y.Order`
-    </View>
-  );
-}
-```
-
-Do
-
-```js
-export default function App() {
-  return (
-    <Viw style={styles.container}>
-      <A11y.Order>
-        <A11y.Index index={1}>
-          <Text style={styles.font}>
-            First
-          </Text>
-        </A11y.Index>
-        <A11y.Index index={3}>
-          <Text style={styles.font}>
-            Third
-          </Text> 
-        </A11y.Index>
-        <A11y.Index index={4}>  // <===== attention here, we group four and five to manage correct order flow
-          <View>
-            <Text style={styles.font}>Four</Text> 
-          </View>
-          <View>
-            <Text style={styles.font}>Five</Text>
-          </View>
-        </A11y.Index>
-        <A11y.Index index={2}>
-          <Text style={styles.font}>
-            Second
-          </Text>
-        </A11y.Index>
-      </A11y.Order>
-      <Text style={styles.font}>Six</Text>
-    </View>
-  );
-}
-```
-
 A11y.Index Props:
+| Prop | Description |
+| :-- | :-- |
+| ViewProps | Standard React Native View properties, including style, testID, etc. |
+| index | (number) The position of the component in the order sequence. |
+| ref: focus | Reference to a focus command, used to set accessibility focus programmatically. |
+| orderType | Specifies the algorithm used for view ordering (see details below). |
+| onScreenReaderSubViewFocused | Triggered when a subview within the component is focused by the screen reader. |
+| onScreenReaderSubViewBlurred | Triggered when the screen reader focus moves away or is blurred from a subview. |
+| onScreenReaderSubViewFocusChange | Triggered when the focus status of a subview changes (either focused or blurred). |
 
-| Props          | Description                                      |
-| -------------- | ------------------------------------------------ |
-| ViewProps      | Default View props includin style, testID, etc   |
-| index          | `number`, position in order                      |
-| ref: focus     | focus command for setting accessibility focus    |
+
+| Value | Description |
+| :-- | :-- |
+| default | Treats the root component as an orderable element. This can be a group or a single element. If multiple elements are present, navigation moves through the inner elements before proceeding to the next index. |
+| legacy | Uses the previous implementation for element search, selecting the first child as the accessibility element for ordering. |
+| search | Searches the child tree for the first accessible element to use in the order. |
 
 
 A11y.Order Props:
 
-| Props          | Description                                      |
-| -------------- | ------------------------------------------------ |
-| ViewProps      | Default View props includin style, testID, etc   |
+| Prop | Description |
+| :-- | :-- |
+| ...ViewProps | Standard React Native View props, including style, testID, etc. |
 
-
-
-
-#### A11y.Group
-
-`A11y.Group` can be used to enhance the experience of screen readers navigating through `ScrollView` or `FlatList` with the horizontal property enabled. You can skip this if you are using the new architecture; however, it is the best for applications that have not yet migrated.
-
-| View                                                      | A11y.Group                                                    |
+## A11y.Container
+| View                                                      | A11y.Container                                                    |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
 | <img src="/.github/images/horizontal-scroll-view.gif" height="500" /> | <img src="/.github/images/horizontal-scroll-group.gif" height="500" /> |
 
-```js
-import { A11y, IndexCommands } from 'react-native-a11y-order';
+The `A11y.Container` component for configuration `UIAccessibilityContainerType` feature on iOS.
+| Props | Description |
+| :-- | :-- |
+| ViewProps | Default view props, including style, testID, etc. |
+| type?: | `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `group`. |
 
-// ...
 
-export default function App() {
-  return (
-    <ScrollView
-      style={styles.slider}
-      contentContainerStyle={styles.sliderContainer}
-      horizontal
-    >
-      <A11y.Group style={styles.slide}>
-        <View>
-          <Text>Title: 1</Text>
-        </View>
-        <View>
-          <Text>Desctiption: 1</Text>
-        </View>
-      </A11y.Group>
-      <A11y.Group style={styles.slide}>
-        <View>
-          <Text>Title: 2</Text>
-        </View>
-        <View>
-          <Text>Desctiption: 2</Text>
-        </View>
-      </A11y.Group>
-    </ScrollView>
-  );
-}
+## A11y.View
+`The A11y.View` component can be used to handle and track screen reader focus independently of the `A11y.Index` component.
+
+| Prop | Description |
+| :-- | :-- |
+| onScreenReaderFocused | Triggered when the view gets focus from the screen reader. |
+| onScreenReaderSubViewFocused | Triggered when a subview within the component is focused by the screen reader. |
+| onScreenReaderSubViewBlurred | Triggered when the screen reader focus moves away or is blurred from a subview. |
+| onScreenReaderSubViewFocusChange | Triggered when the focus status of a subview changes (either focused or blurred). |
+| onScreenReaderDescendantFocusChanged | Triggered when any descendant subview is focused by the screen reader. Provides an object containing the focus status and the nativeId of the focused subview, if applicable. Example: < { status: string, nativeId?: string } >. |
+
+```tsx
+<A11y.View
+  onScreenReaderDescendantFocusChanged={(e) => console.log(e)}
+  onScreenReaderSubViewFocused={() => console.log('List has been focused')}
+  onScreenReaderSubViewBlurred={() => console.log('List has been blurred')}
+  onScreenReaderFocused={() => console.log('Focused')}
+>
+  ...
+</A11y.View>
 ```
 
+## A11y.FocusFrame, A11y.FocusTrap
 
-| Props          | Description                                      |
-| -------------- | ------------------------------------------------ |
-| ViewProps      | Default View props includin style, testID, etc   |
+These components enhance accessibility by providing better control over focus management within specific areas of the screen.
 
+- `A11y.FocusFrame`: Used at the root level of a "screen" to detect and prevent focus leaks, ensuring focus remains contained.
+- `A11y.FocusTrap`: Wraps the content area to explicitly enforce focus confinement within a defined region.
+
+| Prop | Description |
+| :-- | :-- |
+| ViewProps | Includes all standard React Native View properties, such as style, testID, etc. |
+
+```tsx
+<A11y.FocusFrame>
+  ...
+  <A11y.FocusTrap>
+    <Text accessibilityRole="header">Locked Area</Text>
+    <Button
+      title="Confirm"
+      accessibilityLabel="Confirm action"
+    />
+  </A11y.FocusTrap>
+  ...
+</A11y.FocusFrame>
+```
+
+## A11y.PaneTitle, A11y.ScreenChange
+
+Components for screen change announcements
+
+
+React Native currently lacks built-in APIs for announcing modal or screen transitions. To enhance accessibility, you can use A11y.PaneTitle or A11y.ScreenChange:
+- Screen transitions: Announce navigation to a new screen (e.g., "Login Screen").
+- Modal presentations: Announce when a modal appears (e.g., "Confirm Modal").
+
+| Prop | Description |
+| :-- | :-- |
+| title | The title message to be announced for the screen or modal. |
+| detachMessage | The message to be announced when this component is detached (e.g., when leaving the screen). |
+| type | The type of announcement for Android. Options: activity, pane, or announce. |
+| displayed | A trigger for screen focus changes, used to properly update the Android Activity title when switching screens. |
+| withFocusRestore | Ensures that the screen reader focus is preserved and restored appropriately after a screen change. (iOS-specific) |
+
+The `A11y.ScreenChange` component is a simplified version of `A11y.PaneTitle`. It is preconfigured with `type="activity"` to handle screen change announcements on Android. Beyond that, it behaves identically to `A11y.PaneTitle`.
+
+Example:
+```tsx
+export const LoginScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
+  return (
+    <View>
+      <A11y.ScreenChange
+        title="Login Screen"
+        displayed={isFocused}
+      />
+      <View style={styles.container}>
+        <Text>Welcome to the Login Screen</Text>
+        <Button title="Continue" onPress={() => navigation.navigate('Home')} />
+      </View>
+    </View>
+  );
+};
+```
+
+## A11yModule
+`A11yModule` provides an alternative solution for reliably announcing information on iOS.
+
+The default `AccessibilityInfo.announceForAccessibility` function on iOS can often be disrupted by focus changes. For instance, announcements might get interrupted by actions such as navigating between screens or opening a modal.
+
+To overcome this limitation, `A11yModule.announce` is implemented with a custom solution that leverages native events, ensuring that announcements are delivered reliably and are less likely to be interrupted.
+
+| Function | Description |
+| :-- | :-- |
+| announce(message: string): void | Posts a message to be announced by the screen reader with improved reliability on iOS. |
+
+```tsx
+A11yModule.announce('This is a custom announcement, now more reliable on iOS!');
+```
 
 ## Migration
 
@@ -269,6 +439,60 @@ The new approach is better: we no longer need to manage refs, worry about attach
 4. Remove deprecated hooks and utilities: `useFocusOrder`, `useDynamicFocusOrder`, `useA11yOrderManager`.
 
 That's all. The index changes, removals, etc., should work out of the box.
+
+## Legacy
+#### A11y.Group
+
+`A11y.Group` (`A11y.Container`) can be used to enhance the experience of screen readers navigating through `ScrollView` or `FlatList` with the horizontal property enabled. You can skip this if you are using the new architecture; however, it is the best for applications that have not yet migrated.
+
+| View                                                      | A11y.Group                                                    |
+| --------------------------------------------------------- | ------------------------------------------------------------- |
+| <img src="/.github/images/horizontal-scroll-view.gif" height="500" /> | <img src="/.github/images/horizontal-scroll-group.gif" height="500" /> |
+
+```js
+import { A11y, IndexCommands } from 'react-native-a11y-order';
+
+// ...
+
+export default function App() {
+  return (
+    <ScrollView
+      style={styles.slider}
+      contentContainerStyle={styles.sliderContainer}
+      horizontal
+    >
+      <A11y.Group style={styles.slide}>
+        <View>
+          <Text>Title: 1</Text>
+        </View>
+        <View>
+          <Text>Description: 1</Text>
+        </View>
+      </A11y.Group>
+      <A11y.Group style={styles.slide}>
+        <View>
+          <Text>Title: 2</Text>
+        </View>
+        <View>
+          <Text>Description: 2</Text>
+        </View>
+      </A11y.Group>
+    </ScrollView>
+  );
+}
+```
+
+
+| Props | Description |
+| :-- | :-- |
+| ViewProps | Default view props, including style, testID, etc. |
+| type?: | `legacy` or `none` \| `table` \| `list` \| `landmark` \| `group` — representation of `UIAccessibilityContainerType`. The default value is `none`. |
+
+
+## Roadmap
+* Add autofocus prop
+* Refactor and optimize performance
+* Add documentation and descriptive examples
 
 ## Contributing
 

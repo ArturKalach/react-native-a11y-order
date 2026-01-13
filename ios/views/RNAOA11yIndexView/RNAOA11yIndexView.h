@@ -11,6 +11,8 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTUITextField.h>
+#import "RNAOScreenReaderFocusDelegate.h"
+#import "RNAOViewItemProtocol.h"
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTViewComponentView.h>
@@ -18,12 +20,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNAOA11yIndexView : RCTViewComponentView
+@interface RNAOA11yIndexView : RCTViewComponentView<RNAOScreenReaderFocusDelegate, RNAOViewItemProtocol>
 
-@property NSNumber* position;
-@property NSString* orderKey;
-
-- (void)updatePosition:(NSNumber *)position;
+- (void)setPosition: (NSNumber*)position;
+- (void)setOrderKey:(NSString *)orderKey;
+- (void)setOrderFocusType:(NSNumber *)orderFocusType;
 
 @end
 
@@ -34,13 +35,12 @@ NS_ASSUME_NONNULL_END
 
 
 #import <React/RCTView.h>
-@interface RNAOA11yIndexView : RCTView
+@interface RNAOA11yIndexView : RCTView<RNAOScreenReaderFocusDelegate, RNAOViewItemProtocol>
 
-@property NSNumber* position;
-@property NSString* orderKey;
-
-- (void)updatePosition:(NSNumber *)position;
-
+- (void)setPosition: (NSNumber*)position;
+- (void)setOrderKey:(NSString *)orderKey;
+- (void)setOrderFocusType:(NSNumber *)orderFocusType;
+@property (nonatomic, copy) RCTDirectEventBlock onScreenReaderFocusChange;
 @end
 
 

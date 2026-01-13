@@ -1,24 +1,58 @@
 import React, { useImperativeHandle, useRef } from 'react';
-import { View, ViewProps } from 'react-native';
 import { A11ySequenceOrderContext } from '../../context/A11ySequenceOrderContext';
 import A11yIndexView, {
   Commands,
 } from '../../nativeSpecs/A11yIndexNativeComponent';
-
-export type IndexCommands = { focus: () => void };
-
-export type A11yIndexProps = {
-  children: React.ReactNode;
-  index: number;
-} & ViewProps;
+import {
+  type A11yIndexProps,
+  A11yOrderTypeEnum,
+  type IndexCommands,
+} from '../../types/A11yIndex.types';
 
 export const A11yIndex = React.memo(
   React.forwardRef<IndexCommands, A11yIndexProps>(
-    ({ children, index, ...props }, ref) => {
+    (
+      {
+        children,
+        index,
+        orderType = 'default',
+        onScreenReaderSubViewFocusChange,
+        onScreenReaderSubViewFocused,
+        onScreenReaderSubViewBlurred,
+        ...props
+      },
+      ref
+    ) => {
+      const hasHandler = Boolean(
+        onScreenReaderSubViewBlurred ||
+          onScreenReaderSubViewFocused ||
+          onScreenReaderSubViewFocusChange
+      );
+
+      const onScreenReaderChangeHandler = React.useCallback(
+        (event: { nativeEvent: { isFocused: boolean } }) => {
+          onScreenReaderSubViewFocusChange?.(event.nativeEvent.isFocused);
+          if (event.nativeEvent.isFocused) {
+            onScreenReaderSubViewFocused?.();
+          } else {
+            onScreenReaderSubViewBlurred?.();
+          }
+        },
+        [
+          onScreenReaderSubViewFocusChange,
+          onScreenReaderSubViewBlurred,
+          onScreenReaderSubViewFocused,
+        ]
+      );
+
+      const onScreenReaderHandlerProp = hasHandler
+        ? onScreenReaderChangeHandler
+        : undefined;
+
       const orderKey = React.useContext(A11ySequenceOrderContext);
       if (!orderKey) {
         throw new Error(
-          'A11ySequence.Index should be used inside of A11ySequence.Container'
+          '<A11y.Index> element should be used inside of <A11y.Order> container'
         );
       }
 
@@ -32,17 +66,22 @@ export const A11yIndex = React.memo(
         },
       }));
 
-      const isSingleChild = React.Children.count(children) === 1;
+      const importantForAccessibility =
+        orderType === 'default' ? 'yes' : undefined;
 
       return (
         <A11yIndexView
+          importantForAccessibility={
+            props.importantForAccessibility ?? importantForAccessibility
+          }
+          orderFocusType={A11yOrderTypeEnum[orderType]}
           ref={indexRef}
           orderIndex={index}
           orderKey={orderKey}
           {...props}
+          onScreenReaderFocusChange={onScreenReaderHandlerProp}
         >
-          {isSingleChild && children}
-          {!isSingleChild && <View nativeID={orderKey}>{children}</View>}
+          {children}
         </A11yIndexView>
       );
     }

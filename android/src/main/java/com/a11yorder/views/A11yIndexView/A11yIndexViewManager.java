@@ -5,12 +5,17 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.a11yorder.services.FocusUtil;
+import com.a11yorder.events.EventHelper;
+import com.a11yorder.events.ScreenReaderFocusChangedEvent;
+import com.a11yorder.utils.A11yHelper;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.views.view.ReactViewGroup;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @ReactModule(name = A11yIndexViewManager.NAME)
@@ -27,20 +32,7 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
   @NonNull
   @Override
   public A11yIndexView createViewInstance(@NonNull ThemedReactContext context) {
-    A11yIndexView viewGroup = new A11yIndexView(context);
-
-    viewGroup.setOnHierarchyChangeListener(new A11yIndexView.OnHierarchyChangeListener() {
-      @Override
-      public void onChildViewAdded(View parent, View child) {
-        viewGroup.linkAddView(child);
-      }
-
-      @Override
-      public void onChildViewRemoved(View parent, View child) {
-        viewGroup.linkRemoveView(child);
-      }
-    });
-    return viewGroup;
+    return new A11yIndexView(context);
   }
 
   @Override
@@ -56,12 +48,19 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
   }
 
   @Override
+  @ReactProp(name = "orderFocusType")
+  public void setOrderFocusType(A11yIndexView viewGroup, int value) {
+    viewGroup.setOrderFocusType(value);
+  }
+
+  @Override
   public void focus(A11yIndexView view) {
     this.focus((ReactViewGroup) view);
   }
 
-  private  <T extends ReactViewGroup> void focus(T view) {
-    FocusUtil.focus(view);
+  private <T extends ReactViewGroup> void focus(T view) {
+    View firstAccessible = A11yHelper.findFirstAccessible(view, true);
+    A11yHelper.focus(firstAccessible);
   }
 
   @Override
@@ -71,5 +70,14 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
     } else {
       super.receiveCommand(root, commandId, args);
     }
+  }
+
+  @Override
+  public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+    Map<String, Object> export = new HashMap<>();
+
+    export.put(ScreenReaderFocusChangedEvent.EVENT_NAME, EventHelper.buildDirectEventMap("onScreenReaderFocusChange"));
+
+    return export;
   }
 }

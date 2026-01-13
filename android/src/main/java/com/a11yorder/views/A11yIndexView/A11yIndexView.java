@@ -2,54 +2,73 @@ package com.a11yorder.views.A11yIndexView;
 
 import android.content.Context;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 
-import com.a11yorder.views.A11yIndexView.Linking.A11yOrderLinking;
+import com.a11yorder.events.EventHelper;
+import com.a11yorder.services.order.A11yOrderService;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.views.view.ReactViewGroup;
 
+
 public class A11yIndexView extends ReactViewGroup {
+  private final Context context;
+  private final A11yOrderService orderService;
+
   public A11yIndexView(Context context) {
     super(context);
+    this.context = context;
+    this.orderService = new A11yOrderService(this);
   }
-  private Integer index;
-  private String orderKey;
-  private View firstChild;
-
 
   public void setIndex(int index) {
-    if(this.index == null) {
-      this.index = index;
-    } else {
-      this.index = index;
-      if(firstChild != null && orderKey != null) {
-        A11yOrderLinking.getInstance().refreshIndexes(firstChild, orderKey, index);
-      }
-    }
+    this.orderService.setIndex(index);
+  }
+
+  public void setOrderFocusType(int focusType) {
+    this.orderService.setFocusType(focusType);
   }
 
   public void setOrderKey(String orderKey) {
-    this.orderKey = orderKey;
+    this.orderService.orderKey = orderKey;
   }
 
-  private void linkViews (boolean removeFromOrderQueue) {
-    if(firstChild != null && orderKey != null && index != null && !removeFromOrderQueue) {
-      A11yOrderLinking.getInstance().addViewRelationship(firstChild, orderKey, index);
-    }
-    if(removeFromOrderQueue && orderKey != null && index != null) {
-      A11yOrderLinking.getInstance().removeRelationship(orderKey, index);
-    }
+  @Override
+  public void onViewAdded(View child) {
+    super.onViewAdded(child);
+    this.orderService.link(child);
   }
 
-  public void linkAddView(View child) {
-    if(firstChild == null) {
-      firstChild = child;
-      linkViews(false);
-    }
+  @Override
+  public void onViewRemoved(View child) {
+    super.onViewRemoved(child);
+    this.orderService.clear(child);
   }
 
-  public void linkRemoveView(View view) {
-    if(view == firstChild) {
-      firstChild = null;
-      linkViews(true);
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    this.orderService.attach();
+  }
+
+  @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    this.orderService.detach();
+  }
+
+  @Override
+  public boolean onRequestSendAccessibilityEvent(View child, AccessibilityEvent event) {
+    int eventType = event.getEventType();
+    boolean isSubChild = (child == orderService.getStoredView());
+
+    if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED && isSubChild) {
+      EventHelper.screenReaderFocusChanged((ReactContext) context, this.getId(), true);
     }
+
+    if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED && isSubChild) {
+      EventHelper.screenReaderFocusChanged((ReactContext) context, this.getId(), false);
+    }
+
+    return super.onRequestSendAccessibilityEvent(child, event);
   }
 }
