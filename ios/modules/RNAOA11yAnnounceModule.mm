@@ -1,5 +1,5 @@
 //
-//  RNAOAnnounceModule.m
+//  RNAOA11yAnnounceModule.m
 //  react-native-a11y-order
 //
 //  Created by Artur Kalach on 06/12/2025.
@@ -15,7 +15,7 @@ using namespace facebook::react;
 
 #endif
 
-@implementation RNAOAnnounceModule
+@implementation RNAOA11yAnnounceModule
 
 
 + (BOOL)requiresMainQueueSetup

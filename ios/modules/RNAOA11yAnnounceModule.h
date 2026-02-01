@@ -1,12 +1,12 @@
 //
-//  RNAOAnnounceModule.h
+//  RNAOA11yAnnounceModule.h
 //  Pods
 //
 //  Created by Artur Kalach on 06/12/2025.
 //
 
-#ifndef RNAOAnnounceModule_h
-#define RNAOAnnounceModule_h
+#ifndef RNAOA11yAnnounceModule_h
+#define RNAOA11yAnnounceModule_h
 
 
 #import <Foundation/Foundation.h>
@@ -14,7 +14,7 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <RNA11yOrderSpec/RNA11yOrderSpec.h>
 
-@interface RNAOAnnounceModule : NSObject <NativeA11yAnnounceModuleSpec>
+@interface RNAOA11yAnnounceModule : NSObject <NativeA11yAnnounceModuleSpec>
 
 @end
 
@@ -23,7 +23,7 @@
 #import <React/RCTBridgeModule.h>
 
 
-@interface RNAOAnnounceModule : NSObject <RCTBridgeModule>
+@interface RNAOA11yAnnounceModule : NSObject <RCTBridgeModule>
 
 - (void)announce:(NSString *)message;
 
@@ -31,4 +31,4 @@
 
 #endif
 
-#endif /* RNAOAnnounceModule_h */
+#endif /* RNAOA11yAnnounceModule_h */
