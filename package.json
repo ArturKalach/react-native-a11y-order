@@ -178,7 +178,7 @@
         "A11yLock": "RNAOA11yLockView"
       },
       "modulesProvider": {
-        "A11yAnnounceModule": "RNAOA11yAnnounceModule"
+        "A11yAnnounceModule": "RNAOAnnounceModule"
       }
     }
   }
