@@ -17,21 +17,31 @@
 #import <React/RCTView.h>
 #endif
 
+@interface RNAOWeakWrapper : NSObject
+@property (nonatomic, weak) id value;
+@end
+
+@implementation RNAOWeakWrapper
+@end
+
 static char kRNAOScreenReaderFocusDelegate;
 
 @implementation UIView (RNAOA11yOrder)
 
 - (void)setScreenReaderFocusDelegate:(id<RNAOScreenReaderFocusDelegate>)focusDelegate {
-  objc_setAssociatedObject(self, &kRNAOScreenReaderFocusDelegate, focusDelegate, OBJC_ASSOCIATION_ASSIGN);
+  RNAOWeakWrapper *wrapper = [[RNAOWeakWrapper alloc] init];
+  wrapper.value = focusDelegate;
+  objc_setAssociatedObject(self, &kRNAOScreenReaderFocusDelegate, wrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)clearScreenReaderFocusDelegate {
-  objc_setAssociatedObject(self, &kRNAOScreenReaderFocusDelegate, nil, OBJC_ASSOCIATION_ASSIGN);
+  objc_setAssociatedObject(self, &kRNAOScreenReaderFocusDelegate, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (id<RNAOScreenReaderFocusDelegate>)getScreenReaderFocusDelegate {
   @try {
-    return objc_getAssociatedObject(self, &kRNAOScreenReaderFocusDelegate);
+    RNAOWeakWrapper *wrapper = objc_getAssociatedObject(self, &kRNAOScreenReaderFocusDelegate);
+    return wrapper ? wrapper.value : nil;
   } @catch (NSException *exception) {
     return nil;
   }
