@@ -60,6 +60,7 @@ public class A11yOrderPackage extends TurboReactPackage {
           A11yAnnounceModule.NAME,       // className
           false, // canOverrideExistingModule
           false, // needsEagerInit
+          false, // hasConstants to support 0.72
           false, // isCXXModule
           isTurboModule   // isTurboModule
         ));

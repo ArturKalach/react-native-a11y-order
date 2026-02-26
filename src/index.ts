@@ -23,6 +23,8 @@ export type {
   A11yUIContainerProps,
 } from './types/A11yUIContainerView.types';
 
+export type { ScreenReaderDescendantFocusChangedEvent } from './types/A11yView.types';
+
 export type { A11yViewProps } from './types/A11yView.types';
 
 export const A11y = {

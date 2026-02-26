@@ -22,6 +22,6 @@ export const A11yIndex = forwardRef<IndexCommands, A11yIndexProps>(
       },
     }));
 
-    return <View {...props} ref={viewRef} />;
+    return <View {...props} ref={viewRef as any} />;
   }
 );
