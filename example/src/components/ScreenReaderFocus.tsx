@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
 import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
-import { A11y } from 'react-native-a11y-order';
-import type { ScreenReaderDescendantFocusChangedEvent } from '../../../src/types/A11yView.types';
+import {
+  A11y,
+  type ScreenReaderDescendantFocusChangedEvent,
+} from 'react-native-a11y-order';
 
 const alpha = 'α';
 const beta = 'β';

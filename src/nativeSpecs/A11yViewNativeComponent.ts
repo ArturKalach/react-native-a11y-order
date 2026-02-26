@@ -1,7 +1,9 @@
 import type { ComponentType } from 'react';
 import type { ViewProps } from 'react-native';
 import type { DirectEventHandler } from 'react-native/Libraries/Types/CodegenTypes';
+// eslint-disable-next-line @react-native/no-deep-imports
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
+// eslint-disable-next-line @react-native/no-deep-imports
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
 
 export type ScreenReaderFocusChange = Readonly<{
@@ -23,6 +25,7 @@ export interface A11yViewProps extends ViewProps {
 }
 
 export interface NativeCommands {
+  // @ts-ignore
   focus: (viewRef: React.ElementRef<ComponentType>) => void;
 }
 

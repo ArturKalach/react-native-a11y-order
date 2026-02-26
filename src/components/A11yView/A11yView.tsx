@@ -45,7 +45,7 @@ export const A11yView = React.memo(
       return (
         <A11yViewNativeComponent
           {...props}
-          ref={ref}
+          ref={ref as React.Ref<any>}
           descendantFocusChangedEnabled={Boolean(
             onScreenReaderDescendantFocusChanged
           )}

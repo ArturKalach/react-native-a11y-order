@@ -56,6 +56,7 @@ export const A11yIndex = React.memo(
         );
       }
 
+      // @ts-ignore
       const indexRef = useRef<React.ElementRef<React.ComponentType>>(null);
 
       useImperativeHandle(ref, () => ({
@@ -75,7 +76,7 @@ export const A11yIndex = React.memo(
             props.importantForAccessibility ?? importantForAccessibility
           }
           orderFocusType={A11yOrderTypeEnum[orderType]}
-          ref={indexRef}
+          ref={indexRef as React.Ref<any>}
           orderIndex={index}
           orderKey={orderKey}
           {...props}

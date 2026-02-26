@@ -1,5 +1,6 @@
 package com.a11yorder.events;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
 
@@ -9,6 +10,7 @@ public class ScreenReaderFocusedEvent extends Event<ScreenReaderFocusedEvent> {
 
   public ScreenReaderFocusedEvent(int surfaceId, int id) {
     super(surfaceId, id);
+    payload = Arguments.createMap();
   }
 
   @Override
