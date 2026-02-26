@@ -29,9 +29,9 @@ static char kRNAOScreenReaderFocusDelegate;
 @implementation UIView (RNAOA11yOrder)
 
 - (void)setScreenReaderFocusDelegate:(id<RNAOScreenReaderFocusDelegate>)focusDelegate {
-  RNAOWeakWrapper *wrapper = [[RNAOWeakWrapper alloc] init];
-  wrapper.value = focusDelegate;
-  objc_setAssociatedObject(self, &kRNAOScreenReaderFocusDelegate, wrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  RNAOWeakWrapper *weakDelegate = [[RNAOWeakWrapper alloc] init];
+  [weakDelegate setValue: focusDelegate];
+  objc_setAssociatedObject(self, &kRNAOScreenReaderFocusDelegate, weakDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)clearScreenReaderFocusDelegate {
