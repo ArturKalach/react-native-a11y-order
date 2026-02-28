@@ -2,8 +2,11 @@ import React from 'react';
 import A11yViewNativeComponent from '../../nativeSpecs/A11yViewNativeComponent';
 import type { A11yViewProps } from '../../types/A11yView.types';
 
+// Unknown ref type for better react-native support
+type ViewRefType = {};
+
 export const A11yView = React.memo(
-  React.forwardRef<{}, A11yViewProps>(
+  React.forwardRef<ViewRefType, A11yViewProps>(
     (
       {
         onScreenReaderFocused,
