@@ -1,17 +1,12 @@
 {
   "name": "react-native-a11y-order",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "description": "ReactNative library for managing screen reader focus ordering",
-  "main": "./lib/module/index.js",
-  "types": "./lib/typescript/src/index.d.ts",
-  "exports": {
-    ".": {
-      "source": "./src/index.tsx",
-      "types": "./lib/typescript/src/index.d.ts",
-      "default": "./lib/module/index.js"
-    },
-    "./package.json": "./package.json"
-  },
+  "main": "lib/commonjs/index",
+  "module": "lib/module/index",
+  "types": "lib/typescript/src/index.d.ts",
+  "react-native": "src/index",
+  "source": "src/index",
   "files": [
     "src",
     "lib",
@@ -100,12 +95,8 @@
     "source": "src",
     "output": "lib",
     "targets": [
-      [
-        "module",
-        {
-          "esm": true
-        }
-      ],
+      "commonjs",
+      "module",
       [
         "typescript",
         {
