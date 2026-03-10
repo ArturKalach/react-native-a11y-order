@@ -9,5 +9,6 @@ export const setAccessibilityFocus = (ref: RefObject<any>) => {
     }
 
     AccessibilityInfo.setAccessibilityFocus(node);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {}
 };
