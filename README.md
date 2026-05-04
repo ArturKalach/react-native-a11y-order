@@ -6,7 +6,7 @@ Managing screen reader focus order can be challenging, especially in complex or 
 
 | iOS reader                                                | Android reader                                                |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
-| <img src="/.github/images/ios-reader.gif" height="500" /> | <img src="/.github/images/android-reader.gif" height="500" /> |
+| <img src="/.github/images/ios_example.gif" height="500" /> | <img src="/.github/images/android_example.gif" height="500" /> |
 
 
 - Bridgeless
