@@ -35,4 +35,9 @@ public class A11yLockViewManager extends com.a11yorder.A11yLockViewManagerSpec<A
   public void setLockDisabled(A11yLockView view, boolean value) {
     view.setLockDisabled(value);
   }
+
+  @Override
+  public void setForceLock(A11yLockView view, boolean value) {
+    //stub
+  }
 }

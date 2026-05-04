@@ -20,6 +20,7 @@
 - (void)setContainer:(UIView*)view;
 - (void)setContainer:(UIView*)view withDebounce:(BOOL)debounced;
 - (UIView*)getContainer;
+- (BOOL)isEmpty;
 
 @property (nonatomic, strong) RNAODebouncer *debouncer;
 

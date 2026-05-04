@@ -9,5 +9,7 @@ public abstract class A11yLockViewManagerSpec<T extends A11yLockView> extends Re
   public abstract void setContainerKey(T view, String value);
 
   public abstract void setLockDisabled(T view, boolean value);
+
+  public abstract void setForceLock(A11yLockView view, boolean value);
 }
 

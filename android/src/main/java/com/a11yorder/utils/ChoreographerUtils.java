@@ -1,34 +1,29 @@
 package com.a11yorder.utils;
 
 import android.view.Choreographer;
-import androidx.annotation.Nullable;
+
+import androidx.annotation.NonNull;
 
 public class ChoreographerUtils {
 
-  public static void run(@Nullable Runnable task) {
+  public static void run(@NonNull Runnable task) {
     runAfterFrames(2, task);
   }
-  public static void runAfterFrames(int frameCount, @Nullable Runnable task) {
-    if (frameCount <= 0 || task == null) {
-      return;
-    }
 
+  private static void runAfterFrames(int frameCount, @NonNull Runnable task) {
     Choreographer choreographer = Choreographer.getInstance();
 
-    Choreographer.FrameCallback frameCallback = new Choreographer.FrameCallback() {
+    choreographer.postFrameCallback(new Choreographer.FrameCallback() {
       private int frameCounter = frameCount;
 
       @Override
       public void doFrame(long frameTimeNanos) {
-        frameCounter--;
-        if (frameCounter <= 0) {
+        if (--frameCounter <= 0) {
           task.run();
         } else {
           choreographer.postFrameCallback(this);
         }
       }
-    };
-
-    choreographer.postFrameCallback(frameCallback);
+    });
   }
 }

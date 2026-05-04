@@ -3,92 +3,66 @@ package com.a11yorder.services.order.linking;
 import android.os.Build;
 import android.view.View;
 
-import java.lang.ref.WeakReference;
-import java.util.Map;
-import java.util.NavigableSet;
-import java.util.TreeSet;
-
 public class A11yLinkingQueue {
-  public WeakTreeMap viewMap = new WeakTreeMap();
+  private final WeakTreeMap viewMap = new WeakTreeMap();
 
+  // ─── Link helpers ──────────────────────────────────────────────────────────
 
   private void linkPosition(View prev, View next) {
-    if (prev != null && next != null) {
-      prev.setNextFocusForwardId(next.getId());
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-        prev.setAccessibilityTraversalBefore(next.getId());
-      }
+    if (prev == null || next == null) return;
+    prev.setNextFocusForwardId(next.getId());
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+      prev.setAccessibilityTraversalBefore(next.getId());
     }
   }
 
-  private void addWithLinking(int position, View currentView) {
-    viewMap.put(position, currentView);
-    View nextView = viewMap.getNext(position);
-    View prevView = viewMap.getPrev(position);
-
-    if (prevView != null) {
-      this.linkPosition(prevView, currentView);
-    }
-
-    if (nextView != null) {
-      this.linkPosition(currentView, nextView);
+  private void clearForwardLink(View view) {
+    if (view == null) return;
+    view.setNextFocusForwardId(View.NO_ID);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+      view.setAccessibilityTraversalBefore(View.NO_ID);
     }
   }
 
   private void unlinkLast() {
-    View lastView = viewMap.last();
-    if (lastView != null) {
-      lastView.setNextFocusForwardId(View.NO_ID);
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-        lastView.setAccessibilityTraversalBefore(View.NO_ID);
-      }
-    }
+    clearForwardLink(viewMap.last());
   }
 
-  private void reLinkWithRemove(int position) {
-    View nextView = viewMap.getNext(position);
-    View prevView = viewMap.getPrev(position);
-
-    if (prevView != null && nextView != null) {
-      this.linkPosition(prevView, nextView);
-    }
-
-    boolean shouldUnlinkLast = nextView == null;
-    this.viewMap.remove(position);
-
-    if (shouldUnlinkLast) {
-      this.unlinkLast();
-    }
-  }
+  // ─── Public API ────────────────────────────────────────────────────────────
 
   public void addPosition(View view, int position) {
-    if (this.viewMap.get(position) == view) return;
-    this.addWithLinking(position, view);
+    if (viewMap.get(position) == view) return;
+    viewMap.put(position, view);
+    View prev = viewMap.getPrev(position);
+    View next = viewMap.getNext(position);
+    if (prev != null) linkPosition(prev, view);
+    if (next != null) linkPosition(view, next);
   }
 
   public void removeFromOrder(int position) {
-    if (!this.viewMap.containsKey(position)) return;
-    this.reLinkWithRemove(position);
+    if (!viewMap.containsKey(position)) return;
+    View prev = viewMap.getPrev(position);
+    View next = viewMap.getNext(position);
+    boolean wasLast = next == null;
+    viewMap.remove(position);
+    if (prev != null && next != null) {
+      linkPosition(prev, next);
+    } else if (wasLast) {
+      // Clear the forward link on the new last element.
+      unlinkLast();
+    }
   }
 
   public void refreshIndexes(View view, int position) {
-    this.viewMap.put(position, view);
-
-    for (Map.Entry<Integer, WeakReference<View>> positionEntry : this.viewMap.entrySet()) {
-      View currentView = WeakTreeMap.unwrapViewRef(positionEntry);
-      if (currentView != null) {
-        View nextEntry = this.viewMap.getNext(positionEntry.getKey());
-
-        if (nextEntry != null) {
-          linkPosition(currentView, nextEntry);
-        }
-      }
-    }
-
+    viewMap.put(position, view);
+    viewMap.forEachLive((pos, current) -> {
+      View next = viewMap.getNext(pos);
+      if (next != null) linkPosition(current, next);
+    });
     unlinkLast();
   }
 
-  public boolean isEmpty () {
-    return this.viewMap.isEmpty();
+  public boolean isEmpty() {
+    return viewMap.isEmpty();
   }
 }

@@ -1,45 +1,188 @@
-import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { type IndexCommands, A11y } from 'react-native-a11y-order';
 import { CircleNode } from './CircleNode';
-import { CIRCLE_RADIUS } from '../constants/circle';
+import {
+  ANGLES,
+  CIRCLE_RADIUS,
+  CIRCLE_SIZE,
+  type Formula,
+  FORMULAS,
+  WRAPPER_SIZE,
+} from '../constants/circle';
 
 export const CircleExample = () => {
   const ref0 = React.useRef<IndexCommands>(null);
+  const [formula, setFormula] = useState<Formula>('cos');
+
+  const cycleFormula = useCallback(() => {
+    setFormula((prev) => {
+      const idx = FORMULAS.indexOf(prev);
+      return FORMULAS[(idx + 1) % FORMULAS.length]!;
+    });
+  }, []);
 
   return (
     <>
-      <View style={styles.titleBox}>
-        <Text style={styles.title}>Focus Order</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>Unit Circle</Text>
+        <Text style={styles.subtitle}>
+          θ in radians · tap a node to cycle formula
+        </Text>
       </View>
-      <A11y.Order style={styles.circle}>
-        <CircleNode ref={ref0} angle={0} index={1} />
-        <CircleNode angle={30} index={2} />
-        <CircleNode angle={45} index={3} />
-        <CircleNode angle={60} index={4} />
-        <CircleNode angle={90} index={5} />
-        <CircleNode angle={180} index={6} />
-        <CircleNode angle={270} index={7} />
-      </A11y.Order>
-      <View style={styles.buttons}>
-        <View style={styles.button}>
-          <Button title="Focus 0" onPress={() => ref0.current?.focus()} />
-        </View>
+
+      <View style={styles.wrapper}>
+        {/* Axes */}
+        <View style={styles.axisH} />
+        <View style={styles.axisV} />
+
+        {/* Origin dot */}
+        <View style={styles.origin} />
+
+        <A11y.Order style={styles.circle}>
+          {ANGLES.map((angle, i) => (
+            <CircleNode
+              key={angle}
+              ref={i === 0 ? ref0 : undefined}
+              angle={angle}
+              index={i + 1}
+              formula={formula}
+              onPress={cycleFormula}
+            />
+          ))}
+        </A11y.Order>
       </View>
+
+      {/* Formula selector */}
+      <View style={styles.formulaBar}>
+        {FORMULAS.map((f) => (
+          <TouchableOpacity
+            key={f}
+            style={[
+              styles.formulaBtn,
+              formula === f && styles.formulaBtnActive,
+            ]}
+            onPress={() => setFormula(f)}
+            accessibilityRole="button"
+            accessibilityLabel={f}
+            accessibilityState={{ selected: formula === f }}
+          >
+            <Text
+              style={[
+                styles.formulaBtnText,
+                formula === f && styles.formulaBtnTextActive,
+              ]}
+            >
+              {f}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => ref0.current?.focus()}
+        accessibilityRole="button"
+        accessibilityLabel="Focus θ equals 0 node"
+      >
+        <Text style={styles.buttonText}>Focus θ = 0</Text>
+      </TouchableOpacity>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  titleBox: { marginBottom: 40 },
-  title: { fontSize: 25, color: 'black' },
-  circle: {
-    borderWidth: 3,
-    borderColor: 'black',
-    width: CIRCLE_RADIUS * 2,
-    height: CIRCLE_RADIUS * 2,
-    borderRadius: CIRCLE_RADIUS,
+  header: {
+    alignItems: 'center',
+    marginBottom: 16,
   },
-  buttons: { marginTop: 40 },
-  button: { marginBottom: 10 },
+  title: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#1e293b',
+  },
+  subtitle: {
+    fontSize: 12,
+    color: '#64748b',
+    marginTop: 4,
+    fontStyle: 'italic',
+  },
+  wrapper: {
+    width: WRAPPER_SIZE,
+    height: WRAPPER_SIZE,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  axisH: {
+    position: 'absolute',
+    width: WRAPPER_SIZE,
+    height: 1,
+    backgroundColor: '#94a3b8',
+  },
+  axisV: {
+    position: 'absolute',
+    width: 1,
+    height: WRAPPER_SIZE,
+    backgroundColor: '#94a3b8',
+  },
+  origin: {
+    position: 'absolute',
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#94a3b8',
+  },
+  axisLabel: {
+    position: 'absolute',
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#64748b',
+    fontStyle: 'italic',
+  },
+  circle: {
+    width: CIRCLE_SIZE,
+    height: CIRCLE_SIZE,
+    borderRadius: CIRCLE_RADIUS,
+    borderWidth: 2,
+    borderColor: '#334155',
+  },
+  formulaBar: {
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 16,
+    width: WRAPPER_SIZE,
+  },
+  formulaBtn: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 100,
+    alignItems: 'center',
+    backgroundColor: '#f1f5f9',
+    borderWidth: 1.5,
+    borderColor: '#e2e8f0',
+  },
+  formulaBtnActive: {
+    backgroundColor: '#2563eb',
+    borderColor: '#2563eb',
+  },
+  formulaBtnText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#64748b',
+  },
+  formulaBtnTextActive: {
+    color: '#ffffff',
+  },
+  button: {
+    marginTop: 12,
+    backgroundColor: '#2563eb',
+    paddingHorizontal: 28,
+    paddingVertical: 11,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontWeight: '600',
+    fontSize: 14,
+  },
 });

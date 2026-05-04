@@ -9,6 +9,7 @@
 
 #import "UIViewController+RNAOA11yOrder.h"
 #import "RNAOSwizzleInstanceMethod.h"
+#import "RNAOSwizzleInstall.h"
 #import "RNAOA11yAnnounceService.h"
 #import <objc/runtime.h>
 
@@ -34,15 +35,14 @@ static char kRnaoFocusRestoreKey;
     return [objc_getAssociatedObject(self, &kRnaoFocusRestoreKey) boolValue];
 }
 
-+ (void)load
-{
-    static dispatch_once_t once_token;
-
-    dispatch_once(&once_token, ^{
-      RNAOSwizzleInstanceMethod([self class], @selector(viewDidAppear:), @selector(rnaoViewDidAppear:));
-      RNAOSwizzleInstanceMethod([self class], @selector(viewWillDisappear:), @selector(rnaoViewWillDisappear:));
-    });
+static void RNAORegisterViewControllerSwizzles(void) {
+    Class cls = objc_getClass("UIViewController");
+    if (!cls) return;
+    RNAOSwizzleInstanceMethod(cls, @selector(viewDidAppear:), @selector(rnaoViewDidAppear:));
+    RNAOSwizzleInstanceMethod(cls, @selector(viewWillDisappear:), @selector(rnaoViewWillDisappear:));
 }
+
+RNAO_INSTALL_SWIZZLES(RNAORegisterViewControllerSwizzles);
 
 
 - (void)saveAccessibilityFocusedView

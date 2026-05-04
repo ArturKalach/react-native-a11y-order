@@ -8,146 +8,157 @@
 #import <Foundation/Foundation.h>
 #import "RNAOA11yItemDelegate.h"
 #import "RNAOA11yOrderLinking.h"
-#import "RNAOA11yItemProtocol.h"
 
 typedef NS_ENUM(NSInteger, A11yOrderType) {
-    A11yOrderTypeDefault = 0,
-    A11yOrderTypeChild = 1,
-    A11yOrderTypeLegacy = 2,
+  A11yOrderTypeDefault = 0,
+  A11yOrderTypeChild = 1,
+  A11yOrderTypeLegacy = 2,
 };
-
 
 @implementation RNAOA11yItemDelegate {
   __weak UIView<RNAOViewItemProtocol> *_delegate;
+  __weak UIView *_focusDelegateView;
   BOOL _isLinked;
 }
 
-- (instancetype _Nonnull)initWithView:
-(UIView<RNAOA11yItemProtocol, RNAOViewItemProtocol> *_Nonnull)delegate {
+- (instancetype _Nonnull)initWithView:(UIView<RNAOViewItemProtocol> *_Nonnull)delegate {
   self = [super init];
   if (self) {
     _delegate = delegate;
-    _isLinked = false;
+    _isLinked = NO;
   }
   return self;
 }
 
+#pragma mark - Prop setters
+
 - (void)setPosition:(NSNumber *)position {
-  NSNumber *_lastPostion = _position;
+  NSNumber *lastPosition = _position;
   _position = position;
-  
-  if(_lastPostion != nil && _lastPostion != position) {
-    [self relink: position lastPosition: _lastPostion];
+  if (lastPosition != nil && ![lastPosition isEqualToNumber:position]) {
+    [self relink:position lastPosition:lastPosition];
+  }
+}
+
+- (void)setOrderKey:(NSString *)orderKey {
+  if ([_orderKey isEqualToString:orderKey]) return;
+  NSString *prevKey = _orderKey;
+  _orderKey = orderKey;
+  if (_isLinked) {
+    // Atomic: remove from old group and register in new group in one call.
+    // _isLinked = YES guarantees _position and _linkView are non-nil.
+    [[RNAOA11yOrderLinking sharedInstance] updateOrderKey:prevKey next:orderKey position:_position withView:_linkView];
+    _isLinked = (orderKey != nil);
+  } else {
+    // Not yet registered — try now (handles old arch prop-arrival ordering).
+    [self link];
   }
 }
 
 - (void)setOrderFocusType:(NSNumber *)orderFocusType {
-  if(_orderFocusType != nil && _orderFocusType != orderFocusType) {
-    _orderFocusType = orderFocusType;
-    [self relink: _position lastPosition: _position];
-  } else {
-    _orderFocusType = orderFocusType;
-  }
+  if ([_orderFocusType isEqualToNumber:orderFocusType]) return;
+  _orderFocusType = orderFocusType;
+  if (!_isLinked || _delegate.subviews.count == 0) return;
+  UIView *newView = [self getFocusView:_delegate.subviews[0]];
+  if (newView == nil || newView == _linkView) return;
+  [self clear];
+  [self setLinkView:newView];
 }
 
-- (void)finalizeUpdates {
-  if(!_delegate) return;
-  if(_delegate.subviews.count > 0) {
-      [self setLinkView: _delegate.subviews[0]];
-  }
-}
-
-- (void)setLinkView: (UIView*) view {
-  if(_isLinked) return;
-  _linkView = view;
-  
-  [self link];
-  UIView* firstAccessible = [self findFirstAccessibleChild: _delegate];
-  if(firstAccessible) {
-    [_delegate onFocusItemLinked: firstAccessible];
-  }
-}
-
+#pragma mark - Subview lifecycle
 
 - (void)didAddSubview:(UIView *)subview {
-  if(!_linkView) {
-    _isLinked = false;
-    UIView* view = [self getFocusView: subview];
-    [self setLinkView: view];
+  if (!_linkView) {
+    _isLinked = NO;
+    [self setLinkView:[self getFocusView:subview]];
   }
 }
 
 - (void)willRemoveSubview:(UIView *)subview {
-  if(_linkView == subview) {
+  if (_linkView == subview) {
     [self clear];
-    UIView* firstAccessible = [self findFirstAccessibleChild: _delegate];
-    if(firstAccessible) {
-      [_delegate onFocusItemRemoved: subview];
-    }
   }
 }
 
-- (void)relink:(NSNumber *)position lastPosition:(NSNumber*)lastPosition {
-  if(!_delegate) return;
-  
-  if(_orderKey != nil && position != nil && _isLinked) {
-    UIView* view = _linkView ? _linkView : [self getFocusView: _delegate.subviews[0]];
-    [[RNAOA11yOrderLinking sharedInstance] update: position lastPosition:lastPosition withOrderKey: _orderKey withView: view];
-  }
+- (void)finalizeUpdates {
+  if (!_delegate || _delegate.subviews.count == 0) return;
+  [self setLinkView:[self getFocusView:_delegate.subviews[0]]];
+}
+
+#pragma mark - Registration
+
+- (void)setLinkView:(UIView *)view {
+  if (_isLinked) return;
+  _linkView = view;
+  [self link];
 }
 
 - (void)link {
-  if(!_delegate) return;
-  
-  if(self.position && self.orderKey && self.linkView && !_isLinked) {
-    [[RNAOA11yOrderLinking sharedInstance] add: _position withOrderKey:_orderKey withObject:self.linkView];
-    
-    _isLinked = true;
+  if (!_delegate) return;
+  if (_position && _orderKey && _linkView && !_isLinked) {
+    [[RNAOA11yOrderLinking sharedInstance] add:_position withOrderKey:_orderKey withObject:_linkView];
+    _isLinked = YES;
+    [self registerFocusDelegate];
   }
+}
+
+- (void)registerFocusDelegate {
+  UIView *firstAccessible = [self findFirstAccessibleChild:_delegate];
+  UIView *focusView = firstAccessible ?: _linkView;
+  if (focusView) {
+    _focusDelegateView = focusView;
+    [_delegate onFocusItemLinked:focusView];
+  }
+}
+
+- (void)relink:(NSNumber *)position lastPosition:(NSNumber *)lastPosition {
+  if (!_delegate || !_isLinked || !_orderKey || !position) return;
+  UIView *view = _delegate.subviews.count > 0
+      ? [self getFocusView:_delegate.subviews[0]]
+      : _linkView;
+  if (!view) return;
+  [[RNAOA11yOrderLinking sharedInstance] update:position lastPosition:lastPosition withOrderKey:_orderKey withView:view];
 }
 
 - (void)clear {
-  if(!_delegate) return;
-  _isLinked = false;
-  if(_position != nil && _orderKey != nil) {
-      [[RNAOA11yOrderLinking sharedInstance] remove:_position withOrderKey:_orderKey];
+  if (!_delegate) return;
+  if (_focusDelegateView) {
+    [_delegate onFocusItemRemoved:_focusDelegateView];
+    _focusDelegateView = nil;
+  }
+  _isLinked = NO;
+  if (_position && _orderKey) {
+    [[RNAOA11yOrderLinking sharedInstance] remove:_position withOrderKey:_orderKey];
   }
 }
 
+#pragma mark - Focus view resolution
+
 - (UIView *)getFocusView:(UIView *)subview {
-  if(!_delegate) return nil;
-    switch ([_orderFocusType intValue]) {
-        case A11yOrderTypeDefault:
-            return _delegate;
-        case A11yOrderTypeLegacy:
-            return subview;
-        case A11yOrderTypeChild:
-            return [self findFirstAccessibleChild: _delegate];
-        default:
-            return _delegate;
-    }
+  if (!_delegate) return nil;
+  switch ([_orderFocusType intValue]) {
+    case A11yOrderTypeChild:
+      return [self findFirstAccessibleChild:_delegate];
+    case A11yOrderTypeLegacy:
+      return subview;
+    case A11yOrderTypeDefault:
+    default:
+      return _delegate;
+  }
 }
 
 - (UIView *)findFirstAccessibleChild:(UIView *)parentView {
-    if (!parentView) {
-        return nil;
-    }
-    
-    for (UIView *child in parentView.subviews) {
-        if ([self isAccessibleView:child]) {
-            return child;
-        }
-        
-        UIView *accessibleChild = [self findFirstAccessibleChild:child];
-        if (accessibleChild != nil) {
-            return accessibleChild;
-        }
-    }
-    
-    return nil;
+  if (!parentView) return nil;
+  for (UIView *child in parentView.subviews) {
+    if ([self isAccessibleView:child]) return child;
+    UIView *found = [self findFirstAccessibleChild:child];
+    if (found) return found;
+  }
+  return nil;
 }
 
 - (BOOL)isAccessibleView:(UIView *)view {
-    return view.isAccessibilityElement && view.hidden == NO && view.alpha > 0;
+  return view.isAccessibilityElement && !view.hidden && view.alpha > 0;
 }
+
 @end

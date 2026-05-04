@@ -64,7 +64,7 @@ public class A11yView extends A11yViewGroup implements A11yFocusProtocol {
 
     if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED && autoFocus && !hasBeenFocused) {
       hasBeenFocused = true;
-      a11yFocusDelegate.onAccessibilityEvent(child, event);
+      a11yFocusDelegate.onFocused();
     }
 
     if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED && isSubChild) {

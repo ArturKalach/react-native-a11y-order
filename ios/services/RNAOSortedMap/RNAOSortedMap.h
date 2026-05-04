@@ -13,9 +13,10 @@
 
 - (void)put:(NSNumber*)position withObject:(NSObject*)obj;
 - (void)remove:(NSNumber*)position;
-- (void)update:(NSNumber*)position withPosition:(NSNumber*)position withObject:(NSObject*)obj;
+- (void)update:(NSNumber*)lastPosition withPosition:(NSNumber*)position withObject:(NSObject*)obj;
 - (void)clear;
 - (NSArray*)getValues;
+- (BOOL)isEmpty;
 
 @end
 

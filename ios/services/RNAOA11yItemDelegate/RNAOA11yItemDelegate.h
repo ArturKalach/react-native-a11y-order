@@ -12,13 +12,12 @@
 
 @interface RNAOA11yItemDelegate : NSObject
 
-- (instancetype _Nonnull)initWithView:
-(UIView<RNAOViewItemProtocol> *_Nonnull)delegate;
+- (instancetype _Nonnull)initWithView:(UIView<RNAOViewItemProtocol> *_Nonnull)delegate;
 
 @property (nonatomic, weak) UIView *linkView;
-@property (atomic, strong) NSNumber* position;
-@property NSString* orderKey;
-@property NSNumber* orderFocusType;
+@property (nonatomic, strong) NSNumber *position;
+@property (nonatomic, copy) NSString *orderKey;
+@property (nonatomic, strong) NSNumber *orderFocusType;
 
 - (void)willRemoveSubview:(UIView *)subview;
 - (void)didAddSubview:(UIView *)subview;
@@ -26,6 +25,5 @@
 - (void)clear;
 
 @end
-
 
 #endif /* RNAOA11yItemDelegate_h */

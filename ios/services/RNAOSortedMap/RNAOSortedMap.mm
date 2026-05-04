@@ -12,6 +12,8 @@
 @implementation RNAOSortedMap {
   NSMapTable *_dictionary;
   NSMutableArray<NSNumber *> *_sortedKeys;
+  NSMutableArray *_cachedValues;
+  BOOL _isDirty;
 }
 
 - (instancetype)init {
@@ -19,78 +21,77 @@
   if (self) {
     _dictionary = [NSMapTable strongToWeakObjectsMapTable];
     _sortedKeys = [NSMutableArray array];
+    _cachedValues = [NSMutableArray array];
+    _isDirty = YES;
   }
   return self;
 }
 
-- (void)updateSortedKey:(NSNumber*)position {
-  if([_sortedKeys count] == 0) {
-    [_sortedKeys addObject: position];
-  } else {
-    NSInteger indexOfFirstLarger = -1;
-    
-    for (NSInteger i = 0; i < _sortedKeys.count; i++) {
-      NSNumber *number = _sortedKeys[i];
-      if ([number integerValue] > [position integerValue]) {
-        indexOfFirstLarger = i;
-        break;
-      }
-    }
-    
-    
-    if(indexOfFirstLarger == -1) {
-      [_sortedKeys addObject: position];
-    } else {
-      [_sortedKeys insertObject:position atIndex:indexOfFirstLarger];
-    }
-  }
+- (void)updateSortedKey:(NSNumber *)position {
+  NSRange range = NSMakeRange(0, _sortedKeys.count);
+  NSUInteger insertIndex = [_sortedKeys indexOfObject:position
+                                        inSortedRange:range
+                                              options:NSBinarySearchingInsertionIndex
+                                      usingComparator:^NSComparisonResult(NSNumber *a, NSNumber *b) {
+    return [a compare:b];
+  }];
+  [_sortedKeys insertObject:position atIndex:insertIndex];
 }
 
-- (void)put:(NSNumber*)position withObject:(NSObject*)obj {
-  if([_dictionary objectForKey:position] == nil) {
-    [self updateSortedKey: position];
+- (void)put:(NSNumber *)position withObject:(NSObject *)obj {
+  _isDirty = YES;
+  if ([_dictionary objectForKey:position] == nil) {
+    [self updateSortedKey:position];
   }
-  [_dictionary setObject: obj forKey:position];
+  [_dictionary setObject:obj forKey:position];
 }
 
-- (void)remove:(NSNumber*)position {
-  NSUInteger positionIndex = [_sortedKeys indexOfObject:position];
-  if (positionIndex != NSNotFound) {
-    [_sortedKeys removeObjectAtIndex:positionIndex];
+- (void)remove:(NSNumber *)position {
+  _isDirty = YES;
+  NSUInteger index = [_sortedKeys indexOfObject:position];
+  if (index != NSNotFound) {
+    [_sortedKeys removeObjectAtIndex:index];
   }
   [_dictionary removeObjectForKey:position];
 }
 
-
-- (void)remove:(NSNumber*)position withObject:(NSObject*)obj {
-  if([_dictionary objectForKey:position] == obj) {
-    NSUInteger positionIndex = [_sortedKeys indexOfObject:position];
-    if (positionIndex != NSNotFound) {
-      [_sortedKeys removeObjectAtIndex:positionIndex];
+- (void)remove:(NSNumber *)position withObject:(NSObject *)obj {
+  if ([_dictionary objectForKey:position] == obj) {
+    _isDirty = YES;
+    NSUInteger index = [_sortedKeys indexOfObject:position];
+    if (index != NSNotFound) {
+      [_sortedKeys removeObjectAtIndex:index];
     }
     [_dictionary removeObjectForKey:position];
   }
 }
 
-- (void)clear {
-  [_dictionary removeAllObjects];
-  [_sortedKeys removeAllObjects];
-}
-
-- (void)update:(NSNumber*)lastPosition withPosition:(NSNumber*)position withObject:(NSObject*)obj {
-  [self remove:lastPosition withObject: obj];
+- (void)update:(NSNumber *)lastPosition withPosition:(NSNumber *)position withObject:(NSObject *)obj {
+  [self remove:lastPosition withObject:obj];
   [self put:position withObject:obj];
 }
 
-- (NSArray*)getValues {
-  NSMutableArray *result = [NSMutableArray arrayWithCapacity:_sortedKeys.count];
-  for (NSNumber *key in _sortedKeys) {
-    NSObject *object = [_dictionary objectForKey:key];
-    if (object) {
-      [result addObject:object];
+- (void)clear {
+  _isDirty = YES;
+  [_dictionary removeAllObjects];
+  [_sortedKeys removeAllObjects];
+  [_cachedValues removeAllObjects];
+}
+
+- (NSArray *)getValues {
+  if (_isDirty) {
+    [_cachedValues removeAllObjects];
+    for (NSNumber *key in _sortedKeys) {
+      NSObject *obj = [_dictionary objectForKey:key];
+      if (obj) { [_cachedValues addObject:obj]; }
     }
+    _isDirty = NO;
   }
-  return result;
+  return [NSArray arrayWithArray:_cachedValues];
+}
+
+- (BOOL)isEmpty {
+  return _dictionary.count == 0;
 }
 
 @end

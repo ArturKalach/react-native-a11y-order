@@ -12,63 +12,69 @@
 #import "RNAODebouncer.h"
 
 @implementation RNAOA11yRelationship {
-    __weak UIView *_container;
-    RNAOSortedMap *_positions;
-    BOOL _debounced;
+  __weak UIView *_container;
+  RNAOSortedMap *_positions;
 }
 
 - (instancetype)init {
-    self = [super init];
-    if (self) {
-        _positions = [[RNAOSortedMap alloc] init];
-        _container = nil;
-        _debounced = false;
-        self.debouncer = [[RNAODebouncer alloc] initWithInterval: 0.01];
-    }
-    return self;
-}
-
-- (void)add:(NSNumber*)position withObject:(NSObject*)obj {
-    [_positions put:position withObject:obj];
-    if(_debounced) {
-      [self.debouncer debounceAction:^{
-        [self updateAccessibilityElements];
-      }];
-    }
+  self = [super init];
+  if (self) {
+    _positions = [[RNAOSortedMap alloc] init];
+  }
+  return self;
 }
 
 - (void)updateAccessibilityElements {
-  if(_container != nil) {
-    [_container setAccessibilityElements: [_positions getValues]];
+  if (_container != nil) {
+    [_container setAccessibilityElements:[_positions getValues]];
   }
 }
 
--(void)remove:(NSNumber*)position {
-    [_positions remove:position];
-}
-
--(void)setContainer:(UIView*)view {
-    _container = view;
+- (void)scheduleAccessibilityUpdate {
+  if (self.debouncer) {
+    [self.debouncer debounceAction:^{ [self updateAccessibilityElements]; }];
+  } else {
     [self updateAccessibilityElements];
+  }
 }
 
-- (void)setContainer:(UIView*)view withDebounce:(BOOL)debounced {
-  [self setContainer: view];
-  _debounced = debounced;
+- (void)add:(NSNumber *)position withObject:(NSObject *)obj {
+  [_positions put:position withObject:obj];
+  [self scheduleAccessibilityUpdate];
 }
 
-- (void)update:(NSNumber*)lastPosition withPosition:(NSNumber*)position withObject:(NSObject*)obj {
-    [_positions update:lastPosition withPosition:position withObject:obj];
-    [self updateAccessibilityElements];
+- (void)remove:(NSNumber *)position {
+  [_positions remove:position];
+  [self scheduleAccessibilityUpdate];
 }
 
--(void)clear {
-    [_positions clear];
+- (void)update:(NSNumber *)lastPosition withPosition:(NSNumber *)position withObject:(NSObject *)obj {
+  [_positions update:lastPosition withPosition:position withObject:obj];
+  [self scheduleAccessibilityUpdate];
 }
 
--(UIView*)getContainer {
-    return _container;
+- (void)setContainer:(UIView *)view {
+  _container = view;
+  [self updateAccessibilityElements];
 }
 
+- (void)setContainer:(UIView *)view withDebounce:(BOOL)debounced {
+  if (debounced && !self.debouncer) {
+    self.debouncer = [[RNAODebouncer alloc] initWithInterval:0.01];
+  }
+  [self setContainer:view];
+}
+
+- (void)clear {
+  [_positions clear];
+}
+
+- (UIView *)getContainer {
+  return _container;
+}
+
+- (BOOL)isEmpty {
+  return [_positions isEmpty];
+}
 
 @end

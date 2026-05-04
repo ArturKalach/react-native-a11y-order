@@ -9,6 +9,7 @@
 
 #import "UIView+RNAOA11yOrder.h"
 #import "RNAOSwizzleInstanceMethod.h"
+#import "RNAOSwizzleInstall.h"
 #import <objc/runtime.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
@@ -55,27 +56,23 @@ static char kRNAOScreenReaderFocusDelegate;
 }
 
 
-+ (void)load {
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    #ifdef RCT_NEW_ARCH_ENABLED
-      Class swizzleClass = [RCTViewComponentView class];
-    #else
-      Class swizzleClass = [RCTView class];
-    #endif
+static void RNAORegisterViewFocusSwizzles(void) {
+  #ifdef RCT_NEW_ARCH_ENABLED
+    Class swizzleClass = objc_getClass("RCTViewComponentView");
+  #else
+    Class swizzleClass = objc_getClass("RCTView");
+  #endif
+  if (!swizzleClass) return;
 
-    RNAOSwizzleInstanceMethod(
-                              swizzleClass,
-                              @selector(accessibilityElementDidBecomeFocused),
-                              @selector(rnao_accessibilityElementDidBecomeFocused)
-                              );
-    RNAOSwizzleInstanceMethod(
-                              swizzleClass,
-                              @selector(accessibilityElementDidLoseFocus),
-                              @selector(rnao_accessibilityElementDidLoseFocus)
-                              );
-  });
+  RNAOSwizzleInstanceMethod(swizzleClass,
+                            @selector(accessibilityElementDidBecomeFocused),
+                            @selector(rnao_accessibilityElementDidBecomeFocused));
+  RNAOSwizzleInstanceMethod(swizzleClass,
+                            @selector(accessibilityElementDidLoseFocus),
+                            @selector(rnao_accessibilityElementDidLoseFocus));
 }
+
+RNAO_INSTALL_SWIZZLES(RNAORegisterViewFocusSwizzles)
 
 - (void)rnao_accessibilityElementDidBecomeFocused {
   [self rnao_accessibilityElementDidBecomeFocused];

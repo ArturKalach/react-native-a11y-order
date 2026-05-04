@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "RNAOSwizzleInstanceMethod.h"
+#import "RNAOSwizzleInstall.h"
 #import <objc/runtime.h>
 #import "RNAOA11yAnnounceService.h"
 #import "RCTModalHostViewComponentView+RNAOA11yOrder.h"
@@ -16,19 +17,18 @@
 
 @implementation RCTModalHostViewComponentView (RNAOA11yOrder)
 
-+ (void)load
-{
-    static dispatch_once_t once_token;
-
-    dispatch_once(&once_token, ^{
-      RNAOSwizzleInstanceMethod([self class],
-                @selector(dismissViewController:animated:completion:),
-                @selector(rnaoDismissViewController:animated:completion:));
-      RNAOSwizzleInstanceMethod([self class],
+static void RNAORegisterModalPresentationSwizzles(void) {
+    Class cls = objc_getClass("RCTModalHostViewComponentView");
+    if (!cls) return;
+    RNAOSwizzleInstanceMethod(cls,
+              @selector(dismissViewController:animated:completion:),
+              @selector(rnaoDismissViewController:animated:completion:));
+    RNAOSwizzleInstanceMethod(cls,
           @selector(presentViewController:animated:completion:),
           @selector(rnaoPresentViewController:animated:completion:));
-    });
 }
+
+RNAO_INSTALL_SWIZZLES(RNAORegisterModalPresentationSwizzles)
 
 - (void)rnaoPresentViewController:(UIViewController *)modalViewController
                         animated:(BOOL)animated
@@ -52,18 +52,18 @@
 
 @implementation RCTModalHostView (RNAOA11yOrder)
 
-+ (void)load
-{
-    static dispatch_once_t once_token;
-    dispatch_once(&once_token, ^{
-        RNAOSwizzleInstanceMethod([self class],
-            @selector(ensurePresentedOnlyIfNeeded),
-            @selector(rnao_ensurePresentedOnlyIfNeeded));
-        RNAOSwizzleInstanceMethod([self class],
-            @selector(dismissModalViewController),
-            @selector(rnao_dismissModalViewController));
-    });
+static void RNAORegisterModalPresentationSwizzles(void) {
+    Class cls = objc_getClass("RCTModalHostView");
+    if (!cls) return;
+    RNAOSwizzleInstanceMethod(cls,
+        @selector(ensurePresentedOnlyIfNeeded),
+        @selector(rnao_ensurePresentedOnlyIfNeeded));
+    RNAOSwizzleInstanceMethod(cls,
+        @selector(dismissModalViewController),
+        @selector(rnao_dismissModalViewController));
 }
+
+RNAO_INSTALL_SWIZZLES(RNAORegisterModalPresentationSwizzles)
 
 - (void)rnao_ensurePresentedOnlyIfNeeded
 {
