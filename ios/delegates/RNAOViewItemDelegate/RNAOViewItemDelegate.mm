@@ -59,7 +59,7 @@
 
 - (void)clear {
   if(!_delegate) return;
-  [_delegate onFocusItemLinked: _linkView];
+  [_delegate onFocusItemRemoved: _linkView];
   _isLinked = false;
   _linkView = nil;
 }

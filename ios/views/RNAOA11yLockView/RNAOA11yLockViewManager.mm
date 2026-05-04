@@ -22,4 +22,7 @@ RCT_EXPORT_MODULE(A11yLock)
   return [[RNAOA11yLockView alloc] init];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(lockDisabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(componentType, NSInteger)
+
 @end

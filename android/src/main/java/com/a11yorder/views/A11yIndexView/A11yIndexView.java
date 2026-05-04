@@ -29,7 +29,7 @@ public class A11yIndexView extends ReactViewGroup {
   }
 
   public void setOrderKey(String orderKey) {
-    this.orderService.orderKey = orderKey;
+    this.orderService.setOrderKey(orderKey);
   }
 
   @Override

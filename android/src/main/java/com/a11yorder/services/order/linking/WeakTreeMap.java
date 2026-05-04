@@ -5,58 +5,80 @@ import android.view.View;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.NavigableMap;
-import java.util.Set;
 import java.util.TreeMap;
 
 public class WeakTreeMap {
-  public NavigableMap<Integer, WeakReference<View>> viewMap = new TreeMap<>();
+  private final NavigableMap<Integer, WeakReference<View>> viewMap = new TreeMap<>();
 
-  public static View unwrapViewRef(Map. Entry<Integer, WeakReference<View>> viewRef) {
-    if(viewRef == null || viewRef.getValue() == null) return null;
-    return viewRef.getValue().get();
+  public void put(int position, View view) {
+    viewMap.put(position, new WeakReference<>(view));
   }
 
-  public View getNext (int position) {
-    Map.Entry<Integer, WeakReference<View>> view = viewMap.higherEntry(position);
-    if(view == null || view.getValue() == null) return null;
-    return view.getValue().get();
+  public View get(int position) {
+    WeakReference<View> ref = viewMap.get(position);
+    return ref != null ? ref.get() : null;
   }
 
-  public View getPrev (int position) {
-    Map.Entry<Integer, WeakReference<View>> view = viewMap.lowerEntry(position);
-    if(view == null || view.getValue() == null) return null;
-    return view.getValue().get();
+  public void remove(int position) {
+    viewMap.remove(position);
+    // Purge zombie entries left by GC while we're already mutating the map.
+    viewMap.values().removeIf(ref -> ref.get() == null);
   }
 
-  public WeakReference<View> put (int position, View view) {
-   return viewMap.put(position, new WeakReference<>(view));
+  /**
+   * Returns the nearest live view at a position strictly greater than {@code position},
+   * skipping any GC'd entries along the way.
+   */
+  public View getNext(int position) {
+    for (WeakReference<View> ref : viewMap.tailMap(position, false).values()) {
+      View v = ref.get();
+      if (v != null) return v;
+    }
+    return null;
   }
 
-  public View last () {
-    Map.Entry<Integer, WeakReference<View>> lastView = viewMap.lastEntry();
-    if(lastView == null || lastView.getValue() == null) return null;
-    return lastView.getValue().get();
+  /**
+   * Returns the nearest live view at a position strictly less than {@code position},
+   * skipping any GC'd entries along the way.
+   */
+  public View getPrev(int position) {
+    for (WeakReference<View> ref : viewMap.headMap(position, false).descendingMap().values()) {
+      View v = ref.get();
+      if (v != null) return v;
+    }
+    return null;
   }
 
-  public void remove (int position) {
-    this.viewMap.remove(position);
-  }
-
-  public View get (int position) {
-    WeakReference<View> viewRef = this.viewMap.get(position);
-    if(viewRef == null) return null;
-    return viewRef.get();
-  }
-
-  public Set<Map.Entry<Integer, WeakReference<View>>> entrySet() {
-    return this.viewMap.entrySet();
+  /** Returns the live view with the highest position, skipping any GC'd entries. */
+  public View last() {
+    for (WeakReference<View> ref : viewMap.descendingMap().values()) {
+      View v = ref.get();
+      if (v != null) return v;
+    }
+    return null;
   }
 
   public boolean containsKey(int position) {
-    return this.viewMap.containsKey(position);
+    return viewMap.containsKey(position);
   }
 
+  /** Returns {@code true} only if there are no live (non-GC'd) views in the map. */
   public boolean isEmpty() {
-    return this.viewMap.isEmpty();
+    for (WeakReference<View> ref : viewMap.values()) {
+      if (ref.get() != null) return false;
+    }
+    return true;
+  }
+
+  /** Visits every live entry in ascending position order. */
+  public void forEachLive(LiveEntryAction action) {
+    for (Map.Entry<Integer, WeakReference<View>> entry : viewMap.entrySet()) {
+      View v = entry.getValue().get();
+      if (v != null) action.run(entry.getKey(), v);
+    }
+  }
+
+  public interface LiveEntryAction {
+    void run(int position, View view);
   }
 }

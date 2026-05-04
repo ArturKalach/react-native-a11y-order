@@ -15,10 +15,12 @@
 
 - (void)add:(NSNumber*)position withOrderKey:(NSString*)orderKey withObject:(NSObject*)obj;
 - (void)remove:(NSNumber*)position withOrderKey:(NSString*)orderKey;
-- (void)setContainer:(NSString*)orderKey withView:(UIView*) view;
-- (void)setContainer:(NSString*)orderKey withView:(UIView*) view withDebounce:(BOOL)debounced;
+- (void)setContainer:(NSString*)orderKey withView:(UIView*)view;
+- (void)setContainer:(NSString*)orderKey withView:(UIView*)view withDebounce:(BOOL)debounced;
+- (void)update:(NSNumber*)position lastPosition:(NSNumber*)lastPosition withOrderKey:(NSString*)orderKey withView:(UIView*)view;
+- (void)updateOrderKey:(NSString*)prev next:(NSString*)next position:(NSNumber*)position withView:(UIView*)view;
 - (void)removeContainer:(NSString*)orderKey;
-- (void)update:(NSNumber*)position lastPosition:(NSNumber*)_position withOrderKey:(NSString*)_orderKey withView:(UIView*) view;
+
 @end
 
 #endif /* RNAOA11yOrderLinking_h */
