@@ -7,7 +7,7 @@ Java implementation of the accessibility order library. Supports both New Archit
 ```
 android/src/
 ├── main/java/com/a11yorder/
-│   ├── A11yOrderPackage.java               # TurboReactPackage — registers all view managers and modules
+│   ├── A11yOrderPackage.java               # TurboReactPackage — registers 4 view managers (Index, Order, PaneTitle, Lock) + AnnounceModule
 │   ├── core/                               # Inheritance chain (bottom → top):
 │   │   ├── A11yViewGroup.java              #   Base — weak-ref first-child tracking (onChildAttached/onChildRemoved)
 │   │   ├── A11yScreenReaderView.java       #   ↳ screen reader events (focused/focusChanged/descendantFocusChanged)
@@ -36,16 +36,25 @@ android/src/
 │   │   ├── ChoreographerUtils.java         # Frame-based task scheduling (2-frame delay)
 │   │   └── FragmentUtils.java             # Fragment lifecycle observer utilities
 │   └── views/
-│       ├── A11yView/                       # A11y.View — focus tracking, autoFocus, descendant events
-│       ├── A11yOrderView/                  # A11y.Order — registers as order group container
 │       ├── A11yIndexView/                  # A11y.Index — positioned item in an order
-│       ├── A11yGroupView/                  # A11y.Group — legacy (deprecated) container
-│       ├── A11yLockView/                   # A11y.FocusTrap — traps TalkBack focus (modal pattern)
-│       ├── A11yUIContainerView/            # A11y.Container — iOS UIAccessibilityContainerType stub
+│       ├── A11yOrderView/                  # A11y.Order — registers as order group container (extends ReactViewGroup directly)
+│       ├── A11yLockView/                   # A11y.FocusTrap — traps TalkBack focus (modal pattern); includes A11yLockService
 │       └── A11yPaneTitle/                  # A11y.PaneTitle — pane/screen transition announcements
-├── newarch/                                # Fabric/TurboModule spec wrappers (Codegen)
-└── oldarch/                                # Bridge spec wrappers
+├── newarch/                                # Fabric/TurboModule spec wrappers (Codegen): 5 files
+└── oldarch/                                # Bridge spec wrappers: 8 files (5 active + 3 legacy — see below)
 ```
+
+### Legacy / Deprecated Specs (oldarch-only, no concrete implementations)
+
+Three oldarch spec files exist without corresponding `views/` implementations and are not registered in `A11yOrderPackage`:
+
+| Spec file | Would back | Status |
+|---|---|---|
+| `A11yViewSpec.java` | A11y.View | Legacy — functionality absorbed into A11yIndexView chain |
+| `A11yGroupViewManagerSpec.java` | A11y.Group | Legacy — deprecated container |
+| `A11yUIContainerViewManagerSpec.java` | A11y.Container | Legacy — iOS-only concept, stub on Android |
+
+`A11y.Card` (iOS-only pattern) has no Android implementation and no spec file.
 
 ## Core Protocols / Interfaces
 
@@ -95,9 +104,9 @@ All events are dispatched via `EventHelper` which fetches `EventDispatcher` from
 
 | Event class | JS event name | Payload | Fired from |
 |---|---|---|---|
-| `ScreenReaderFocusChangedEvent` | `topScreenReaderFocusChange` | `{isFocused: boolean}` | `A11yIndexView`, `A11yView` |
-| `ScreenReaderFocusedEvent` | `topScreenReaderFocused` | none | `A11yView` |
-| `ScreenReaderDescendantFocusChangedEvent` | `topScreenReaderDescendantFocusChanged` | `{status: "focused"\|"blurred", nativeId: String}` | `A11yView` |
+| `ScreenReaderFocusChangedEvent` | `topScreenReaderFocusChange` | `{isFocused: boolean}` | `A11yIndexView` (via `A11yScreenReaderView`) |
+| `ScreenReaderFocusedEvent` | `topScreenReaderFocused` | none | `A11yIndexView` (via `A11yScreenReaderView`) |
+| `ScreenReaderDescendantFocusChangedEvent` | `topScreenReaderDescendantFocusChanged` | `{status: "focused"\|"blurred", nativeId: String}` | `A11yIndexView` (via `A11yScreenReaderView`) |
 
 Events are triggered by overriding `onRequestSendAccessibilityEvent(child, event)` and filtering `TYPE_VIEW_ACCESSIBILITY_FOCUSED` / `TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED`.
 
@@ -127,13 +136,14 @@ A11yIndexView receives orderKey + orderIndex props
 ```
 A11yViewGroup                 weak-ref first-child tracking
   └─ A11yScreenReaderView     screen reader events (focused / focusChanged / descendantFocusChanged)
-       └─ A11yAutoFocusView   autoFocus prop + focus() + A11yFocusProtocol  ← shared by both leaves
-            ├─ A11yView       leaf — no extra logic
+       └─ A11yAutoFocusView   autoFocus prop + focus() + A11yFocusProtocol
             └─ A11yViewOrder  A11yOrderService wiring (index / key / focusType)
                  └─ A11yIndexView  leaf — no extra logic
 ```
 
-## Auto-Focus Flow (A11yAutoFocusView — applies to both A11yView and A11yIndexView)
+`A11yOrderView`, `A11yLockView`, and `A11yPaneTitle` extend `ReactViewGroup` directly and are **not** part of the core inheritance chain above.
+
+## Auto-Focus Flow (A11yAutoFocusView — applies to A11yIndexView)
 
 ```
 onAttachedToWindow() with autoFocus=true

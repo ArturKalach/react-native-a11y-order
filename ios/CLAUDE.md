@@ -29,15 +29,34 @@ ios/
 │   ├── RNAOA11yOrderLinking/           # Registry: orderKey → RNAOA11yRelationship
 │   ├── RNAOA11yRelationship/           # Maps positions → accessibilityElements on a container
 │   └── RNAOSortedMap/                  # Weak-ref sorted map (position → object)
-└── views/                              # Native view components
-    ├── RNAOA11yView/                   # A11y.View — focus tracking, autoFocus, descendant events
-    ├── RNAOA11yOrderView/              # A11y.Order — registers as accessibility container
+└── views/
+    ├── base/                           # Inheritance chain base classes
+    │   ├── RNAOA11yViewGroup           # Base (RCTViewComponentView new arch / RCTView old arch)
+    │   ├── RNAOA11yScreenReaderView    # ↳ screen reader focus delegation
+    │   ├── RNAOA11yGroupChildrenView   # ↳ shouldGroupAccessibilityChildren override (groupChildrenMode)
+    │   ├── RNAOA11yAutoFocusView       # ↳ autoFocus, focus events, FocusServiceSubscriber
+    │   └── RNAOA11yViewOrder           # ↳ position/orderKey/focusType + RNAOA11yItemDelegate
     ├── RNAOA11yIndexView/              # A11y.Index — positioned item in an order
+    ├── RNAOA11yOrderView/              # A11y.Order — registers as accessibility container
+    ├── RNAOA11yCardView/               # A11y.Card — full-cover overlay for card + nested buttons pattern
     ├── RNAOA11yGroupView/              # A11y.Group — shouldGroupAccessibilityChildren = YES
     ├── RNAOA11yLockView/               # A11y.FocusTrap — traps VoiceOver focus
     ├── RNAOA11yUIContainerView/        # A11y.Container — UIAccessibilityContainerType wrapper
     └── RNAOA11yPaneTitleView/          # A11y.PaneTitle — pane announcement + focus restore
 ```
+
+## View Inheritance Chain
+
+```
+RNAOA11yViewGroup             base (RCTViewComponentView new arch / RCTView old arch)
+  └─ RNAOA11yScreenReaderView     screen reader focus delegation (RNAOScreenReaderFocusDelegate)
+       └─ RNAOA11yGroupChildrenView   shouldGroupAccessibilityChildren override (groupChildrenMode: -1/0/1)
+            └─ RNAOA11yAutoFocusView  autoFocus, focus events, RNAOA11yFocusServiceSubscriber
+                 └─ RNAOA11yViewOrder position/orderKey/focusType + RNAOA11yItemDelegate
+                      └─ RNAOA11yIndexView  leaf — no extra logic
+```
+
+`RNAOA11yOrderView`, `RNAOA11yCardView`, `RNAOA11yLockView`, `RNAOA11yGroupView`, `RNAOA11yUIContainerView`, and `RNAOA11yPaneTitleView` extend `RCTViewComponentView` directly and are **not** part of the inheritance chain above.
 
 ## Core Protocols
 
@@ -62,6 +81,10 @@ NSMapTable (strong→weak) + sorted NSNumber key array. Weak references mean rem
 
 ### RNAOA11yFocusService
 Listens to `UIAccessibilityElementFocusedNotification` and fans out to a weak-hash-table of subscribers. Views subscribe/unsubscribe on mount/unmount.
+
+### RNAOA11yCardView
+
+Implements the `A11y.Card` overlay pattern for iOS. Places a full-cover invisible `accessibilityElement` overlay on top of the card. VoiceOver focuses the overlay (fires `onAccessibilityTap`); sighted users tap through to the underlying `Pressable`. There is no Android counterpart — TalkBack does not need the overlay trick.
 
 ### RNAOA11yAnnounceService
 VoiceOver-aware announcement queue. Only fires when: VoiceOver is active + lock is off + queue non-empty. Uses a 0.3s debounce to batch announcements and a 1s lock during navigation transitions.

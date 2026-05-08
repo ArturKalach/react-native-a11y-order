@@ -10,7 +10,7 @@ import {
   type A11yOrderType,
   type IndexCommands,
   A11yContainerTypeEnum,
-} from '../../types/A11yIndex.types';
+} from './A11yIndex.types';
 
 type ScreenReaderCallbacks = Pick<
   A11yIndexProps,

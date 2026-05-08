@@ -2,6 +2,7 @@ package com.a11yorder;
 
 
 import com.a11yorder.modules.A11yAnnounceModule;
+import com.a11yorder.views.A11yCardView.A11yCardViewManager;
 import com.a11yorder.views.A11yIndexView.A11yIndexViewManager;
 import com.a11yorder.views.A11yLockView.A11yLockViewManager;
 import com.a11yorder.views.A11yOrderView.A11yOrderViewManager;
@@ -28,6 +29,7 @@ public class A11yOrderPackage extends TurboReactPackage {
     viewManagers.add(new A11yOrderViewManager());
     viewManagers.add(new A11yPaneTitleManager());
     viewManagers.add(new A11yLockViewManager());
+    viewManagers.add(new A11yCardViewManager());
 
     return viewManagers;
   }

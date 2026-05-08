@@ -1,22 +1,16 @@
 import React from 'react';
-import { type ViewProps } from 'react-native';
 import A11yPaneTitleNative from '../../nativeSpecs/A11yPaneTitleNativeComponent';
+import type {
+  A11yPaneTitleProps,
+  A11yPaneType,
+  A11yScreenChangeProps,
+} from './A11yPaneTitle.types';
 
-enum PaneEnum {
-  activity = 0,
-  pane = 1,
-  announce = 2,
-}
-
-type PaneType = keyof typeof PaneEnum;
-
-type A11yPaneTitleType = React.PropsWithChildren<{
-  title?: string;
-  detachMessage?: string;
-  type?: PaneType;
-  withFocusRestore?: boolean;
-  displayed?: boolean;
-}>;
+const PaneTypeValue: Record<A11yPaneType, number> = {
+  activity: 0,
+  pane: 1,
+  announce: 2,
+};
 
 export const A11yPaneTitle = ({
   title,
@@ -25,21 +19,21 @@ export const A11yPaneTitle = ({
   children,
   displayed,
   withFocusRestore = true,
-}: ViewProps & A11yPaneTitleType) => {
+}: A11yPaneTitleProps) => {
   if (displayed === false) return null;
 
   return (
     <A11yPaneTitleNative
       title={title}
       detachMessage={detachMessage}
-      type={PaneEnum[type]}
+      type={PaneTypeValue[type]}
       children={children}
       withFocusRestore={withFocusRestore}
     />
   );
 };
 
-export const A11yScreenChange = (props: Omit<A11yPaneTitleType, 'type'>) => (
+export const A11yScreenChange = (props: A11yScreenChangeProps) => (
   <A11yPaneTitle
     title={props.title}
     detachMessage={props.detachMessage}

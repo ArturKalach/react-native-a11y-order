@@ -8,18 +8,32 @@ import { A11yView } from './components/A11yView/A11yView';
 import { A11yFocusFrame } from './components/A11yLock/A11yFocusFrame/A11yFocusFrame';
 import { A11yFocusTrap } from './components/A11yLock/A11yFocusTrap/A11yFocusTrap';
 import { A11yCard } from './components/A11yCard/A11yCard';
+
+// ─── Component props ──────────────────────────────────────────────────────────
+
 export type { A11yCardProps } from './components/A11yCard/A11yCard.types';
-
+export type { A11ySequenceProps } from './components/A11ySequence/A11ySequence.types';
 export type {
-  IndexCommands,
-  A11yOrderType,
-  A11yOrderTypeEnum,
   A11yIndexProps,
-} from './types/A11yIndex.types';
+  A11yOrderType,
+  IndexCommands,
+} from './components/A11yIndex/A11yIndex.types';
+export { A11yOrderTypeEnum } from './components/A11yIndex/A11yIndex.types';
+export type {
+  A11yViewProps,
+  ScreenReaderDescendantFocusChangedEvent,
+} from './components/A11yView/A11yView.types';
+export type {
+  A11yFocusTrapProps,
+  A11yFocusFrameProps,
+} from './components/A11yLock/A11yLock.types';
+export type {
+  A11yPaneTitleProps,
+  A11yScreenChangeProps,
+  A11yPaneType,
+} from './components/A11yPaneTitle/A11yPaneTitle.types';
 
-export type { ScreenReaderDescendantFocusChangedEvent } from './types/A11yView.types';
-
-export type { A11yViewProps } from './types/A11yView.types';
+// ─── Namespace ────────────────────────────────────────────────────────────────
 
 export const A11y = {
   Order: A11yIndexSequence,
