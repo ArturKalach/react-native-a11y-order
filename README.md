@@ -106,7 +106,7 @@ Move screen reader focus to the element when it mounts:
 | :-- | :-- | :-- |
 | `...ViewProps` | — | All standard React Native View properties. |
 | `index` | `number` | Position in the ordering sequence. |
-| `orderType` | `'default' \| 'child' \| 'legacy'` | Algorithm used to select the focusable element (see below). |
+| `orderType` | `'default' \| 'child' \| 'subview'` | Algorithm used to select the focusable element (see below). |
 | `autoFocus` | `boolean` | Moves screen reader focus to this element on mount. |
 | `a11yUIContainer` | `'none' \| 'table' \| 'list' \| 'landmark' \| 'group'` | iOS `UIAccessibilityContainerType` hint. |
 | `onScreenReaderFocused` | `() => void` | Fires when this element receives screen reader focus. |
@@ -122,13 +122,53 @@ Move screen reader focus to the element when it mounts:
 | :-- | :-- |
 | `default` | The `A11y.Index` container itself is the ordered element. Navigation moves through inner elements before advancing to the next index. |
 | `child` | Searches the child tree for the first accessible element to use in the ordering. |
-| `legacy` | Uses the first direct child as the accessibility element for ordering. |
+| `subview` | Uses the first accessible subview via the platform's legacy traversal path. |
 
 #### A11y.Order props
 
 | Prop | Description |
 | :-- | :-- |
 | `...ViewProps` | All standard React Native View props. |
+
+---
+
+### A11y.Card
+
+`A11y.Card` solves the "card with inner interactive elements" accessibility problem. A plain `Pressable` with nested buttons or links breaks VoiceOver: it acts as a leaf node and hides its children from the screen reader.
+
+`A11y.Card` exposes the card itself **and** its inner elements to the screen reader simultaneously:
+
+- **iOS** — places a full-cover invisible overlay as the first `accessibilityElement`. VoiceOver focuses the overlay (triggers `onPress` via `onAccessibilityTap`) while sighted users tap through to the `Pressable` normally.
+- **Android** — no overlay is needed. TalkBack does not block child focus, so the card acts as a standard accessible `Pressable`.
+
+```tsx
+import { A11y } from 'react-native-a11y-order';
+
+<A11y.Card
+  onPress={() => navigation.navigate('Detail')}
+  accessibility={{
+    accessibilityLabel: 'Product card',
+    accessibilityHint: 'Opens product detail',
+  }}
+>
+  <Text>Product name</Text>
+  <Button title="Add to cart" onPress={addToCart} />
+</A11y.Card>
+```
+
+#### A11y.Card props
+
+| Prop | Type | Description |
+| :-- | :-- | :-- |
+| `onPress` | `() => void` | Called when the card is pressed (sighted users) or activated by the screen reader (VoiceOver double-tap). |
+| `onLongPress` | `() => void` | Called on long-press for sighted users. For VoiceOver users, add a custom action via `accessibility.accessibilityActions` — VoiceOver does not fire long-press. |
+| `accessibility` | `ViewProps` | All screen-reader-facing props (`accessibilityLabel`, `accessibilityHint`, `accessibilityRole`, `accessibilityState`, etc.). Applied to the overlay on iOS and to the `Pressable` on Android. |
+| `disabled` | `boolean` | Disables the card. Automatically merged into `accessibility.accessibilityState.disabled` — you only need to set it once. |
+| `style` | `StyleProp<ViewStyle>` | Visual style for the inner `Pressable` (background, border, shadow…). |
+| `containerProps` | `ViewProps` | Layout props for the outer container — use for margins, flex, and positioning in the parent. |
+| `pressableProps` | `PressableProps` | Escape hatch for `Pressable`-specific props not covered above (`hitSlop`, `android_ripple`, …). |
+| `testID` | `string` | Test identifier forwarded to the inner `Pressable`. |
+| `children` | `React.ReactNode` | Card content. Interactive children (buttons, links) remain fully accessible to the screen reader. |
 
 ---
 
@@ -165,8 +205,8 @@ Move screen reader focus to the element when it mounts:
 
 Confine screen reader focus to a region — for modals and overlays.
 
-- `A11y.FocusFrame`: place at the root of a "screen" to detect focus leaks.
-- `A11y.FocusTrap`: wraps the content that should hold focus.
+- `A11y.FocusFrame`: place at the root of the screen or overlay. Provides the context that `A11y.FocusTrap` requires — **`A11y.FocusTrap` must always be a descendant of `A11y.FocusFrame`**.
+- `A11y.FocusTrap`: wraps the content that should hold focus. Only one `FocusTrap` should be active inside a `FocusFrame` at a time.
 
 On iOS, `A11y.FocusTrap` uses `accessibilityViewIsModal`. With `forceLock`, it also actively redirects VoiceOver back into the trap when focus escapes.
 
