@@ -49,6 +49,27 @@ RCT_EXPORT_METHOD(focus:(nonnull NSNumber *)reactTag)
     }];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(autoFocus, BOOL, RNAOA11yIndexView)
+{
+  BOOL value = json ? [RCTConvert BOOL:json] : NO;
+  [view setAutoFocus: value];
+}
+
+RCT_CUSTOM_VIEW_PROPERTY(descendantFocusChangedEnabled, BOOL, RNAOA11yIndexView)
+{
+  BOOL value = json ? [RCTConvert BOOL:json] : NO;
+  [view setDescendantFocusChangedEnabled: value];
+}
+
+RCT_CUSTOM_VIEW_PROPERTY(containerType, NSInteger, UIView)
+{
+    NSInteger viewContainerType = json ? [RCTConvert NSInteger:json] : 0;
+    view.accessibilityContainerType = (UIAccessibilityContainerType)viewContainerType;
+}
+
+RCT_EXPORT_VIEW_PROPERTY(onScreenReaderFocused, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onScreenReaderFocusChange, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onScreenReaderDescendantFocusChanged, RCTDirectEventBlock)
+
 
 @end

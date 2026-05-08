@@ -25,9 +25,7 @@ export const CircleNode = React.forwardRef<IndexCommands, Props>(
 
     const indexRef = React.useRef<IndexCommands>(null);
 
-    React.useImperativeHandle(ref, () => ({
-      focus: () => indexRef.current?.focus(),
-    }));
+    React.useImperativeHandle(ref, () => indexRef.current!, []);
 
     return (
       <A11y.Index

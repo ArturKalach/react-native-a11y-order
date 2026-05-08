@@ -1,28 +1,18 @@
-package com.a11yorder.views.A11yView;
-
+package com.a11yorder.core;
 
 import android.content.Context;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 
-import com.a11yorder.core.A11yViewGroup;
 import com.a11yorder.events.EventHelper;
-import com.a11yorder.services.focus.A11yFocusDelegate;
-import com.a11yorder.services.focus.A11yFocusProtocol;
 import com.facebook.react.bridge.ReactContext;
 
-public class A11yView extends A11yViewGroup implements A11yFocusProtocol {
+public class A11yScreenReaderView extends A11yViewGroup {
   private final Context context;
-  private final A11yFocusDelegate a11yFocusDelegate;
-  private Boolean autoFocus = false;
 
-  private Boolean autoFocusOnce = false;
-  private Boolean hasBeenFocused = false;
-
-  public A11yView(Context context) {
+  public A11yScreenReaderView(Context context) {
     super(context);
     this.context = context;
-    this.a11yFocusDelegate = new A11yFocusDelegate((ReactContext) context, this);
   }
 
   public static String getNativeIdSafe(View view) {
@@ -32,20 +22,6 @@ public class A11yView extends A11yViewGroup implements A11yFocusProtocol {
     } catch (Exception e) {
       return null;
     }
-  }
-
-  public boolean isViewFocused() {
-    View focusTarget = this.isFocusable() ? this : this.getChildAt(0);
-    if (focusTarget == null) return false;
-    return focusTarget.isAccessibilityFocused();
-  }
-
-  public void setAutoFocus(Boolean value) {
-    this.autoFocus = value;
-  }
-
-  public void focus() {
-    a11yFocusDelegate.requestFocus();
   }
 
   @Override
@@ -61,11 +37,6 @@ public class A11yView extends A11yViewGroup implements A11yFocusProtocol {
   public boolean onRequestSendAccessibilityEvent(View child, AccessibilityEvent event) {
     int eventType = event.getEventType();
     boolean isSubChild = (child == this.getSubChild());
-
-    if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED && autoFocus && !hasBeenFocused) {
-      hasBeenFocused = true;
-      a11yFocusDelegate.onFocused();
-    }
 
     if (eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED && isSubChild) {
       EventHelper.screenReaderFocusChanged((ReactContext) context, this.getId(), true);
@@ -86,18 +57,5 @@ public class A11yView extends A11yViewGroup implements A11yFocusProtocol {
     }
 
     return super.onRequestSendAccessibilityEvent(child, event);
-  }
-
-  @Override
-  protected void onAttachedToWindow() {
-    super.onAttachedToWindow();
-    if (autoFocus && !autoFocusOnce) {
-      autoFocusOnce = true;
-
-      if (!isViewFocused()) {
-        hasBeenFocused = false;
-        a11yFocusDelegate.requestFocus();
-      }
-    }
   }
 }

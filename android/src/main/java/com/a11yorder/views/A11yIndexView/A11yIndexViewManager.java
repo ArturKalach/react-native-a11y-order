@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.a11yorder.events.EventHelper;
+import com.a11yorder.events.ScreenReaderDescendantFocusChangedEvent;
 import com.a11yorder.events.ScreenReaderFocusChangedEvent;
+import com.a11yorder.events.ScreenReaderFocusedEvent;
 import com.a11yorder.utils.A11yHelper;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
@@ -54,6 +56,11 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
   }
 
   @Override
+  public void setShouldGroupAccessibilityChildren(A11yIndexView view, int value) {
+    //stub
+  }
+
+  @Override
   public void focus(A11yIndexView view) {
     this.focus((ReactViewGroup) view);
   }
@@ -72,11 +79,31 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
     }
   }
 
+
+  @Override
+  @ReactProp(name = "autoFocus")
+  public void setAutoFocus(A11yIndexView view, boolean value) {
+    view.setAutoFocus(value);
+  }
+
+  @Override
+  public void setDescendantFocusChangedEnabled(A11yIndexView view, boolean value) {
+    //stub
+  }
+
+  @Override
+  public void setContainerType(A11yIndexView view, int value) {
+    //stub
+  }
+
+  @javax.annotation.Nullable
   @Override
   public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
     Map<String, Object> export = new HashMap<>();
 
+    export.put(ScreenReaderFocusedEvent.EVENT_NAME, EventHelper.buildDirectEventMap("onScreenReaderFocused"));
     export.put(ScreenReaderFocusChangedEvent.EVENT_NAME, EventHelper.buildDirectEventMap("onScreenReaderFocusChange"));
+    export.put(ScreenReaderDescendantFocusChangedEvent.EVENT_NAME, EventHelper.buildDirectEventMap("onScreenReaderDescendantFocusChanged"));
 
     return export;
   }

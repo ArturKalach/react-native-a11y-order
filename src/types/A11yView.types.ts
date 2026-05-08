@@ -1,19 +1,6 @@
-import type { NativeSyntheticEvent, ViewProps } from 'react-native';
-import type { ScreenReaderDescendantFocusChanged } from '../nativeSpecs/A11yViewNativeComponent';
+import type { A11yIndexProps } from './A11yIndex.types';
 
-export type ScreenReaderDescendantFocusChangedEvent =
-  NativeSyntheticEvent<ScreenReaderDescendantFocusChanged>;
+export type { ScreenReaderDescendantFocusChangedEvent } from './A11yIndex.types';
 
-export type A11yViewProps = ViewProps & {
-  autoFocus?: boolean;
-
-  onScreenReaderFocused?: () => void;
-
-  onScreenReaderSubViewFocusChange?: (isFocused: boolean) => void;
-  onScreenReaderSubViewFocused?: () => void;
-  onScreenReaderSubViewBlurred?: () => void;
-
-  onScreenReaderDescendantFocusChanged?: (
-    e: ScreenReaderDescendantFocusChangedEvent
-  ) => void;
-};
+/** Props for {@link A11yView} — focus tracking without ordering. */
+export type A11yViewProps = Omit<A11yIndexProps, 'index' | 'orderType'>;

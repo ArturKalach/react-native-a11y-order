@@ -54,4 +54,10 @@ export const NAV_ITEMS: NavItem[] = [
     desc: 'Screen reader announcements',
     color: '#65a30d',
   },
+  {
+    id: 'Card',
+    label: 'Card',
+    desc: 'Tappable card with inner buttons',
+    color: '#0369a1',
+  },
 ];

@@ -8,8 +8,11 @@ Java implementation of the accessibility order library. Supports both New Archit
 android/src/
 ├── main/java/com/a11yorder/
 │   ├── A11yOrderPackage.java               # TurboReactPackage — registers all view managers and modules
-│   ├── core/
-│   │   └── A11yViewGroup.java              # Base ViewGroup — weak-ref first-child tracking
+│   ├── core/                               # Inheritance chain (bottom → top):
+│   │   ├── A11yViewGroup.java              #   Base — weak-ref first-child tracking (onChildAttached/onChildRemoved)
+│   │   ├── A11yScreenReaderView.java       #   ↳ screen reader events (focused/focusChanged/descendantFocusChanged)
+│   │   ├── A11yAutoFocusView.java          #   ↳ autoFocus prop, focus() command, A11yFocusProtocol
+│   │   └── A11yViewOrder.java              #   ↳ A11yOrderService wiring (index/key/focusType, child linking)
 │   ├── events/
 │   │   ├── EventHelper.java                # Dispatch utilities for all custom events
 │   │   ├── ScreenReaderFocusChangedEvent   # isFocused boolean event payload
@@ -119,7 +122,18 @@ A11yIndexView receives orderKey + orderIndex props
   → links prev.setAccessibilityTraversalBefore(view) + view.setAccessibilityTraversalBefore(next)
 ```
 
-## Auto-Focus Flow (A11yView)
+## View Inheritance Chain
+
+```
+A11yViewGroup                 weak-ref first-child tracking
+  └─ A11yScreenReaderView     screen reader events (focused / focusChanged / descendantFocusChanged)
+       └─ A11yAutoFocusView   autoFocus prop + focus() + A11yFocusProtocol  ← shared by both leaves
+            ├─ A11yView       leaf — no extra logic
+            └─ A11yViewOrder  A11yOrderService wiring (index / key / focusType)
+                 └─ A11yIndexView  leaf — no extra logic
+```
+
+## Auto-Focus Flow (A11yAutoFocusView — applies to both A11yView and A11yIndexView)
 
 ```
 onAttachedToWindow() with autoFocus=true

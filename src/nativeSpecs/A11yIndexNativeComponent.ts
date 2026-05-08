@@ -15,14 +15,23 @@ export type ScreenReaderFocusChange = Readonly<{
 
 export type ScreenReaderDescendantFocusChanged = Readonly<{
   status: string;
+  nativeId?: string;
 }>;
 
 export interface A11yIndexNativeComponentProps extends ViewProps {
-  orderIndex: Int32;
-  orderKey: string;
-  orderFocusType: Int32;
+  orderIndex?: Int32;
+  orderKey?: string;
+  orderFocusType?: Int32;
+  shouldGroupAccessibilityChildren?: Int32;
 
+  autoFocus?: boolean;
+  descendantFocusChangedEnabled?: boolean;
+
+  onScreenReaderFocused?: DirectEventHandler<{}>;
+  onScreenReaderDescendantFocusChanged?: DirectEventHandler<ScreenReaderDescendantFocusChanged>;
   onScreenReaderFocusChange?: DirectEventHandler<ScreenReaderFocusChange>;
+
+  containerType?: Int32;
 }
 
 export interface NativeCommands {

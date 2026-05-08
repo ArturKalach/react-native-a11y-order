@@ -24,6 +24,7 @@ import { ScreenReaderFocus } from './components/ScreenReaderFocus';
 import { FocusLockExample } from './components/FocusLockExample';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AnnounceExample } from './components/AnnounceExample';
+import { CardExample } from './components/CardExample';
 import { NAV_ITEMS } from './constants/navigation';
 
 const ScreenChangeAnnounce = ({ title }: { title: string }) => {
@@ -232,6 +233,18 @@ function AnnounceScreen() {
   );
 }
 
+function CardScreen() {
+  return (
+    <View style={styles.flex}>
+      <ScreenChangeAnnounce title="Card Screen" />
+      <ScrollView>
+        <CardExample />
+      </ScrollView>
+      <NavigationButtons ignore="Card" />
+    </View>
+  );
+}
+
 const Stack = createNativeStackNavigator();
 
 const HEADER_OPTIONS = { header: CustomHeader };
@@ -283,6 +296,11 @@ function RootStack() {
         name="AnnounceExamples"
         options={HEADER_OPTIONS}
         component={AnnounceScreen}
+      />
+      <Stack.Screen
+        name="Card"
+        options={HEADER_OPTIONS}
+        component={CardScreen}
       />
     </Stack.Navigator>
   );
