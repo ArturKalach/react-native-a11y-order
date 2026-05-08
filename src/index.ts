@@ -1,5 +1,5 @@
 import { A11yIndex } from './components/A11yIndex/A11yIndex';
-import { A11yIndexSequence } from './components/A11ySequence/A11ySequence';
+import { A11yOrder } from './components/A11yOrder/A11yOrder';
 import {
   A11yPaneTitle,
   A11yScreenChange,
@@ -12,7 +12,7 @@ import { A11yCard } from './components/A11yCard/A11yCard';
 // ─── Component props ──────────────────────────────────────────────────────────
 
 export type { A11yCardProps } from './components/A11yCard/A11yCard.types';
-export type { A11ySequenceProps } from './components/A11ySequence/A11ySequence.types';
+export type { A11yOrderProps } from './components/A11yOrder/A11yOrder.types';
 export type {
   A11yIndexProps,
   A11yOrderType,
@@ -36,7 +36,7 @@ export type {
 // ─── Namespace ────────────────────────────────────────────────────────────────
 
 export const A11y = {
-  Order: A11yIndexSequence,
+  Order: A11yOrder,
   Index: A11yIndex,
   View: A11yView,
   PaneTitle: A11yPaneTitle,

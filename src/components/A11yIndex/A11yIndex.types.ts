@@ -12,7 +12,7 @@ export type IndexCommands = Omit<React.ComponentRef<typeof View>, 'focus'> & {
 export const A11yOrderTypeEnum = {
   default: 0,
   child: 1,
-  legacy: 2,
+  subview: 2,
 } as const;
 
 /** @internal Numeric backing values for {@link A11yUIContainerType}. */
@@ -35,7 +35,7 @@ export type A11yUIContainerType = keyof typeof A11yContainerTypeEnum;
  *
  * - `'default'` — the `A11y.Index` view itself
  * - `'child'`   — the first accessible child (useful when the index wrapper has no visual presence)
- * - `'legacy'`  — first accessible child via an older traversal path
+ * - `'subview'` — first accessible child via an older traversal path
  */
 export type A11yOrderType = keyof typeof A11yOrderTypeEnum;
 

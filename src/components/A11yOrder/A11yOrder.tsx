@@ -1,11 +1,11 @@
 import React from 'react';
 import { A11ySequenceOrderContext } from '../../context/A11ySequenceOrderContext';
 import A11yOrderNativeComponent from '../../nativeSpecs/A11yOrderNativeComponent';
-import type { A11ySequenceProps } from './A11ySequence.types';
+import type { A11yOrderProps } from './A11yOrder.types';
 
-export type { A11ySequenceProps };
+export type { A11yOrderProps };
 
-export const A11yIndexSequence = React.memo<A11ySequenceProps>((props) => {
+export const A11yOrder = React.memo<A11yOrderProps>((props) => {
   const orderKey = React.useId();
   return (
     <A11ySequenceOrderContext.Provider value={orderKey}>

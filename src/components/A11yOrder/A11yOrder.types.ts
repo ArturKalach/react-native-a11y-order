@@ -8,4 +8,4 @@ import type { ViewProps } from 'react-native';
  * The `orderKey` that links child `A11y.Index` elements to this container is generated
  * internally via `React.useId` and requires no prop.
  */
-export type A11ySequenceProps = ViewProps;
+export type A11yOrderProps = ViewProps;
