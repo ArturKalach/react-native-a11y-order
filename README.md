@@ -16,10 +16,7 @@ Managing screen reader focus order can be challenging, especially in complex or 
 - Compatible with Expo prebuild
 
 > [!TIP]
-> If you need to adjust the horizontal or vertical focus order, consider using `<View collapsable={false}>` as a quick fix.
-> By default, React Native optimizes views, which can sometimes impact the focus order unintentionally.
->
-> While this library is designed to handle complex or unusual focus scenarios, in many cases, using `<View collapsable={false}>` can resolve focus issues without requiring additional work.
+> Before adding this library, try `<View collapsable={false}>` — it fixes most simple focus order issues with no extra dependencies. [Learn more](./docs/guides/collapsable.md)
 
 > [!IMPORTANT]
 > Starting from React Native v0.8.2, an experimental feature `experimental_accessibilityOrder` is available for setting the correct focus order.
