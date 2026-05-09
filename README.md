@@ -19,8 +19,7 @@ Managing screen reader focus order can be challenging, especially in complex or 
 > Before adding this library, try `<View collapsable={false}>` — it fixes most simple focus order issues with no extra dependencies. [Learn more](./docs/guides/collapsable.md)
 
 > [!IMPORTANT]
-> Starting from React Native v0.8.2, an experimental feature `experimental_accessibilityOrder` is available for setting the correct focus order.
-> You can find more information in the [Accessibility documentation](https://reactnative.dev/docs/accessibility).
+> React Native v0.8.2+ includes an experimental `experimental_accessibilityOrder` prop — see [Accessibility docs](https://reactnative.dev/docs/accessibility).
 
 ---
 
