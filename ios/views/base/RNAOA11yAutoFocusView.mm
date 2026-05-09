@@ -100,7 +100,6 @@
   [super removeFromSuperview];
 }
 
-#ifdef RCT_NEW_ARCH_ENABLED
 - (NSString*)getNativeId:(UIView*)element {
   NSString* nativeId = nil;
   @try {
@@ -110,11 +109,6 @@
   }
   return nativeId;
 }
-#else
-- (NSString*)getNativeId:(UIView*)element {
-  return element.nativeID;
-}
-#endif
 
 - (void)accessibilityElementDidBecomeFocused {
   [super accessibilityElementDidBecomeFocused];
