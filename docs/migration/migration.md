@@ -59,6 +59,39 @@ import { A11yModule } from 'react-native-a11y-order';
 A11yModule.announce('message');
 ```
 
+### `orderType` value renames
+
+The `orderType` prop values have been renamed for clarity. The behaviour is unchanged.
+
+| 0.9.x | 1.0 |
+| :-- | :-- |
+| `'legacy'` | `'subview'` — first direct child view, no accessibility check |
+| `'search'` | `'child'` — depth-first search for first accessible element |
+| `'default'` | `'default'` (unchanged) |
+
+### `A11y.Container` removed
+
+`A11y.Container` no longer exists as a standalone component. Use the `a11yUIContainer` prop on `A11y.View` or `A11y.Index` instead.
+
+```tsx
+// Before (0.9.x)
+import { A11y } from 'react-native-a11y-order';
+<A11y.Container type="list">
+  {items}
+</A11y.Container>
+
+// After (1.0)
+<A11y.View a11yUIContainer="list">
+  {items}
+</A11y.View>
+```
+
+The `type` values map directly — `list`, `table`, `landmark`, `group`, `none` are all unchanged. The `legacy` type value is removed.
+
+### `A11y.Group` removed
+
+`A11y.Group` was already marked as legacy in 0.9.x. It is fully removed in 1.0. For horizontal scroll accessibility, use `a11yUIContainer="group"` on `A11y.View` or rely on the New Architecture, which handles this correctly by default.
+
 ### New props in 1.0
 
 These props did not exist in 0.9.x and require no migration — add them only if you need the functionality.
@@ -69,5 +102,9 @@ These props did not exist in 0.9.x and require no migration — add them only if
 | `A11y.View` | `shouldGroupAccessibilityChildren` | iOS only. Same as above. |
 | `A11y.Index` | `a11yUIContainer` | iOS only. Sets `UIAccessibilityContainerType`. |
 | `A11y.View` | `a11yUIContainer` | iOS only. Sets `UIAccessibilityContainerType`. |
+| `A11y.Index` | `autoFocus` | Moves screen reader focus to the element on mount. |
+| `A11y.View` | `autoFocus` | Same as above. |
+| `A11y.Index` | `onScreenReaderDescendantFocusChanged` | Fires when any descendant gains or loses screen reader focus. |
+| `A11y.View` | `onScreenReaderDescendantFocusChanged` | Same as above. |
 | `A11y.FocusTrap` | `lockDisabled` | Disables the focus trap without unmounting. |
 | `A11y.PaneTitle` | `withFocusRestore` | Restores focus on unmount. Defaults to `true`. |
