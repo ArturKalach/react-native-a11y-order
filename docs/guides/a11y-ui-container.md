@@ -6,7 +6,7 @@
 
 VoiceOver on iOS understands semantic container types. When you wrap a list of items with `a11yUIContainer="list"`, VoiceOver announces "list, 4 items" when entering and "2 of 4" as the user navigates through rows. Without it, the items are read as plain elements with no context.
 
-![UI container semantics on iOS](../images/a11y-ui-container/ui_container_ios.gif)
+<img src="../images/a11y-ui-container/ui_container_ios.gif" height="400" alt="UI container semantics on iOS" />
 
 ## Container types
 

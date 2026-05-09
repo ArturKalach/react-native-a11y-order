@@ -16,7 +16,7 @@ The native view assigns separate `focusGroupIdentifier` values to the overlay an
 
 | iOS | Android |
 | --- | --- |
-| ![A11y.Card on iOS](../images/a11y-card/a11y_card_ios.gif) | ![A11y.Card on Android](../images/a11y-card/a11y_card_android.gif) |
+| <img src="../images/a11y-card/a11y_card_ios.gif" height="400" alt="A11y.Card on iOS" /> | <img src="../images/a11y-card/a11y_card_android.gif" height="400" alt="A11y.Card on Android" /> |
 
 ## Basic usage
 

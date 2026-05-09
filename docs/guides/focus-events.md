@@ -4,7 +4,7 @@
 
 | iOS | Android |
 | --- | --- |
-| ![Focus events on iOS](../images/focus-events/focus_events_ios.gif) | ![Focus events on Android](../images/focus-events/focus_events_android.gif) |
+| <img src="../images/focus-events/focus_events_ios.gif" height="400" alt="Focus events on iOS" /> | <img src="../images/focus-events/focus_events_android.gif" height="400" alt="Focus events on Android" /> |
 
 ## Available events
 

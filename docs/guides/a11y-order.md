@@ -6,7 +6,7 @@
 
 | iOS | Android |
 | --- | --- |
-| ![Screen reader on iOS](../images/a11y-order/screen_reader_ios.gif) | ![Screen reader on Android](../images/a11y-order/screen_reader_android.gif) |
+| <img src="../images/a11y-order/screen_reader_ios.gif" height="400" alt="Screen reader on iOS" /> | <img src="../images/a11y-order/screen_reader_android.gif" height="400" alt="Screen reader on Android" /> |
 
 Sometimes the layout your designer wants and the focus order your users need are different things. A common case: a grid where focus should sweep left-to-right top-to-bottom, but the flex layout renders columns first. Or a form where a summary row appears at the top visually but must be read last.
 

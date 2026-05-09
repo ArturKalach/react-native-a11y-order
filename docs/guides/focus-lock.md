@@ -15,7 +15,7 @@
 
 | iOS | Android |
 | --- | --- |
-| ![Focus trap on iOS](../images/focus-lock/focus_lock_ios.gif) | ![Focus trap on Android](../images/focus-lock/force_lock_android.gif) |
+| <img src="../images/focus-lock/focus_lock_ios.gif" height="400" alt="Focus trap on iOS" /> | <img src="../images/focus-lock/force_lock_android.gif" height="400" alt="Focus trap on Android" /> |
 
 ## Basic usage
 
