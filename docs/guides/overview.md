@@ -156,3 +156,7 @@ A11yModule.announce('Changes saved successfully');
 ```
 
 → [Full guide](../leftovers/announce.md)
+
+---
+
+← [Getting started](../getting-started/getting-started.md) | [collapsable={false}](./collapsable.md) →

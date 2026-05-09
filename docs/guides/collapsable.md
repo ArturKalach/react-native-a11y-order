@@ -37,3 +37,7 @@ React Native optimises the native view tree by collapsing views that have no vis
 ## Related
 
 - [A11y Order guide](./a11y-order.md)
+
+---
+
+← [Component overview](./overview.md) | [A11y Order](./a11y-order.md) →

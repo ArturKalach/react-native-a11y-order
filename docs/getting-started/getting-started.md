@@ -91,3 +91,7 @@ Most simple focus order problems can be fixed with a single prop:
 React Native optimises away views that have no visual effect. This can scramble focus order when the native tree differs from the React tree. `collapsable={false}` prevents the optimisation.
 
 Use this library when `collapsable={false}` is not enough — complex reordering, cards with inner buttons, modal focus trapping, or programmatic focus management.
+
+---
+
+[Component overview](../guides/overview.md) →

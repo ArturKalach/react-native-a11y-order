@@ -108,3 +108,7 @@ These props did not exist in 0.9.x and require no migration — add them only if
 | `A11y.View` | `onScreenReaderDescendantFocusChanged` | Same as above. |
 | `A11y.FocusTrap` | `lockDisabled` | Disables the focus trap without unmounting. |
 | `A11y.PaneTitle` | `withFocusRestore` | Restores focus on unmount. Defaults to `true`. |
+
+---
+
+← [Troubleshooting](../troubleshooting/troubleshooting.md)

@@ -114,3 +114,7 @@ import { type IndexCommands } from 'react-native-a11y-order';
 
 const ref = React.useRef<IndexCommands>(null);
 ```
+
+---
+
+← [A11yModule.announce](../leftovers/announce.md) | [Migration guide](../migration/migration.md) →

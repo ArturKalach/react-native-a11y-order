@@ -81,3 +81,7 @@ Cards can be nested. Inner cards are independently focusable:
 | `pressableProps` | `PressableProps` | Escape hatch for `Pressable`-specific props (`hitSlop`, `android_ripple`, …). |
 | `testID` | `string` | Test identifier forwarded to the inner `Pressable`. |
 | `children` | `React.ReactNode` | Card content. Interactive children remain accessible to the screen reader. |
+
+---
+
+← [A11y Order](./a11y-order.md) | [Focus Lock](./focus-lock.md) →

@@ -53,3 +53,7 @@ A11yModule.announce('Item added to cart');
 ## Related
 
 - [A11y.PaneTitle / ScreenChange API reference](../components/A11yPaneTitle.md)
+
+---
+
+← [autoFocus](./autofocus.md) | [Troubleshooting](../troubleshooting/troubleshooting.md) →

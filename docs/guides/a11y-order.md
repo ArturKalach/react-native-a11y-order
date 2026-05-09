@@ -112,3 +112,7 @@ Controls which element within the `A11y.Index` subtree actually receives focus.
 
 - [Focus Events guide](./focus-events.md)
 - [collapsable={false} guide](./collapsable.md)
+
+---
+
+← [collapsable={false}](./collapsable.md) | [A11y Card](./a11y-card.md) →
