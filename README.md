@@ -27,7 +27,21 @@ yarn add react-native-a11y-order
 cd ios && pod install
 ```
 
-Get started with the [documentation](./docs/README.md) or jump straight to the [component overview](./docs/guides/overview.md).
+Get started with the [getting started guide](./docs/getting-started/getting-started.md) or jump straight to the [component overview](./docs/guides/overview.md).
+
+## What's available
+
+| Export | Purpose |
+| :-- | :-- |
+| [`A11y.Order`](./docs/guides/a11y-order.md) | Container that defines a named focus-order sequence. |
+| [`A11y.Index`](./docs/components/A11yIndex.md) | Positioned slot within an `A11y.Order` sequence. |
+| [`A11y.View`](./docs/components/A11yView.md) | Standalone view with screen reader focus events; no ordering. |
+| [`A11y.Card`](./docs/components/A11yCard.md) | Card that keeps both a card-level action and nested buttons accessible simultaneously. |
+| [`A11y.FocusTrap`](./docs/components/A11yFocusTrap.md) | Confines screen reader focus to a subtree (modal/overlay). |
+| [`A11y.FocusFrame`](./docs/components/A11yFocusTrap.md) | Root boundary required by `A11y.FocusTrap`; detects focus escaping the region. |
+| [`A11y.PaneTitle`](./docs/components/A11yPaneTitle.md) | Announces screen or panel transitions to VoiceOver/TalkBack. |
+| [`A11y.ScreenChange`](./docs/components/A11yPaneTitle.md) | Shorthand for `A11y.PaneTitle` with `type="activity"` pre-set. |
+| [`A11yModule`](./docs/leftovers/announce.md) | Reliable programmatic announcements on iOS. |
 
 ---
 
