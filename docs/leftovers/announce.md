@@ -56,4 +56,4 @@ A11yModule.announce('Item added to cart');
 
 ---
 
-← [autoFocus](./autofocus.md) | [Troubleshooting](../troubleshooting/troubleshooting.md) →
+← [autoFocus](./autofocus.md) | [Migration guide](../migration/migration.md) →

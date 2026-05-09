@@ -51,7 +51,6 @@ Get started with the [getting started guide](./docs/getting-started/getting-star
 - [Component overview](./docs/guides/overview.md)
 - [Guides](./docs/README.md#guides)
 - [Component API reference](./docs/components/overview.md)
-- [Troubleshooting](./docs/troubleshooting/troubleshooting.md)
 - [Migration guide](./docs/migration/migration.md)
 
 ---

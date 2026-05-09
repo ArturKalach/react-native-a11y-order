@@ -54,8 +54,3 @@ Smaller utilities that solve specific problems.
 
 → [Migrating to 1.0 from 0.9.x](./migration/migration.md)
 
----
-
-## Troubleshooting
-
-→ [Common issues and fixes](./troubleshooting/troubleshooting.md)
