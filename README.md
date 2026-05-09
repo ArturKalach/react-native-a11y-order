@@ -35,7 +35,7 @@ Get started with the [documentation](./docs/README.md) or jump straight to the [
 
 - [Getting started](./docs/getting-started/getting-started.md)
 - [Component overview](./docs/guides/overview.md)
-- [Guides](./docs/README.md#guides) — ordering, cards, focus lock, UI containers, focus events
+- [Guides](./docs/README.md#guides)
 - [Component API reference](./docs/components/overview.md)
 - [Troubleshooting](./docs/troubleshooting/troubleshooting.md)
 - [Migration guide](./docs/migration/migration.md)
