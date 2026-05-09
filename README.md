@@ -1,3 +1,5 @@
+[![Artur Kalach — LinkedIn articles](/.github/images/react_native_a11y_order.png)](https://www.linkedin.com/in/artur-kalach-99477b138/recent-activity/articles/)
+
 # React Native A11y Order
 
 <div>
