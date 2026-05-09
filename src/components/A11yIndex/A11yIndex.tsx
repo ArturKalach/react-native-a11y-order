@@ -74,9 +74,8 @@ function useFocusRef(ref: React.ForwardedRef<IndexCommands>) {
         if (prop === 'focus') {
           return () => {
             if (localRef.current) {
-              Commands.focus(
-                localRef.current as unknown as React.Component<{}, any, any>
-              );
+              // @ts-expect-error Commands.focus type is too generic in codegen
+              Commands.focus(localRef.current);
             }
           };
         }
