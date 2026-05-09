@@ -1,13 +1,13 @@
 import type { ComponentType } from 'react';
-import type { ViewProps } from 'react-native';
+import {
+  codegenNativeComponent,
+  codegenNativeCommands,
+  type ViewProps,
+} from 'react-native';
 import type {
   DirectEventHandler,
   Int32,
 } from 'react-native/Libraries/Types/CodegenTypes';
-// eslint-disable-next-line @react-native/no-deep-imports
-import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
-// eslint-disable-next-line @react-native/no-deep-imports
-import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 
 export type ScreenReaderFocusChange = Readonly<{
   isFocused: boolean;
