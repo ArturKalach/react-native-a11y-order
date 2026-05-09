@@ -14,6 +14,10 @@ The native view assigns separate `focusGroupIdentifier` values to the overlay an
 
 **Android**: No overlay is needed. TalkBack does not block child focus, so the card acts as a standard accessible `Pressable`.
 
+| iOS | Android |
+| --- | --- |
+| ![A11y.Card on iOS](../images/a11y-card/a11y_card_ios.gif) | ![A11y.Card on Android](../images/a11y-card/a11y_card_android.gif) |
+
 ## Basic usage
 
 ```tsx

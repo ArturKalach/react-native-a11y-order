@@ -2,6 +2,10 @@
 
 `A11y.View` and `A11y.Index` expose a set of callbacks that fire as screen reader focus enters and leaves elements. Use these to track which element has focus, show/hide UI, or log analytics.
 
+| iOS | Android |
+| --- | --- |
+| ![Focus events on iOS](../images/focus-events/focus_events_ios.gif) | ![Focus events on Android](../images/focus-events/focus_events_android.gif) |
+
 ## Available events
 
 | Event | Fires when |

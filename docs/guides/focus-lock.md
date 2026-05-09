@@ -13,6 +13,10 @@
 
 **Android**: `A11y.FocusTrap` intercepts TalkBack navigation gestures to keep focus within the defined boundary.
 
+| iOS | Android |
+| --- | --- |
+| ![Focus trap on iOS](../images/focus-lock/focus_lock_ios.gif) | ![Focus trap on Android](../images/focus-lock/force_lock_android.gif) |
+
 ## Basic usage
 
 ```tsx
