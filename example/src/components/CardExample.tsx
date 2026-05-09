@@ -144,9 +144,11 @@ const CartItemCard = ({
       accessibility={{ accessibilityLabel, accessibilityHint }}
       style={styles.card}
     >
-      <View style={styles.row}>
-        <Thumbnail color={item.color} emoji={item.emoji} />
-        <Description item={item} />
+      <View collapsable={false} style={styles.row}>
+        <View style={styles.cardContent} collapsable={false}>
+          <Thumbnail color={item.color} emoji={item.emoji} />
+          <Description item={item} />
+        </View>
         <A11y.Card onPress={() => onChangeQty(1)} accessibility={qteA11y}>
           <Controls
             quantity={item.quantity}
@@ -275,6 +277,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   row: { flexDirection: 'row', alignItems: 'stretch' },
+  cardContent: { flexDirection: 'row', flex: 1 },
   // Thumbnail
   thumbnail: { width: 72, alignItems: 'center', justifyContent: 'center' },
   thumbnailEmoji: { fontSize: 36 },

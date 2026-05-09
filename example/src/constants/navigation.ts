@@ -13,12 +13,6 @@ export const NAV_ITEMS: NavItem[] = [
     color: '#2563eb',
   },
   {
-    id: 'Slider',
-    label: 'Slider',
-    desc: 'Accessible horizontal scroll',
-    color: '#7c3aed',
-  },
-  {
     id: 'Reorder',
     label: 'Reorder',
     desc: 'Dynamic focus order changes',
@@ -59,5 +53,17 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'Card',
     desc: 'Tappable card with inner buttons',
     color: '#0369a1',
+  },
+  {
+    id: 'UIContainer',
+    label: 'UI Container',
+    desc: 'iOS UIAccessibilityContainerType variants',
+    color: '#7c3aed',
+  },
+  {
+    id: 'Slider',
+    label: 'Slider',
+    desc: 'Accessible horizontal scroll',
+    color: '#7c3aed',
   },
 ];

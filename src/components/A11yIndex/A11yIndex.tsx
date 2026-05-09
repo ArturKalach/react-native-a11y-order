@@ -118,7 +118,17 @@ function useOrderProps(
 
 export const A11yIndex = React.memo(
   React.forwardRef<IndexCommands, A11yIndexProps>(
-    ({ children, index, orderType, a11yUIContainer, ...props }, ref) => {
+    (
+      {
+        children,
+        index,
+        orderType,
+        a11yUIContainer,
+        shouldGroupAccessibilityChildren,
+        ...props
+      },
+      ref
+    ) => {
       const {
         onScreenReaderFocused,
         onScreenReaderSubViewFocusChange,
@@ -132,6 +142,13 @@ export const A11yIndex = React.memo(
       const containerTypeValue = a11yUIContainer
         ? A11yContainerTypeEnum[a11yUIContainer]
         : undefined;
+
+      const shouldGroupChildrenValue =
+        shouldGroupAccessibilityChildren === undefined
+          ? -1
+          : shouldGroupAccessibilityChildren
+          ? 1
+          : 0;
 
       const screenReaderNativeProps = useScreenReaderProps({
         onScreenReaderFocused,
@@ -151,6 +168,7 @@ export const A11yIndex = React.memo(
           ref={localRef as React.Ref<any>}
           {...viewProps}
           containerType={containerTypeValue}
+          shouldGroupAccessibilityChildren={shouldGroupChildrenValue}
           importantForAccessibility={importantForAccessibility}
           orderFocusType={orderFocusType}
           orderIndex={index}

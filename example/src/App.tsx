@@ -25,6 +25,7 @@ import { FocusLockExample } from './components/FocusLockExample';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AnnounceExample } from './components/AnnounceExample';
 import { CardExample } from './components/CardExample';
+import { UIContainerExample } from './components/UIContainerExample';
 import { NAV_ITEMS } from './constants/navigation';
 
 const ScreenChangeAnnounce = ({ title }: { title: string }) => {
@@ -245,6 +246,18 @@ function CardScreen() {
   );
 }
 
+function UIContainerScreen() {
+  return (
+    <View style={styles.flex}>
+      <ScreenChangeAnnounce title="UI Container Screen" />
+      <ScrollView>
+        <UIContainerExample />
+      </ScrollView>
+      <NavigationButtons ignore="UIContainer" />
+    </View>
+  );
+}
+
 const Stack = createNativeStackNavigator();
 
 const HEADER_OPTIONS = { header: CustomHeader };
@@ -301,6 +314,11 @@ function RootStack() {
         name="Card"
         options={HEADER_OPTIONS}
         component={CardScreen}
+      />
+      <Stack.Screen
+        name="UIContainer"
+        options={HEADER_OPTIONS}
+        component={UIContainerScreen}
       />
     </Stack.Navigator>
   );

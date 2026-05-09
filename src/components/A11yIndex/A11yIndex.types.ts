@@ -64,6 +64,19 @@ export type A11yIndexProps = ViewProps & {
    */
   a11yUIContainer?: A11yUIContainerType;
 
+  /**
+   * iOS only — controls the wrapping view's `shouldGroupAccessibilityChildren`.
+   * Determines whether VoiceOver treats descendants as one grouped unit
+   * or navigates them individually.
+   *
+   * - `true` — group descendants; VoiceOver focuses the wrapper as a single
+   *   element with a combined label built from its children.
+   * - `false` — force descendants to remain individually focusable even when
+   *   iOS would otherwise group them.
+   * - omitted — defer to the wrapping view's default behavior.
+   */
+  shouldGroupAccessibilityChildren?: boolean;
+
   /** When `true`, requests screen reader focus on this element immediately after mount. */
   autoFocus?: boolean;
 

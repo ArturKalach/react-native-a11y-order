@@ -15,13 +15,50 @@ using namespace facebook::react;
 
 #endif
 
-@implementation RNAOA11yCardView
+@implementation RNAOA11yCardView {
+  UIFocusGuide *_contentFocusGuide;
+  NSString *_overlayFocusGroupIdentifier;
+  NSString *_contentFocusGroupIdentifier;
+}
 
 - (nullable NSArray *)accessibilityElements {
   return self.subviews;
 }
 
+- (void)willRemoveSubview:(UIView *)subview {
+  [super willRemoveSubview:subview];
+  if (@available(iOS 15.0, *)) {
+    NSString *identifier = subview.focusGroupIdentifier;
+    if ([identifier isEqualToString:_overlayFocusGroupIdentifier] ||
+        [identifier isEqualToString:_contentFocusGroupIdentifier]) {
+      subview.focusGroupIdentifier = nil;
+    }
+  }
+}
+
+- (void)assignFocusGroupIdentifierToChild:(UIView *)child atIndex:(NSInteger)index {
+  if (@available(iOS 15.0, *)) {
+    if (!_overlayFocusGroupIdentifier) {
+      _overlayFocusGroupIdentifier =
+          [NSString stringWithFormat:@"RNAOA11yCard-%p-overlay", self];
+      _contentFocusGroupIdentifier =
+          [NSString stringWithFormat:@"RNAOA11yCard-%p-content", self];
+    }
+    if (index == 0) {
+      child.focusGroupIdentifier = _overlayFocusGroupIdentifier;
+    } else if (index == 1) {
+      child.focusGroupIdentifier = _contentFocusGroupIdentifier;
+    }
+  }
+}
+
 #ifdef RCT_NEW_ARCH_ENABLED
+
+- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView
+                          index:(NSInteger)index {
+  [super mountChildComponentView:childComponentView index:index];
+  [self assignFocusGroupIdentifierToChild:childComponentView atIndex:index];
+}
 
 + (ComponentDescriptorProvider)componentDescriptorProvider {
   return concreteComponentDescriptorProvider<A11yCardViewComponentDescriptor>();
@@ -29,6 +66,16 @@ using namespace facebook::react;
 
 Class<RCTComponentViewProtocol> A11yCardViewCls(void) {
   return RNAOA11yCardView.class;
+}
+
+#else
+
+- (void)didAddSubview:(UIView *)subview {
+  [super didAddSubview:subview];
+  NSUInteger index = [self.subviews indexOfObject:subview];
+  if (index != NSNotFound) {
+    [self assignFocusGroupIdentifierToChild:subview atIndex:(NSInteger)index];
+  }
 }
 
 #endif
