@@ -4,20 +4,21 @@
   <img align="right" width="35%" src="/.github/images/ios_example.gif">
 </div>
 
-Native-first React Native library for controlling screen reader focus order on iOS (VoiceOver) and Android (TalkBack).
+Screen readers follow the DOM — not your design. `react-native-a11y-order` gives you precise, native-level control over VoiceOver and TalkBack focus on iOS and Android.
 
-- Custom focus order, independent of render order
-- Cards with nested interactive elements
-- Focus trapping for modals and overlays
-- Screen and panel transition announcements
-- Supports New Architecture, Old Architecture, and Bridgeless
-- Compatible with Expo prebuild
+- **Focus order** — define the exact sequence, regardless of how views are rendered
+- **Cards with inner buttons** — expose both the card action and nested controls to the screen reader simultaneously
+- **Focus trap** — keep VoiceOver and TalkBack inside modals and overlays, with no leaking
+- **Transition announcements** — tell the screen reader when a screen or panel changes
+- New Architecture · Old Architecture · Bridgeless · Expo prebuild
 
 > [!TIP]
 > Before adding this library, try `<View collapsable={false}>` — it fixes most simple focus order issues with no extra dependencies. [Learn more](./docs/guides/collapsable.md)
 
 > [!IMPORTANT]
 > React Native v0.8.2+ includes an experimental `experimental_accessibilityOrder` prop — see [Accessibility docs](https://reactnative.dev/docs/accessibility).
+
+</br>
 
 ## Installation
 
