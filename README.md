@@ -1,18 +1,16 @@
 # React Native A11y Order
 
-React Native A11y Order Library: Enhance screen reader functionality with advanced control.
+<div>
+  <img align="right" width="35%" src="/.github/images/ios_example.gif">
+</div>
 
-Managing screen reader focus order can be challenging, especially in complex or unconventional scenarios. The `react-native-a11y-order` library is built with a native-first approach to resolve issues related to screen reader focus order and provide additional accessibility features on both Android and iOS platforms.
+Native-first React Native library for controlling screen reader focus order on iOS (VoiceOver) and Android (TalkBack).
 
-| iOS reader                                                | Android reader                                                |
-| --------------------------------------------------------- | ------------------------------------------------------------- |
-| <img src="/.github/images/ios_example.gif" height="500" /> | <img src="/.github/images/android_example.gif" height="500" /> |
-
-
-- Bridgeless
-- New architecture
-- Old architecture
-- Backward compatibility
+- Custom focus order, independent of render order
+- Cards with nested interactive elements
+- Focus trapping for modals and overlays
+- Screen and panel transition announcements
+- Supports New Architecture, Old Architecture, and Bridgeless
 - Compatible with Expo prebuild
 
 > [!TIP]
@@ -21,45 +19,18 @@ Managing screen reader focus order can be challenging, especially in complex or 
 > [!IMPORTANT]
 > React Native v0.8.2+ includes an experimental `experimental_accessibilityOrder` prop — see [Accessibility docs](https://reactnative.dev/docs/accessibility).
 
----
-
 ## Installation
 
 ```sh
 yarn add react-native-a11y-order
-```
-
-```sh
-npm install react-native-a11y-order
-```
-
-### iOS
-
-```sh
 cd ios && pod install
 ```
 
----
-
-## Quick reference
-
-| Export | Purpose |
-| :-- | :-- |
-| `A11y.Order` | Container that defines a named focus-order sequence. |
-| `A11y.Index` | Positioned slot within an `A11y.Order` sequence. |
-| `A11y.View` | Focus-event observer with no ordering requirement. |
-| `A11y.Card` | Card that keeps both a card-level action and nested buttons accessible simultaneously. |
-| `A11y.FocusTrap` | Confines screen reader focus to a subtree (modal/overlay). |
-| `A11y.FocusFrame` | Root boundary required by `A11y.FocusTrap`. |
-| `A11y.PaneTitle` | Announces screen or panel transitions to VoiceOver/TalkBack. |
-| `A11y.ScreenChange` | Shorthand for `A11y.PaneTitle` with `type="activity"` pre-set. |
-| `A11yModule` | Reliable programmatic announcements on iOS. |
+Get started with the [documentation](./docs/README.md) or jump straight to the [component overview](./docs/guides/overview.md).
 
 ---
 
 ## Documentation
-
-Full guides and API reference are in the [`/docs`](./docs/README.md) folder:
 
 - [Getting started](./docs/getting-started/getting-started.md)
 - [Component overview](./docs/guides/overview.md)
