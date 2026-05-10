@@ -2,13 +2,22 @@
 
 `A11y.Order` and `A11y.Index` let you define an explicit focus sequence that is independent of the visual render order.
 
-## The problem
-
 | iOS | Android |
 | --- | --- |
 | <img src="../images/a11y-order/screen_reader_ios.gif" height="400" alt="Screen reader on iOS" /> | <img src="../images/a11y-order/screen_reader_android.gif" height="400" alt="Screen reader on Android" /> |
 
-Sometimes the layout your designer wants and the focus order your users need are different things. A common case: a grid where focus should sweep left-to-right top-to-bottom, but the flex layout renders columns first. Or a form where a summary row appears at the top visually but must be read last.
+
+## The problem
+
+The layout your designer wants and the focus order your users need are often different things.
+
+By default, the screen reader follows the native view hierarchy — which matches the render order, not the visual layout. In practice this means focus can move in unexpected directions: clockwise around a card grid instead of row by row, bottom-to-top through a chat thread, diagonally across a table, or back-and-forth between columns in a flex layout that renders column-first.
+
+Common cases where this breaks down:
+- A grid that should be read left-to-right, top-to-bottom, but renders columns first
+- A chat thread where the newest message is at the bottom but focus starts at the top
+- A table where cells are laid out in a way that makes focus jump between rows
+- A form where a summary row appears at the top visually but should be read last
 
 ## Basic usage
 

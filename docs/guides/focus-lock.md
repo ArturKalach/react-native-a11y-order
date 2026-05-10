@@ -1,5 +1,10 @@
 # Focus Lock — Trap screen reader focus
 
+| iOS | Android |
+| --- | --- |
+| <img src="../images/focus-lock/focus_lock_ios.gif" height="400" alt="Focus trap on iOS" /> | <img src="../images/focus-lock/force_lock_android.gif" height="400" alt="Focus trap on Android" /> |
+
+
 `A11y.FocusTrap` and `A11y.FocusFrame` confine screen reader focus to a region. Use them for modals, bottom sheets, confirmation dialogs, and any overlay where focus must not leak to content behind.
 
 ## Components
@@ -13,9 +18,6 @@
 
 **Android**: `A11y.FocusTrap` intercepts TalkBack navigation gestures to keep focus within the defined boundary.
 
-| iOS | Android |
-| --- | --- |
-| <img src="../images/focus-lock/focus_lock_ios.gif" height="400" alt="Focus trap on iOS" /> | <img src="../images/focus-lock/force_lock_android.gif" height="400" alt="Focus trap on Android" /> |
 
 ## Basic usage
 

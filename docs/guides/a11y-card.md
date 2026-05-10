@@ -1,5 +1,11 @@
 # A11y.Card — Cards with inner interactive elements
 
+
+| iOS | Android |
+| --- | --- |
+| <img src="../images/a11y-card/a11y_card_ios.gif" height="400" alt="A11y.Card on iOS" /> | <img src="../images/a11y-card/a11y_card_android.gif" height="400" alt="A11y.Card on Android" /> |
+
+
 `A11y.Card` solves a common accessibility problem: a tappable card that also contains interactive children (buttons, links) that must remain individually accessible to the screen reader.
 
 ## The problem
@@ -13,10 +19,6 @@ A `Pressable` that contains other `Pressable` elements breaks VoiceOver on iOS. 
 The native view assigns separate `focusGroupIdentifier` values to the overlay and the content subtree, which allows Full Keyboard Access to navigate from the card label into the inner buttons using arrow keys.
 
 **Android**: No overlay is needed. TalkBack does not block child focus, so the card acts as a standard accessible `Pressable`.
-
-| iOS | Android |
-| --- | --- |
-| <img src="../images/a11y-card/a11y_card_ios.gif" height="400" alt="A11y.Card on iOS" /> | <img src="../images/a11y-card/a11y_card_android.gif" height="400" alt="A11y.Card on Android" /> |
 
 ## Basic usage
 
