@@ -68,15 +68,15 @@ export default function App() {
 
 | Export | Purpose |
 | :-- | :-- |
-| `A11y.Order` | Container that defines a named focus-order sequence |
-| `A11y.Index` | Positioned slot within an `A11y.Order` sequence |
-| `A11y.View` | Standalone view with screen reader focus events; no ordering |
-| `A11y.Card` | Card that keeps both a card-level action and nested buttons accessible simultaneously |
-| `A11y.FocusTrap` | Confines screen reader focus to a subtree (modal/overlay) |
-| `A11y.FocusFrame` | Root boundary required by `A11y.FocusTrap`; detects focus escaping the region |
-| `A11y.PaneTitle` | Announces screen or panel transitions to VoiceOver/TalkBack |
-| `A11y.ScreenChange` | Shorthand for `A11y.PaneTitle` with `type="activity"` pre-set |
-| `A11yModule` | Reliable programmatic announcements on iOS |
+| [`A11y.Order`](../guides/a11y-order.md) | Container that defines a named focus-order sequence |
+| [`A11y.Index`](../components/A11yIndex.md) | Positioned slot within an `A11y.Order` sequence |
+| [`A11y.View`](../components/A11yView.md) | Standalone view with screen reader focus events; no ordering |
+| [`A11y.Card`](../components/A11yCard.md) | Card that keeps both a card-level action and nested buttons accessible simultaneously |
+| [`A11y.FocusTrap`](../components/A11yFocusTrap.md) | Confines screen reader focus to a subtree (modal/overlay) |
+| [`A11y.FocusFrame`](../components/A11yFocusTrap.md) | Root boundary required by `A11y.FocusTrap`; detects focus escaping the region |
+| [`A11y.PaneTitle`](../components/A11yPaneTitle.md) | Announces screen or panel transitions to VoiceOver/TalkBack |
+| [`A11y.ScreenChange`](../components/A11yPaneTitle.md) | Shorthand for `A11y.PaneTitle` with `type="activity"` pre-set |
+| [`A11yModule`](../leftovers/announce.md) | Reliable programmatic announcements on iOS |
 
 ## Before you reach for this library
 
