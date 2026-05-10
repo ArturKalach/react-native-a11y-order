@@ -6,14 +6,18 @@ import type { ViewProps } from 'react-native';
  */
 export type A11yFocusTrapProps = ViewProps & {
   /**
-   * When `true`, the focus trap is inactive — the screen reader can navigate freely
-   * outside this container. Defaults to `false`.
+   * When `true`, the focus trap is inactive and the screen reader can navigate
+   * freely outside this container.
+   *
+   * Defaults to `false`.
    */
   lockDisabled?: boolean;
 
   /**
-   * When `true`, focus is trapped immediately on mount rather than waiting for
-   * the next accessibility navigation gesture. Use for programmatically-opened modals.
+   * When `true`, focus is moved inside the trap immediately on mount rather than
+   * waiting for the next accessibility navigation gesture.
+   * Use this for programmatically-opened modals and sheets.
+   *
    * Defaults to `false`.
    */
   forceLock?: boolean;

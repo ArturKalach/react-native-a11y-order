@@ -1,3 +1,5 @@
+> **Note:** This feature is a leftover — useful in practice but not part of the core focus-order API. See [Leftovers](./README.md).
+
 # autoFocus — Move focus on mount
 
 `autoFocus` is a boolean prop available on both `A11y.View` and `A11y.Index`. When `true`, it moves screen reader focus to the element immediately after it mounts.

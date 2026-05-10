@@ -14,30 +14,39 @@ export type A11yPaneType = 'activity' | 'pane' | 'announce';
  * VoiceOver / TalkBack and optionally restores focus when the view unmounts.
  */
 export type A11yPaneTitleProps = React.PropsWithChildren<{
-  /** The title announced to the screen reader when this component mounts. */
+  /**
+   * The title announced to the screen reader when this component mounts.
+   */
   title?: string;
 
-  /** A message announced when this component unmounts, e.g. `"Drawer closed"`. */
+  /**
+   * A message announced to the screen reader when this component unmounts.
+   * Use to signal the end of a flow, e.g. `"Modal closed"` or `"Drawer closed"`.
+   */
   detachMessage?: string;
 
   /**
-   * Controls the native announcement type. Defaults to `'pane'`.
+   * Controls the native announcement mechanism. Defaults to `'pane'`.
    *
-   * - `'pane'`     — layout-changed notification with a title
-   * - `'activity'` — screen-change notification for full-screen transitions
-   * - `'announce'` — plain announcement, no focus shift
+   * - `'pane'`     — layout-changed notification with a title (panels, sheets)
+   * - `'activity'` — screen-change notification (full-screen navigation)
+   * - `'announce'` — plain announcement with no focus shift (status updates)
    */
   type?: A11yPaneType;
 
   /**
-   * When `true` (default), VoiceOver / TalkBack restores focus to the previously
-   * focused element when this component unmounts.
+   * When `true`, VoiceOver / TalkBack restores focus to the previously focused
+   * element when this component unmounts.
+   *
+   * Defaults to `true`.
    */
   withFocusRestore?: boolean;
 
   /**
    * When `false`, the component renders nothing and posts no announcement.
-   * Use to conditionally suppress the view without unmounting the subtree.
+   * Use this to conditionally suppress the view without unmounting its subtree.
+   *
+   * Defaults to `true`.
    */
   displayed?: boolean;
 }>;

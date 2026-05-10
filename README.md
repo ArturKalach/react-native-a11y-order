@@ -1,4 +1,4 @@
-[![react-native-a11y-order, Artur Kalach — LinkedIn articles](/.github/images/react_native_a11y_order.png)](https://www.linkedin.com/in/artur-kalach-99477b138/recent-activity/articles/)
+![react-native-a11y-order](/.github/images/react_native_a11y_order.png)
 
 # React Native A11y Order
 
@@ -31,6 +31,13 @@ cd ios && pod install
 
 Get started with the [getting started guide](./docs/getting-started/getting-started.md) or jump straight to the [component overview](./docs/guides/overview.md).
 
+## React Native compatibility
+
+| Library version | React Native |
+| :-- | :-- |
+| `1.0.0` | ≥ 0.80 |
+| `0.11.0` | ≤ 0.79 |
+
 ## What's available
 
 | Export | Purpose |
@@ -54,6 +61,23 @@ Get started with the [getting started guide](./docs/getting-started/getting-star
 - [Guides](./docs/README.md#guides)
 - [Component API reference](./docs/components/overview.md)
 - [Migration guide](./docs/migration/migration.md)
+
+---
+
+## Roadmap
+
+All planned features are implemented and released. No new functionality or API changes are planned.
+
+Future work is limited to:
+- React Native version support (new releases)
+- Bug fixes and issue resolution
+
+Both active versions receive fixes:
+
+| Version | React Native | Status |
+| :-- | :-- | :-- |
+| `1.0.0` | ≥ 0.80 | Active — bug fixes and new RN support |
+| `0.11.0` | ≤ 0.79 | Active — bug fixes only |
 
 ---
 
