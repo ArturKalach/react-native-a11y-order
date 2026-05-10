@@ -1,3 +1,5 @@
+> **Note:** This feature is a leftover — useful in practice but not part of the core focus-order API. See [Leftovers](./README.md).
+
 # A11yModule.announce — Reliable announcements
 
 `A11yModule.announce` sends a message to the screen reader. Unlike the built-in `AccessibilityInfo.announceForAccessibility`, it uses a native queue on iOS to ensure the message is delivered even during transitions.

@@ -53,49 +53,71 @@ export type A11yIndexProps = ViewProps & {
   index?: number;
 
   /**
-   * Controls which element VoiceOver / TalkBack actually focuses.
-   * Defaults to `'default'` (the index view itself).
+   * Controls which element VoiceOver / TalkBack actually focuses for this slot.
+   *
+   * - `'default'` — the `A11y.Index` view itself receives focus
+   * - `'child'`   — the first accessible descendant receives focus (useful when
+   *   the index wrapper has no visual presence of its own)
+   * - `'subview'` — focuses the first direct child view rather than the first accessible descendant
+   *
+   * Defaults to `'default'`.
    */
   orderType?: A11yOrderType;
 
   /**
-   * iOS only — sets `UIAccessibilityContainerType`.
-   * Helps VoiceOver understand the semantic container type (list, table, landmark…).
+   * iOS only — sets `UIAccessibilityContainerType` on the wrapping view.
+   * Helps VoiceOver understand the semantic role of the container:
+   * `'list'`, `'table'`, `'landmark'`, etc.
+   *
+   * @platform ios
    */
   a11yUIContainer?: A11yUIContainerType;
 
   /**
-   * iOS only — controls the wrapping view's `shouldGroupAccessibilityChildren`.
+   * iOS only — maps to `shouldGroupAccessibilityChildren` on the native view.
    * Determines whether VoiceOver treats descendants as one grouped unit
    * or navigates them individually.
    *
-   * - `true` — group descendants; VoiceOver focuses the wrapper as a single
-   *   element with a combined label built from its children.
-   * - `false` — force descendants to remain individually focusable even when
-   *   iOS would otherwise group them.
-   * - omitted — defer to the wrapping view's default behavior.
+   * - `true`    — VoiceOver focuses the wrapper as a single element and builds
+   *   a combined label from its children.
+   * - `false`   — descendants stay individually focusable even when iOS would
+   *   otherwise collapse them.
+   * - omitted   — defers to the platform default.
+   *
+   * @platform ios
    */
   shouldGroupAccessibilityChildren?: boolean;
 
-  /** When `true`, requests screen reader focus on this element immediately after mount. */
+  /**
+   * When `true`, requests screen reader focus on this element immediately after mount.
+   */
   autoFocus?: boolean;
 
-  /** Called when the screen reader focuses this element directly. */
+  /**
+   * Called when the screen reader focuses this element directly (not a descendant).
+   */
   onScreenReaderFocused?: () => void;
 
   /**
-   * Called whenever screen reader focus enters or leaves any descendant.
-   * `isFocused` is `true` on enter, `false` on leave.
+   * Called when screen reader focus enters or leaves any descendant.
+   * Receives `true` on enter and `false` on leave.
    */
   onScreenReaderSubViewFocusChange?: (isFocused: boolean) => void;
 
-  /** Called when screen reader focus enters any descendant. */
+  /**
+   * Called when screen reader focus enters any descendant.
+   */
   onScreenReaderSubViewFocused?: () => void;
 
-  /** Called when screen reader focus leaves any descendant. */
+  /**
+   * Called when screen reader focus leaves any descendant.
+   */
   onScreenReaderSubViewBlurred?: () => void;
 
-  /** Called with the native event when screen reader focus changes on any descendant. */
+  /**
+   * Called with the full native event when screen reader focus changes on any descendant.
+   * Use this when you need the `nativeId` of the focused element.
+   */
   onScreenReaderDescendantFocusChanged?: (
     e: ScreenReaderDescendantFocusChangedEvent
   ) => void;
