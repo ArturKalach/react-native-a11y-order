@@ -12,16 +12,17 @@ export type SlideData = {
 
 export const Slide = ({ index, title, desc, color, accent }: SlideData) => {
   return (
-    <A11y.Group
+    <A11y.View
+      shouldGroupAccessibilityChildren
+      collapsable={false}
       style={[styles.slide, { backgroundColor: color }]}
-      accessibilityLabel={`Slide ${index}: ${title}. ${desc}`}
     >
       <View style={[styles.badge, { backgroundColor: accent }]}>
         <Text style={styles.badgeText}>{index}</Text>
       </View>
       <Text style={[styles.title, { color: accent }]}>{title}</Text>
       <Text style={styles.desc}>{desc}</Text>
-    </A11y.Group>
+    </A11y.View>
   );
 };
 

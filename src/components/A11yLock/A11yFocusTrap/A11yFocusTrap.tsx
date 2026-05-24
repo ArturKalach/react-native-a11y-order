@@ -1,13 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
-import type { A11yLockProps } from '../../../types/A11yLock.types';
+import type { A11yFocusTrapProps } from '../A11yLock.types';
 import { A11yFocusTrapMountWrapper } from './A11yFocusTrapMountWrapper';
 import { A11yBaseLock } from '../A11yBaseLock/A11yBaseLock';
 
 export const A11yFocusTrap = ({
   forceLock = false,
   ...props
-}: A11yLockProps) => {
+}: A11yFocusTrapProps) => {
   if (forceLock) {
     return (
       <A11yFocusTrapMountWrapper>

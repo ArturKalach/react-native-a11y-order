@@ -1,13 +1,13 @@
 import type { ComponentType } from 'react';
-import type { ViewProps } from 'react-native';
+import {
+  codegenNativeComponent,
+  codegenNativeCommands,
+  type ViewProps,
+} from 'react-native';
 import type {
   DirectEventHandler,
   Int32,
 } from 'react-native/Libraries/Types/CodegenTypes';
-// eslint-disable-next-line @react-native/no-deep-imports
-import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
-// eslint-disable-next-line @react-native/no-deep-imports
-import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 
 export type ScreenReaderFocusChange = Readonly<{
   isFocused: boolean;
@@ -15,14 +15,22 @@ export type ScreenReaderFocusChange = Readonly<{
 
 export type ScreenReaderDescendantFocusChanged = Readonly<{
   status: string;
+  nativeId?: string;
 }>;
 
 export interface A11yIndexNativeComponentProps extends ViewProps {
-  orderIndex: Int32;
-  orderKey: string;
-  orderFocusType: Int32;
+  orderIndex?: Int32;
+  orderKey?: string;
+  orderFocusType?: Int32;
+  shouldGroupAccessibilityChildren?: Int32;
 
+  descendantFocusChangedEnabled?: boolean;
+
+  onScreenReaderFocused?: DirectEventHandler<{}>;
+  onScreenReaderDescendantFocusChanged?: DirectEventHandler<ScreenReaderDescendantFocusChanged>;
   onScreenReaderFocusChange?: DirectEventHandler<ScreenReaderFocusChange>;
+
+  containerType?: Int32;
 }
 
 export interface NativeCommands {

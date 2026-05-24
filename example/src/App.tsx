@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -24,6 +23,8 @@ import { ScreenReaderFocus } from './components/ScreenReaderFocus';
 import { FocusLockExample } from './components/FocusLockExample';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AnnounceExample } from './components/AnnounceExample';
+import { CardExample } from './components/CardExample';
+import { UIContainerExample } from './components/UIContainerExample';
 import { NAV_ITEMS } from './constants/navigation';
 
 const ScreenChangeAnnounce = ({ title }: { title: string }) => {
@@ -124,59 +125,6 @@ function SliderScreen() {
   );
 }
 
-function AutoFocusScreen() {
-  const [showModal, setShowModal] = React.useState(false);
-  const [showMessage, setShowMessage] = React.useState(false);
-
-  return (
-    <View style={styles.flex}>
-      <ScreenChangeAnnounce title="Auto Focus Screen" />
-      <ScrollView contentContainerStyle={styles.screenContent}>
-        <Text style={styles.screenTitle}>Auto Focus</Text>
-        <A11y.View autoFocus>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => setShowModal((v) => !v)}
-            accessibilityRole="button"
-          >
-            <Text style={styles.btnText}>Open Modal</Text>
-          </TouchableOpacity>
-        </A11y.View>
-        <TouchableOpacity
-          style={[styles.btn, styles.btnSecondary]}
-          onPress={() => setShowMessage((v) => !v)}
-          accessibilityRole="button"
-        >
-          <Text style={styles.btnSecondaryText}>Show Message</Text>
-        </TouchableOpacity>
-        {showMessage && (
-          <A11y.View autoFocus>
-            <View style={styles.messageBox}>
-              <Text style={styles.messageText}>Auto-focused message</Text>
-            </View>
-          </A11y.View>
-        )}
-        <Modal visible={showModal}>
-          <ScreenChangeAnnounce title="Auto Focus Modal" />
-          <View style={styles.modalContent}>
-            <Text style={styles.screenTitle}>Modal Content</Text>
-            <A11y.View autoFocus>
-              <TouchableOpacity
-                style={styles.btn}
-                onPress={() => setShowModal(false)}
-                accessibilityRole="button"
-              >
-                <Text style={styles.btnText}>Close</Text>
-              </TouchableOpacity>
-            </A11y.View>
-          </View>
-        </Modal>
-      </ScrollView>
-      <NavigationButtons ignore="AutoFocus" />
-    </View>
-  );
-}
-
 function ReorderScreen() {
   return (
     <View style={styles.flex}>
@@ -232,6 +180,30 @@ function AnnounceScreen() {
   );
 }
 
+function CardScreen() {
+  return (
+    <View style={styles.flex}>
+      <ScreenChangeAnnounce title="Card Screen" />
+      <ScrollView>
+        <CardExample />
+      </ScrollView>
+      <NavigationButtons ignore="Card" />
+    </View>
+  );
+}
+
+function UIContainerScreen() {
+  return (
+    <View style={styles.flex}>
+      <ScreenChangeAnnounce title="UI Container Screen" />
+      <ScrollView>
+        <UIContainerExample />
+      </ScrollView>
+      <NavigationButtons ignore="UIContainer" />
+    </View>
+  );
+}
+
 const Stack = createNativeStackNavigator();
 
 const HEADER_OPTIONS = { header: CustomHeader };
@@ -253,11 +225,6 @@ function RootStack() {
         name="Slider"
         options={HEADER_OPTIONS}
         component={SliderScreen}
-      />
-      <Stack.Screen
-        name="AutoFocus"
-        options={HEADER_OPTIONS}
-        component={AutoFocusScreen}
       />
       <Stack.Screen
         name="Reorder"
@@ -283,6 +250,16 @@ function RootStack() {
         name="AnnounceExamples"
         options={HEADER_OPTIONS}
         component={AnnounceScreen}
+      />
+      <Stack.Screen
+        name="Card"
+        options={HEADER_OPTIONS}
+        component={CardScreen}
+      />
+      <Stack.Screen
+        name="UIContainer"
+        options={HEADER_OPTIONS}
+        component={UIContainerScreen}
       />
     </Stack.Navigator>
   );

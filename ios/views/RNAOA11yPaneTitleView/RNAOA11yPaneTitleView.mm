@@ -12,6 +12,7 @@
 #import "RNAOA11yPaneTitleView.h"
 #import "UIViewController+RNAOA11yOrder.h"
 #import "RNAOA11yAnnounceService.h"
+#import "RNAOSpeechAttributes.h"
 
 #ifdef RCT_NEW_ARCH_ENABLED
 
@@ -99,10 +100,10 @@ Class<RCTComponentViewProtocol> A11yPaneTitleCls(void)
 
   if(self.window && !_announced) {
     _announced = YES;
-    [[RNAOA11yAnnounceService shared] announce: _title];
+    [self _announce:_title];
   }
   if(!self.window && _announced && _detachMessage) {
-    [[RNAOA11yAnnounceService shared] announce: _detachMessage];
+    [self _announce:_detachMessage];
   }
 
   if (self.window) {
@@ -113,5 +114,14 @@ Class<RCTComponentViewProtocol> A11yPaneTitleCls(void)
   }
 }
 
+- (void)_announce:(NSString *)message {
+  if (@available(iOS 17.0, *)) {
+    NSAttributedString *attrStr = [RNAOSpeechAttributes attributedStringFor:message
+                                                                     options:@{ @"priority": @"high", @"queue": @NO }];
+    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, attrStr);
+  } else {
+    [[RNAOA11yAnnounceService shared] announce:message];
+  }
+}
 
 @end
