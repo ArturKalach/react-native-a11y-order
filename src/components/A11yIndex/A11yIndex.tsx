@@ -102,16 +102,17 @@ function useOrderProps(
   }
 
   const resolvedOrderType = orderType ?? 'default';
-  const importantForAccessibilityFallback =
-    resolvedOrderType === 'default' ? ('yes' as const) : undefined;
+  const isDefaultOrderType = resolvedOrderType === 'default';
+
+  const importantForAccessibility =
+    hasOrderInfo && isDefaultOrderType ? 'yes' : importantForAccessibilityProp;
 
   return {
     orderKey,
     orderFocusType: hasOrderInfo
       ? A11yOrderTypeEnum[resolvedOrderType]
       : undefined,
-    importantForAccessibility:
-      importantForAccessibilityProp ?? importantForAccessibilityFallback,
+    importantForAccessibility,
   };
 }
 
