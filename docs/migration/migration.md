@@ -34,7 +34,48 @@ The `type` values map directly — `list`, `table`, `landmark`, `group`, `none` 
 
 ### `A11y.Group` removed
 
-`A11y.Group` was already marked as legacy in 0.9.x and is fully removed in 1.0. For horizontal scroll accessibility, wrap items in `<View collapsable={false}>` or use `A11y.View` with `a11yUIContainer="group"`.
+`A11y.Group` was already marked as legacy in 0.9.x and is fully removed in 1.0. For horizontal scroll accessibility, wrap items in `<View collapsable={false}>` or use `A11y.View` / `A11y.Index` with `shouldGroupAccessibilityChildren`.
+
+### `A11yModule` renamed to `ScreenReader`
+
+The announcement API has been renamed and expanded. `A11yModule` no longer exists — use `ScreenReader` (or the standalone functions) instead. The new API returns a `Promise<AnnouncementResult>` and accepts options for priority, queueing, calm mode, delay, and iOS speech attributes.
+
+```tsx
+// Before (0.9.x)
+import { A11yModule } from 'react-native-a11y-order';
+A11yModule.announce('Saved');
+
+// After (1.0)
+import { ScreenReader } from 'react-native-a11y-order';
+await ScreenReader.announce('Saved');
+
+// Or import the functions directly
+import { announce, cancel, cancelAll } from 'react-native-a11y-order';
+await announce('Saved', { priority: 'high' });
+```
+
+`ScreenReader.announce` defaults to **calm mode** (navigation-aware, waits for transitions to settle). The standalone `announce()` defaults to **direct mode** (posts immediately). See [ScreenReader.announce](../api/ScreenReader.md) for the full options and cancellation API.
+
+### `autoFocus` prop removed from `A11y.Index`
+
+The `autoFocus` prop on `A11y.Index` has been removed. Use the imperative `focus()` command via ref instead — it gives explicit control over when and where screen reader focus moves.
+
+```tsx
+// Before (0.9.x)
+<A11y.Index autoFocus />
+
+// After (1.0)
+import { useRef, useEffect } from 'react';
+import type { IndexCommands } from 'react-native-a11y-order';
+
+const ref = useRef<IndexCommands>(null);
+
+useEffect(() => {
+  ref.current?.focus();
+}, []);
+
+<A11y.Index ref={ref} />
+```
 
 ### New props in 1.0
 

@@ -3,7 +3,7 @@
 # React Native A11y Order
 
 <div>
-  <img align="right" width="35%" src="/.github/images/ios_example.gif">
+  <img align="right" width="35%" src="/.github/images/a11y-order-ios.gif">
 </div>
 
 Native-first React Native library for controlling screen reader focus order on iOS (VoiceOver) and Android (TalkBack).

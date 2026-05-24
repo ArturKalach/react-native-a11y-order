@@ -22,6 +22,7 @@ export const A11yCard = ({
         {...accessibility}
         accessible
         pointerEvents="none"
+        collapsable={false}
         onAccessibilityTap={onPress}
         style={styles.overlay}
       />
@@ -40,5 +41,11 @@ export const A11yCard = ({
 
 const styles = StyleSheet.create({
   container: { position: 'relative' },
-  overlay: StyleSheet.absoluteFillObject,
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
 });
