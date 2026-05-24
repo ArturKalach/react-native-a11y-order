@@ -118,4 +118,4 @@ If an ordered element also needs container semantics, use `a11yUIContainer` dire
 
 ---
 
-← [Focus Events](./focus-events.md) | [autoFocus](../leftovers/autofocus.md) →
+← [Focus Events](./focus-events.md) | [ScreenReader.announce](../api/ScreenReader.md) →

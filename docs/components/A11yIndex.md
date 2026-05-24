@@ -17,7 +17,6 @@ import { type IndexCommands, type A11yIndexProps } from 'react-native-a11y-order
 | :-- | :-- | :-- | :-- |
 | `index` | `number` | — | Position in the focus sequence. Lower numbers are focused first; ties resolved by render order. |
 | `orderType` | `'default' \| 'child' \| 'subview'` | `'default'` | Controls which element receives screen reader focus. |
-| `autoFocus` | `boolean` | `false` | Moves screen reader focus to this element on mount. |
 | `a11yUIContainer` | `'none' \| 'table' \| 'list' \| 'landmark' \| 'group'` | — | *(iOS only)* Sets `UIAccessibilityContainerType`. |
 | `shouldGroupAccessibilityChildren` | `boolean` | — | *(iOS only)* When `true`, VoiceOver reads all descendants as one combined element. When `false`, forces individual navigation. Omit to use system default. |
 | `onScreenReaderFocused` | `() => void` | — | Fires when this element receives screen reader focus. |
@@ -54,4 +53,3 @@ ref.current?.measure((x, y, width, height) => {});
 
 - [A11y Order guide](../guides/a11y-order.md)
 - [Focus Events guide](../guides/focus-events.md)
-- [autoFocus](../leftovers/autofocus.md)

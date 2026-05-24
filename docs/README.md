@@ -36,17 +36,7 @@ Full props tables for every component.
 | [A11y.Card](./components/A11yCard.md) | Card with accessible inner interactive elements |
 | [A11y.FocusTrap + A11y.FocusFrame](./components/A11yFocusTrap.md) | Focus confinement for modals and overlays |
 | [A11y.PaneTitle + A11y.ScreenChange](./components/A11yPaneTitle.md) | Screen and panel transition announcements |
-
----
-
-## Additional features
-
-Smaller utilities that solve specific problems.
-
-| Page | Description |
-| :-- | :-- |
-| [autoFocus](./leftovers/autofocus.md) | Move screen reader focus on mount |
-| [A11yModule.announce](./leftovers/announce.md) | Reliable programmatic announcements on iOS |
+| [ScreenReader.announce](./api/ScreenReader.md) | Reliable programmatic announcements on iOS |
 
 ---
 

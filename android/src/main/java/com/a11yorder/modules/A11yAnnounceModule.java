@@ -1,13 +1,12 @@
 package com.a11yorder.modules;
 
-import com.a11yorder.A11yAnnounceModuleSpec;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
+import androidx.annotation.Nullable;
 
-import com.facebook.proguard.annotations.DoNotStrip;
+import com.a11yorder.A11yAnnounceModuleSpec;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 
 public class A11yAnnounceModule extends A11yAnnounceModuleSpec {
 
@@ -22,8 +21,22 @@ public class A11yAnnounceModule extends A11yAnnounceModuleSpec {
     return NAME;
   }
 
+  // stub — announcement is handled by the JS layer on Android
+  @Override
   @ReactMethod
-  public void announce(String message) {
-    //stub
+  public void announce(String message, @Nullable ReadableMap options, Promise promise) {
+    promise.resolve(null);
+  }
+
+  @Override
+  @ReactMethod
+  public void cancel(String id, Promise promise) {
+    promise.resolve(null);
+  }
+
+  @Override
+  @ReactMethod
+  public void cancelAll(Promise promise) {
+    promise.resolve(null);
   }
 }

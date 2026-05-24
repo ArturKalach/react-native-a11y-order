@@ -1,13 +1,10 @@
 //
 //  RNAOA11yAnnounceModule.h
-//  Pods
-//
-//  Created by Artur Kalach on 06/12/2025.
+//  react-native-a11y-order
 //
 
 #ifndef RNAOA11yAnnounceModule_h
 #define RNAOA11yAnnounceModule_h
-
 
 #import <Foundation/Foundation.h>
 
@@ -16,19 +13,26 @@
 
 @interface RNAOA11yAnnounceModule : NSObject <NativeA11yAnnounceModuleSpec>
 
-@end
-
 #else
 
 #import <React/RCTBridgeModule.h>
 
-
 @interface RNAOA11yAnnounceModule : NSObject <RCTBridgeModule>
 
-- (void)announce:(NSString *)message;
+- (void)announce:(NSString *)message
+         options:(NSDictionary *)options
+         resolve:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject;
 
-@end
+- (void)cancel:(NSString *)announcementId
+        resolve:(RCTPromiseResolveBlock)resolve
+         reject:(RCTPromiseRejectBlock)reject;
+
+- (void)cancelAll:(RCTPromiseResolveBlock)resolve
+           reject:(RCTPromiseRejectBlock)reject;
 
 #endif
+
+@end
 
 #endif /* RNAOA11yAnnounceModule_h */

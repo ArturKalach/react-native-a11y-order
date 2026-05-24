@@ -1,5 +1,5 @@
-#ifndef RNAOA11yAutoFocusView_h
-#define RNAOA11yAutoFocusView_h
+#ifndef RNAOA11yManagedFocusView_h
+#define RNAOA11yManagedFocusView_h
 
 #import "RNAOA11yGroupChildrenView.h"
 #import "RNAOA11yFocusService.h"
@@ -8,8 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNAOA11yAutoFocusView : RNAOA11yGroupChildrenView<RNAOA11yFocusServiceSubscriber>
-@property BOOL autoFocus;
+@interface RNAOA11yManagedFocusView : RNAOA11yGroupChildrenView<RNAOA11yFocusServiceSubscriber>
 @property BOOL descendantFocusChangedEnabled;
 @end
 
@@ -17,8 +16,7 @@ NS_ASSUME_NONNULL_END
 
 #else
 
-@interface RNAOA11yAutoFocusView : RNAOA11yGroupChildrenView<RNAOA11yFocusServiceSubscriber>
-@property BOOL autoFocus;
+@interface RNAOA11yManagedFocusView : RNAOA11yGroupChildrenView<RNAOA11yFocusServiceSubscriber>
 @property BOOL descendantFocusChangedEnabled;
 @property (nonatomic, copy) RCTDirectEventBlock onScreenReaderDescendantFocusChanged;
 @property (nonatomic, copy) RCTDirectEventBlock onScreenReaderFocusChange;
@@ -27,4 +25,4 @@ NS_ASSUME_NONNULL_END
 
 #endif
 
-#endif /* RNAOA11yAutoFocusView_h */
+#endif /* RNAOA11yManagedFocusView_h */

@@ -46,4 +46,15 @@ export const A11y = {
   Card: A11yCard,
 };
 
-export { A11yModule } from './modules/A11yAnnounceModule';
+export {
+  ScreenReader,
+  announce,
+  cancel,
+  cancelAll,
+} from './modules/A11yAnnounceModule';
+export type {
+  AnnouncePriority,
+  AnnounceStatus,
+  AnnounceOptions,
+  AnnouncementResult,
+} from './modules/A11yAnnounceModule';

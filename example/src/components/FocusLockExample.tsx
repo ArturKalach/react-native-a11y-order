@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { A11y, A11yModule } from 'react-native-a11y-order';
+import { A11y, ScreenReader } from 'react-native-a11y-order';
 
 const FocusTrapContent = ({ onClose }: { onClose: () => void }) => (
   <A11y.FocusTrap forceLock style={styles.trap}>
@@ -12,7 +12,7 @@ const FocusTrapContent = ({ onClose }: { onClose: () => void }) => (
     </View>
     <TouchableOpacity
       style={styles.btn}
-      onPress={() => A11yModule.announce('Action confirmed')}
+      onPress={() => ScreenReader.announce('Action confirmed')}
       accessibilityRole="button"
       accessibilityLabel="Confirm action"
     >
@@ -77,7 +77,7 @@ export const FocusLockExample = ({
         <TouchableOpacity
           style={[styles.btn, styles.btnGhost]}
           onPress={() =>
-            A11yModule.announce('Button outside locked area pressed')
+            ScreenReader.announce('Button outside locked area pressed')
           }
           accessibilityRole="button"
           accessibilityLabel="Button outside locked area"

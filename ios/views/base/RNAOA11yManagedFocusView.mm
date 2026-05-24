@@ -1,12 +1,11 @@
-#import "RNAOA11yAutoFocusView.h"
+#import "RNAOA11yManagedFocusView.h"
 #import "RNAOViewItemDelegate.h"
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "RNAOFabricEventHelper.h"
 #endif
 
-@implementation RNAOA11yAutoFocusView {
-  BOOL _needsAutoFocus;
+@implementation RNAOA11yManagedFocusView {
   BOOL _descendantFocusChangedEnabled;
   RNAOViewItemDelegate* _viewDelegate;
 }
@@ -15,7 +14,6 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    _needsAutoFocus = YES;
     _descendantFocusChangedEnabled = NO;
     _viewDelegate = [[RNAOViewItemDelegate alloc] initWithView: self];
   }
@@ -24,8 +22,6 @@
 
 - (void)prepareForRecycle {
   [super prepareForRecycle];
-  _needsAutoFocus = YES;
-  _autoFocus = NO;
   [_viewDelegate prepareForRecycle];
 }
 
@@ -38,7 +34,6 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    _needsAutoFocus = YES;
     _viewDelegate = [[RNAOViewItemDelegate alloc] initWithView: self];
   }
   return self;
@@ -74,18 +69,6 @@
 
 - (void)focus {
   [self focusView];
-}
-
-- (void)didMoveToWindow {
-  [super didMoveToWindow];
-  if (self.window) {
-    if (_needsAutoFocus && _autoFocus) {
-      _needsAutoFocus = NO;
-      dispatch_async(dispatch_get_main_queue(), ^{
-        [self focusView];
-      });
-    }
-  }
 }
 
 - (void)didMoveToSuperview {

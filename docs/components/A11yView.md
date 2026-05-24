@@ -18,13 +18,11 @@ import { type A11yViewProps } from 'react-native-a11y-order';
 | Element must appear at a specific position in a focus sequence | `A11y.Index` inside `A11y.Order` |
 | Only need to observe focus events | `A11y.View` |
 | Only need iOS container semantics (`a11yUIContainer`) | `A11y.View` |
-| autoFocus without ordering | `A11y.View` |
 
 ## Props
 
 | Prop | Type | Default | Description |
 | :-- | :-- | :-- | :-- |
-| `autoFocus` | `boolean` | `false` | Moves screen reader focus to this element on mount. |
 | `a11yUIContainer` | `'none' \| 'table' \| 'list' \| 'landmark' \| 'group'` | — | *(iOS only)* Sets `UIAccessibilityContainerType`. |
 | `shouldGroupAccessibilityChildren` | `boolean` | — | *(iOS only)* When `true`, VoiceOver reads all descendants as one combined element. When `false`, forces individual navigation. Omit to use system default. |
 | `onScreenReaderFocused` | `() => void` | — | Fires when this element receives screen reader focus. |
@@ -64,18 +62,7 @@ import { type A11yViewProps } from 'react-native-a11y-order';
 
 VoiceOver announces: "Menu. 4 items. list"
 
-### autoFocus
-
-```tsx
-{showMessage && (
-  <A11y.View autoFocus>
-    <Text>Success message</Text>
-  </A11y.View>
-)}
-```
-
 ## Guides
 
 - [Focus Events guide](../guides/focus-events.md)
 - [A11y UI Container guide](../guides/a11y-ui-container.md)
-- [autoFocus](../leftovers/autofocus.md)

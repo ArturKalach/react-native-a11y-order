@@ -57,4 +57,4 @@ const MyScreen = () => {
 ## Guide
 
 - [Focus Lock guide](../guides/focus-lock.md)
-- [Announce guide](../leftovers/announce.md)
+- [Announce guide](../api/ScreenReader.md)

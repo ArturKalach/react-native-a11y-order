@@ -52,4 +52,4 @@ These props did not exist in 0.9.x and require no migration — add them only if
 
 ---
 
-← [A11yModule.announce](../leftovers/announce.md)
+← [ScreenReader.announce](../api/ScreenReader.md)

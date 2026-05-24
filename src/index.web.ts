@@ -23,4 +23,4 @@ export const A11y = {
   Card: View,
 };
 
-export { A11yModule } from './modules/A11yAnnounceModule';
+export { ScreenReader } from './modules/A11yAnnounceModule';

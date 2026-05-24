@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.a11yorder.services.order.A11yOrderService;
 
-public class A11yViewOrder extends A11yAutoFocusView {
+public class A11yViewOrder extends A11yManagedFocusView {
   private final A11yOrderService orderService;
 
   public A11yViewOrder(Context context) {
