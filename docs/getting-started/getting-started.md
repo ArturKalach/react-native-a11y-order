@@ -76,7 +76,7 @@ export default function App() {
 | [`A11y.FocusFrame`](../components/A11yFocusTrap.md) | Root boundary required by `A11y.FocusTrap`; detects focus escaping the region |
 | [`A11y.PaneTitle`](../components/A11yPaneTitle.md) | Announces screen or panel transitions to VoiceOver/TalkBack |
 | [`A11y.ScreenChange`](../components/A11yPaneTitle.md) | Shorthand for `A11y.PaneTitle` with `type="activity"` pre-set |
-| [`A11yModule`](../leftovers/announce.md) | Reliable programmatic announcements on iOS |
+| [`ScreenReader`](../api/ScreenReader.md) | Reliable programmatic announcements on iOS |
 
 ## Before you reach for this library
 

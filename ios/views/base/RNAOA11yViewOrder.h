@@ -1,13 +1,13 @@
 #ifndef RNAOA11yViewOrder_h
 #define RNAOA11yViewOrder_h
 
-#import "RNAOA11yAutoFocusView.h"
+#import "RNAOA11yManagedFocusView.h"
 
 #ifdef RCT_NEW_ARCH_ENABLED
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNAOA11yViewOrder : RNAOA11yAutoFocusView
+@interface RNAOA11yViewOrder : RNAOA11yManagedFocusView
 
 - (void)setPosition:(NSNumber*)position;
 - (void)setOrderKey:(NSString *)orderKey;
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_END
 
 #else
 
-@interface RNAOA11yViewOrder : RNAOA11yAutoFocusView
+@interface RNAOA11yViewOrder : RNAOA11yManagedFocusView
 
 - (void)setPosition:(NSNumber*)position;
 - (void)setOrderKey:(NSString *)orderKey;

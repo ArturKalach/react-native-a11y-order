@@ -106,7 +106,6 @@ Controls which element within the `A11y.Index` subtree actually receives focus.
 | :-- | :-- | :-- |
 | `index` | `number` | Position in the focus sequence. Lower = focused first. |
 | `orderType` | `'default' \| 'child' \| 'subview'` | Which element receives focus. Defaults to `'default'`. |
-| `autoFocus` | `boolean` | Moves screen reader focus to this element on mount. |
 | `a11yUIContainer` | `'none' \| 'table' \| 'list' \| 'landmark' \| 'group'` | *(iOS only)* Sets `UIAccessibilityContainerType`. |
 | `shouldGroupAccessibilityChildren` | `boolean` | *(iOS only)* When `true`, VoiceOver reads all descendants as one combined element. When `false`, forces individual navigation. |
 | `onScreenReaderFocused` | `() => void` | Fires when this element receives screen reader focus. |

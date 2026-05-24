@@ -40,6 +40,8 @@ Get started with the [getting started guide](./docs/getting-started/getting-star
 
 ## What's available
 
+**Components**
+
 | Export | Purpose |
 | :-- | :-- |
 | [`A11y.Order`](./docs/guides/a11y-order.md) | Container that defines a named focus-order sequence. |
@@ -50,7 +52,12 @@ Get started with the [getting started guide](./docs/getting-started/getting-star
 | [`A11y.FocusFrame`](./docs/components/A11yFocusTrap.md) | Root boundary required by `A11y.FocusTrap`; detects focus escaping the region. |
 | [`A11y.PaneTitle`](./docs/components/A11yPaneTitle.md) | Announces screen or panel transitions to VoiceOver/TalkBack. |
 | [`A11y.ScreenChange`](./docs/components/A11yPaneTitle.md) | Shorthand for `A11y.PaneTitle` with `type="activity"` pre-set. |
-| [`A11yModule`](./docs/leftovers/announce.md) | Reliable programmatic announcements on iOS. |
+
+**API**
+
+| Export | Purpose |
+| :-- | :-- |
+| [`ScreenReader`](./docs/api/ScreenReader.md) | Reliable programmatic announcements for VoiceOver and TalkBack. |
 
 ---
 

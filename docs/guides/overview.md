@@ -127,35 +127,19 @@ import { A11y } from 'react-native-a11y-order';
 
 The features below are included as supplementary tools. They can help in specific situations, but their behaviour varies across OS versions and device configurations — **always verify on real devices before shipping**.
 
-### `autoFocus` prop
-
-**Problem:** When a modal opens or a new section appears, the screen reader stays on whatever it was focused on before — users may not notice the change.
-
-**Solution:** The `autoFocus` prop on `A11y.View` and `A11y.Index` moves screen reader focus to the element as soon as it mounts. For event-driven focus (not mount-driven), use the ref API: `ref.current?.focus()` on `A11y.Index`.
-
-```tsx
-{showError && (
-  <A11y.View autoFocus>
-    <Text>Something went wrong</Text>
-  </A11y.View>
-)}
-```
-
-→ [Full guide](../leftovers/autofocus.md)
-
-### `A11yModule.announce`
+### `ScreenReader.announce`
 
 **Problem:** React Native's built-in `AccessibilityInfo.announceForAccessibility` can be dropped when a focus change happens at the same time — common during screen transitions.
 
-**Solution:** `A11yModule.announce` uses a native queue on iOS to ensure the message is delivered even mid-transition. On Android, behaviour is similar to the built-in API.
+**Solution:** `ScreenReader.announce` uses a native queue on iOS to ensure the message is delivered even mid-transition. On Android, behaviour is similar to the built-in API.
 
 ```tsx
-import { A11yModule } from 'react-native-a11y-order';
+import { ScreenReader } from 'react-native-a11y-order';
 
-A11yModule.announce('Changes saved successfully');
+ScreenReader.announce('Changes saved successfully');
 ```
 
-→ [Full guide](../leftovers/announce.md)
+→ [Full guide](../api/ScreenReader.md)
 
 ---
 

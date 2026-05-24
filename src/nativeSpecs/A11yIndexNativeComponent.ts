@@ -24,7 +24,6 @@ export interface A11yIndexNativeComponentProps extends ViewProps {
   orderFocusType?: Int32;
   shouldGroupAccessibilityChildren?: Int32;
 
-  autoFocus?: boolean;
   descendantFocusChangedEnabled?: boolean;
 
   onScreenReaderFocused?: DirectEventHandler<{}>;

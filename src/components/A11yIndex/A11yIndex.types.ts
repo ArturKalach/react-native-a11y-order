@@ -89,11 +89,6 @@ export type A11yIndexProps = ViewProps & {
   shouldGroupAccessibilityChildren?: boolean;
 
   /**
-   * When `true`, requests screen reader focus on this element immediately after mount.
-   */
-  autoFocus?: boolean;
-
-  /**
    * Called when the screen reader focuses this element directly (not a descendant).
    */
   onScreenReaderFocused?: () => void;

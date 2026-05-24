@@ -13,7 +13,6 @@ public abstract class A11yIndexViewManagerSpec<T extends A11yIndexView> extends 
 
   public abstract void focus(T view);
 
-  public abstract void setAutoFocus(A11yIndexView view, boolean value);
   public abstract void setDescendantFocusChangedEnabled(A11yIndexView view, boolean value);
 
   public abstract void setContainerType(A11yIndexView view, int value);

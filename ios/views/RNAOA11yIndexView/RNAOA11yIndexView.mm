@@ -49,10 +49,6 @@ using namespace facebook::react;
     [self setOrderFocusType: @(newViewProps.orderFocusType)];
   }
 
-  if (self.autoFocus != newViewProps.autoFocus) {
-    [self setAutoFocus: newViewProps.autoFocus];
-  }
-
   if (self.groupChildrenMode != newViewProps.shouldGroupAccessibilityChildren) {
     self.groupChildrenMode = newViewProps.shouldGroupAccessibilityChildren;
   }

@@ -81,12 +81,6 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
 
 
   @Override
-  @ReactProp(name = "autoFocus")
-  public void setAutoFocus(A11yIndexView view, boolean value) {
-    view.setAutoFocus(value);
-  }
-
-  @Override
   public void setDescendantFocusChangedEnabled(A11yIndexView view, boolean value) {
     //stub
   }

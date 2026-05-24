@@ -37,12 +37,6 @@ export const NAV_ITEMS: NavItem[] = [
     color: '#9333ea',
   },
   {
-    id: 'AutoFocus',
-    label: 'Auto Focus',
-    desc: 'Auto-focus on mount',
-    color: '#0891b2',
-  },
-  {
     id: 'AnnounceExamples',
     label: 'Announce',
     desc: 'Screen reader announcements',
