@@ -4,6 +4,7 @@ import {
   codegenNativeCommands,
   type ViewProps,
   type CodegenTypes,
+  type HostComponent,
 } from 'react-native';
 
 export type ScreenReaderFocusChange = Readonly<{
@@ -41,4 +42,4 @@ export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
 
 export default codegenNativeComponent<A11yIndexNativeComponentProps>(
   'A11yIndexView'
-);
+) as HostComponent<A11yIndexNativeComponentProps>;

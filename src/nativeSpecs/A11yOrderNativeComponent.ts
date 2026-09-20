@@ -1,4 +1,8 @@
-import { codegenNativeComponent, type ViewProps } from 'react-native';
+import {
+  codegenNativeComponent,
+  type HostComponent,
+  type ViewProps,
+} from 'react-native';
 
 export interface A11yOrderNativeComponentProps extends ViewProps {
   orderKey: string;
@@ -6,4 +10,4 @@ export interface A11yOrderNativeComponentProps extends ViewProps {
 
 export default codegenNativeComponent<A11yOrderNativeComponentProps>(
   'A11yOrderView'
-);
+) as HostComponent<A11yOrderNativeComponentProps>;
