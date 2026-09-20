@@ -1,6 +1,5 @@
 package com.a11yorder;
 
-import com.a11yorder.views.A11yLockView.A11yLockView;
 import com.facebook.react.viewmanagers.A11yLockManagerInterface;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.facebook.react.views.view.ReactViewManager;

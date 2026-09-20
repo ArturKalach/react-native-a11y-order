@@ -2,11 +2,6 @@ package com.a11yorder;
 
 import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
-
-import com.facebook.react.uimanager.ViewGroupManager;
-import com.facebook.react.uimanager.ViewManagerDelegate;
-import com.facebook.react.viewmanagers.A11yOrderViewManagerDelegate;
 import com.facebook.react.viewmanagers.A11yOrderViewManagerInterface;
 import com.facebook.react.views.view.ReactViewManager;
 
