@@ -7,6 +7,7 @@
 
 
 #import <react/renderer/components/RNA11yOrderSpec/ComponentDescriptors.h>
+#import <react/renderer/components/RNA11yOrderSpec/Props.h>
 #import <react/renderer/components/RNA11yOrderSpec/RCTComponentViewHelpers.h>
 #import <React/RCTFabricComponentsPlugins.h>
 
@@ -17,6 +18,15 @@ using namespace facebook::react;
   UIFocusGuide *_contentFocusGuide;
   NSString *_overlayFocusGroupIdentifier;
   NSString *_contentFocusGroupIdentifier;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+  if (self = [super initWithFrame:frame]) {
+    static const auto defaultProps = std::make_shared<const A11yCardViewProps>();
+    _props = defaultProps;
+  }
+  return self;
 }
 
 - (nullable NSArray *)accessibilityElements {
