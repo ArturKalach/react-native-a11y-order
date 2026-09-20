@@ -17,7 +17,6 @@
   [self onScreenReaderFocusChangeHandler: focused];
 }
 
-#ifdef RCT_NEW_ARCH_ENABLED
 - (void)focusView {
   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
 }
@@ -27,6 +26,5 @@
     [self focusView];
   }
 }
-#endif
 
 @end

@@ -1892,7 +1892,7 @@ PODS:
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
     - SocketRocket
-  - react-native-a11y-order (1.0.0-rc):
+  - react-native-a11y-order (1.0.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2884,7 +2884,7 @@ SPEC CHECKSUMS:
   FBLazyVector: a293a88992c4c33f0aee184acab0b64a08ff9458
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
-  hermes-engine: 0fc497ed1580b6625cc787cea3a2c117c3796fa9
+  hermes-engine: 3ba2614db417c107553b276df85cd89724f6eb65
   RCT-Folly: 846fda9475e61ec7bcbf8a3fe81edfcaeb090669
   RCTDeprecation: 2b70c6e3abe00396cefd8913efbf6a2db01a2b36
   RCTRequired: f3540eee8094231581d40c5c6d41b0f170237a81
@@ -2921,7 +2921,7 @@ SPEC CHECKSUMS:
   React-logger: 9e597cbeda7b8cc8aa8fb93860dade97190f69cc
   React-Mapbuffer: 20046c0447efaa7aace0b76085aa9bb35b0e8105
   React-microtasksnativemodule: 0e837de56519c92d8a2e3097717df9497feb33cb
-  react-native-a11y-order: b60904a73ac5ca5e1a4e5f8589fddba7d98ae6a3
+  react-native-a11y-order: 1425f24b88e076d8d8afc51536aa2b977b8b70c6
   react-native-safe-area-context: befb5404eb8a16fdc07fa2bebab3568ecabcbb8a
   React-NativeModulesApple: 1a378198515f8e825c5931a7613e98da69320cee
   React-networking: bfd1695ada5a57023006ce05823ac5391c3ce072
@@ -2960,6 +2960,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 6ca93c8c13f56baeec55eb608577619b17a4d64e
 
-PODFILE CHECKSUM: 9c399e630f172f346287e53fc752583305551642
+PODFILE CHECKSUM: 3bdd0c7e1ebea1ffe55bb7dc8b7131f8f5e9505e
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0

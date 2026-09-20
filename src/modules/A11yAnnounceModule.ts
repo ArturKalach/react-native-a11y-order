@@ -1,29 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
 import NativeA11yAnnounceModule from '../nativeSpecs/NativeA11yAnnounceModule';
-
-const LINKING_ERROR =
-  `The package 'react-native-a11y-order' doesn't seem to be linked. Make sure: \n\n${Platform.select(
-    { ios: "- You have run 'pod install'\n", default: '' }
-  )}- You rebuilt the app after installing the package\n` +
-  `- You are not using Expo Go\n`;
-
-// @ts-expect-error
-const isTurboModuleEnabled = global.__turboModuleProxy != null;
-
-const A11yAnnounceNative = isTurboModuleEnabled
-  ? NativeA11yAnnounceModule
-  : NativeModules.A11yAnnounceModule;
-
-const A11yAnnounceProxy: typeof NativeA11yAnnounceModule =
-  A11yAnnounceNative ??
-  new Proxy(
-    {},
-    {
-      get() {
-        throw new Error(LINKING_ERROR);
-      },
-    }
-  );
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -137,7 +112,7 @@ export function announce(
   options?: AnnounceOptions
 ): Promise<AnnouncementResult> {
   const { speech, ...rest } = options ?? {};
-  return A11yAnnounceProxy!.announce(message, {
+  return NativeA11yAnnounceModule.announce(message, {
     ...rest,
     ...speech,
   }) as Promise<AnnouncementResult>;
@@ -149,7 +124,7 @@ export function announce(
  * In direct mode, interrupts the active announcement if it matches.
  */
 export function cancel(id: string): Promise<AnnouncementResult> {
-  return A11yAnnounceProxy!.cancel(id) as Promise<AnnouncementResult>;
+  return NativeA11yAnnounceModule.cancel(id) as Promise<AnnouncementResult>;
 }
 
 /**
@@ -157,7 +132,7 @@ export function cancel(id: string): Promise<AnnouncementResult> {
  * Calm-mode promises resolve with `status: 'cancelled'`.
  */
 export function cancelAll(): Promise<AnnouncementResult> {
-  return A11yAnnounceProxy!.cancelAll() as Promise<AnnouncementResult>;
+  return NativeA11yAnnounceModule.cancelAll() as Promise<AnnouncementResult>;
 }
 
 // ─── Namespace export (backward-compatible) ───────────────────────────────────

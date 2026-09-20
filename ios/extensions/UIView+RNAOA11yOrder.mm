@@ -12,11 +12,7 @@
 #import "RNAOSwizzleInstall.h"
 #import <objc/runtime.h>
 
-#ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTViewComponentView.h>
-#else
-#import <React/RCTView.h>
-#endif
 
 @interface RNAOWeakWrapper : NSObject
 @property (nonatomic, weak) id value;
@@ -57,11 +53,7 @@ static char kRNAOScreenReaderFocusDelegate;
 
 
 static void RNAORegisterViewFocusSwizzles(void) {
-  #ifdef RCT_NEW_ARCH_ENABLED
     Class swizzleClass = objc_getClass("RCTViewComponentView");
-  #else
-    Class swizzleClass = objc_getClass("RCTView");
-  #endif
   if (!swizzleClass) return;
 
   RNAOSwizzleInstanceMethod(swizzleClass,

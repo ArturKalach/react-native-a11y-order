@@ -12,7 +12,7 @@ Native-first React Native library for controlling screen reader focus order on i
 - 🃏 **Cards with inner buttons** — card action and nested controls, both accessible at once
 - 🔒 **Focus trap** — keep VoiceOver and TalkBack inside modals, no leaking
 - 📣 **Transition announcements** — notify the screen reader on screen and panel changes
-- ⚡ New Architecture · Old Architecture · Bridgeless · Expo prebuild
+- ⚡ New Architecture · Bridgeless · Expo prebuild
 
 > [!TIP]
 > Before adding this library, try `<View collapsable={false}>` — it fixes most simple focus order issues with no extra dependencies. [Learn more](./docs/guides/collapsable.md)

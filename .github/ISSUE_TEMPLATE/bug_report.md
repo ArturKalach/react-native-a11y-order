@@ -38,7 +38,6 @@ labels: bug
 | Library version | |
 | React Native version | |
 | Platform | iOS / Android / both |
-| Architecture | New Arch / Old Arch / both |
 | Screen reader | VoiceOver / TalkBack / both |
 | OS version | |
 

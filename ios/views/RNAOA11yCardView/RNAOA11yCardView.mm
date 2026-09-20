@@ -5,7 +5,6 @@
 
 #import "RNAOA11yCardView.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 #import <react/renderer/components/RNA11yOrderSpec/ComponentDescriptors.h>
 #import <react/renderer/components/RNA11yOrderSpec/RCTComponentViewHelpers.h>
@@ -13,7 +12,6 @@
 
 using namespace facebook::react;
 
-#endif
 
 @implementation RNAOA11yCardView {
   UIFocusGuide *_contentFocusGuide;
@@ -52,7 +50,6 @@ using namespace facebook::react;
   }
 }
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView
                           index:(NSInteger)index {
@@ -68,16 +65,5 @@ Class<RCTComponentViewProtocol> A11yCardViewCls(void) {
   return RNAOA11yCardView.class;
 }
 
-#else
-
-- (void)didAddSubview:(UIView *)subview {
-  [super didAddSubview:subview];
-  NSUInteger index = [self.subviews indexOfObject:subview];
-  if (index != NSNotFound) {
-    [self assignFocusGroupIdentifierToChild:subview atIndex:(NSInteger)index];
-  }
-}
-
-#endif
 
 @end

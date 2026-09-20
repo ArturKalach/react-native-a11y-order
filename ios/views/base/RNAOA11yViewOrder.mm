@@ -1,15 +1,12 @@
 #import "RNAOA11yViewOrder.h"
 #import "RNAOA11yItemDelegate.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
 #import "RNAOFabricEventHelper.h"
-#endif
 
 @implementation RNAOA11yViewOrder {
   RNAOA11yItemDelegate* _a11yItemDelegate;
 }
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
@@ -28,21 +25,6 @@
   [super prepareForRecycle];
 }
 
-#else
-
-- (instancetype)initWithFrame:(CGRect)frame {
-  if (self = [super initWithFrame:frame]) {
-    _a11yItemDelegate = [[RNAOA11yItemDelegate alloc] initWithView: self];
-  }
-  return self;
-}
-
-- (void)layoutSubviews {
-  [super layoutSubviews];
-  [_a11yItemDelegate finalizeUpdates];
-}
-
-#endif
 
 - (void)setPosition:(NSNumber*)position {
   [_a11yItemDelegate setPosition: position];
@@ -77,16 +59,8 @@
   [_a11yItemDelegate willRemoveSubview: subview];
 }
 
-#ifdef RCT_NEW_ARCH_ENABLED
 - (void)onScreenReaderFocusChangeHandler:(BOOL)isFocused {
   [RNAOFabricEventHelper onIndexViewFocusChange:isFocused withEmitter:_eventEmitter];
 }
-#else
-- (void)onScreenReaderFocusChangeHandler:(BOOL)isFocused {
-  if (self.onScreenReaderFocusChange) {
-    self.onScreenReaderFocusChange(@{@"isFocused" : @(isFocused)});
-  }
-}
-#endif
 
 @end
