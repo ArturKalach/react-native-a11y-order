@@ -12,7 +12,7 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 
-#import "RCTModalHostViewComponentView.h"
+#import <React/RCTModalHostViewComponentView.h>
 
 
 @interface RCTModalHostViewComponentView (RNAOA11yOrder)
