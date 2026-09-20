@@ -30,8 +30,8 @@ function useScreenReaderProps({
 }: ScreenReaderCallbacks) {
   const hasHandler = Boolean(
     onScreenReaderSubViewBlurred ||
-      onScreenReaderSubViewFocused ||
-      onScreenReaderSubViewFocusChange
+    onScreenReaderSubViewFocused ||
+    onScreenReaderSubViewFocusChange
   );
 
   const onScreenReaderFocusChange = React.useCallback(
@@ -148,8 +148,8 @@ export const A11yIndex = React.memo(
         shouldGroupAccessibilityChildren === undefined
           ? -1
           : shouldGroupAccessibilityChildren
-          ? 1
-          : 0;
+            ? 1
+            : 0;
 
       const screenReaderNativeProps = useScreenReaderProps({
         onScreenReaderFocused,
@@ -166,7 +166,7 @@ export const A11yIndex = React.memo(
 
       return (
         <A11yIndexView
-          ref={localRef as React.Ref<any>}
+          ref={localRef}
           {...viewProps}
           containerType={containerTypeValue}
           shouldGroupAccessibilityChildren={shouldGroupChildrenValue}

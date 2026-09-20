@@ -1,4 +1,3 @@
-import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import type { A11yCardProps } from './A11yCard.types';
 

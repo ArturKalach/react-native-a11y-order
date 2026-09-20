@@ -1,4 +1,3 @@
-import React from 'react';
 import { View } from 'react-native';
 import type { A11yFocusTrapProps } from '../A11yLock.types';
 import { A11yFocusTrapMountWrapper } from './A11yFocusTrapMountWrapper';
