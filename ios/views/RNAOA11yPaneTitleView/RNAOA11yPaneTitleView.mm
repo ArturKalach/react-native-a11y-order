@@ -12,6 +12,7 @@
 #import "UIViewController+RNAOA11yOrder.h"
 #import "RNAOA11yAnnounceService.h"
 #import "RNAOSpeechAttributes.h"
+#import "RNAOPropsHelper.h"
 
 
 #include <string>
@@ -19,8 +20,9 @@
 #import <react/renderer/components/RNA11yOrderSpec/EventEmitters.h>
 #import <react/renderer/components/RNA11yOrderSpec/Props.h>
 #import <react/renderer/components/RNA11yOrderSpec/RCTComponentViewHelpers.h>
-#import "RNAOPropsHelper.h"
+
 #import <React/RCTFabricComponentsPlugins.h>
+#import <React/UIView+React.h>
 
 using namespace facebook::react;
 
