@@ -42,5 +42,6 @@ Full props tables for every component.
 
 ## Migration
 
-→ [Migrating to 1.0 from 0.9.x](./migration/migration.md)
+→ [Migrating to 2.0 from 1.x](./migration/migration.md#migrating-to-20-from-1x) — no API changes, raised platform minimums
+→ [Migrating to 1.0 from 0.9.x](./migration/migration.md#migrating-to-10-from-09x)
 

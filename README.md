@@ -33,10 +33,11 @@ Get started with the [getting started guide](./docs/getting-started/getting-star
 
 ## React Native compatibility
 
-| Library version | React Native |
-| :-- | :-- |
-| `1.0.0` | ≥ 0.80 |
-| `0.11.0` | ≤ 0.79 |
+| React Native | Install | Architecture |
+| :-- | :-- | :-- |
+| 0.87 and newer | `react-native-a11y-order@2` | New Architecture only |
+| 0.80 – 0.86 | `react-native-a11y-order@1` | New + Old Architecture |
+| 0.79 and older | `react-native-a11y-order@0.11` | New + Old Architecture |
 
 ## What's available
 
@@ -79,11 +80,12 @@ Future work is limited to:
 - React Native version support (new releases)
 - Bug fixes and issue resolution
 
-Both active versions receive fixes:
+All active versions receive fixes:
 
 | Version | React Native | Status |
 | :-- | :-- | :-- |
-| `1.0.0` | ≥ 0.80 | Active — bug fixes and new RN support |
+| `2.0.0` | ≥ 0.87 | Active — bug fixes and new RN support |
+| `1.0.0` | 0.80 – 0.86 | Active — bug fixes only |
 | `0.11.0` | ≤ 0.79 | Active — bug fixes only |
 
 ---
