@@ -9,9 +9,7 @@
 #import "RNAOA11yAnnounceService.h"
 #import "RNAOSpeechAttributes.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
 using namespace facebook::react;
-#endif
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MARK: - Pending entry
@@ -134,7 +132,6 @@ RCT_EXPORT_MODULE(A11yAnnounceModule);
     }
 }
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 - (void)announce:(NSString *)message
          options:(JS::NativeA11yAnnounceModule::AnnounceOptions &)options
@@ -156,19 +153,6 @@ RCT_EXPORT_MODULE(A11yAnnounceModule);
 
     [self _announceMessage:message opts:opts resolve:resolve reject:reject];
 }
-
-#else
-
-RCT_EXPORT_METHOD(announce:(NSString *)message
-                   options:(NSDictionary *)options
-                   resolve:(RCTPromiseResolveBlock)resolve
-                    reject:(RCTPromiseRejectBlock)reject)
-{
-    NSDictionary *opts = ([options isKindOfClass:[NSDictionary class]]) ? options : @{};
-    [self _announceMessage:message opts:opts resolve:resolve reject:reject];
-}
-
-#endif // RCT_NEW_ARCH_ENABLED
 
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -235,12 +219,10 @@ RCT_EXPORT_METHOD(cancelAll:(RCTPromiseResolveBlock)resolve
 }
 
 
-#ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams &)params
 {
     return std::make_shared<facebook::react::NativeA11yAnnounceModuleSpecJSI>(params);
 }
-#endif
 
 @end

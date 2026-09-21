@@ -1,6 +1,6 @@
 # iOS Native Layer
 
-Objective-C implementation of the accessibility order library. Supports both New Architecture (Fabric/TurboModules) and Old Architecture (Bridge/RCTView).
+Objective-C implementation of the accessibility order library. **New Architecture only** (Fabric/TurboModules); Old Architecture (Bridge/RCTView) support was removed in `2.0.0`.
 
 ## Directory Structure
 
@@ -19,9 +19,9 @@ ios/
 │   ├── RNAOPropsHelper                 # Fabric C++ ↔ ObjC prop comparison/unwrapping
 │   ├── RNAOSwizzleInstanceMethod       # Safe method_exchangeImplementations wrapper
 │   ├── RNAOSwizzleInstall.h            # Macros for +load vs __attribute__((constructor))
-│   └── RNAOFabricEventHelper/          # Typed event emission for Fabric (RCT_NEW_ARCH only)
+│   └── RNAOFabricEventHelper/          # Typed event emission for Fabric
 ├── modules/
-│   └── RNAOA11yAnnounceModule          # TurboModule / RCT_EXPORT_MODULE for announcements
+│   └── RNAOA11yAnnounceModule          # TurboModule for announcements
 ├── services/                           # Singletons and data structures
 │   ├── RNAOA11yAnnounceService/        # VoiceOver-aware announcement queue
 │   │   ├── RNAOA11yAnnounceService     # Entry point: announce/cancel/cancelAll + lock
@@ -34,7 +34,7 @@ ios/
 │   └── RNAOSortedMap/                  # Weak-ref sorted map (position → object)
 └── views/
     ├── base/                           # Inheritance chain base classes
-    │   ├── RNAOA11yViewGroup           # Base (RCTViewComponentView new arch / RCTView old arch)
+    │   ├── RNAOA11yViewGroup           # Base (RCTViewComponentView)
     │   ├── RNAOA11yScreenReaderView    # ↳ screen reader focus delegation
     │   ├── RNAOA11yGroupChildrenView   # ↳ shouldGroupAccessibilityChildren override (groupChildrenMode)
     │   ├── RNAOA11yManagedFocusView    # ↳ focus events, autoFocus prop, focus() command, FocusServiceSubscriber
@@ -49,7 +49,7 @@ ios/
 ## View Inheritance Chain
 
 ```
-RNAOA11yViewGroup             base (RCTViewComponentView new arch / RCTView old arch)
+RNAOA11yViewGroup             base (RCTViewComponentView)
   └─ RNAOA11yScreenReaderView     screen reader focus delegation (RNAOScreenReaderFocusDelegate)
        └─ RNAOA11yGroupChildrenView   shouldGroupAccessibilityChildren override (groupChildrenMode: -1/0/1)
             └─ RNAOA11yManagedFocusView  focus events, RNAOA11yFocusServiceSubscriber, descendantFocusChangedEnabled
@@ -72,7 +72,7 @@ RNAOA11yViewGroup             base (RCTViewComponentView new arch / RCTView old 
 ## Singleton Services
 
 ### RNAOA11yOrderLinking
-Registry mapping `orderKey` (NSString) → `RNAOA11yRelationship`. The main coordination point between `RNAOA11yOrderView` (container) and `RNAOA11yIndexView` (items). Supports an optional debounce path (`setContainer:withView:withDebounce:`) to avoid excessive accessibility tree rebuilds during rapid prop updates.
+Registry mapping `orderKey` (NSString) → `RNAOA11yRelationship`. The main coordination point between `RNAOA11yOrderView` (container) and `RNAOA11yIndexView` (items). Exposes an optional debounce path (`setContainer:withView:withDebounce:`); the 2-arg `setContainer:withView:` routes through it with `debounced: NO`, which is the only path used today.
 
 ### RNAOA11yRelationship
 Owns an `RNAOSortedMap` for one order group. When the map changes it calls `setAccessibilityElements:` on the registered container view. Holds a `debouncer` for batching updates.
@@ -110,7 +110,7 @@ Places a full-cover invisible `accessibilityElement` overlay on top of the card 
 
 ## A11yIndex Props
 
-Props handled by `RNAOA11yIndexViewManager` / `updateProps:oldProps:`:
+Props handled by `RNAOA11yIndexView`'s `updateProps:oldProps:`:
 
 | Prop | Type | Purpose |
 |---|---|---|
@@ -130,13 +130,15 @@ Three UIKit classes are swizzled:
 - **UIViewController** — `viewWillDisappear` saves focused element + locks announcements 1.0s; `viewDidAppear` restores focus via `UIAccessibilityLayoutChangedNotification` + locks 0.5s
 - **RCTModalHostViewComponentView** — present/dismiss locks announcements 0.1s
 
-## Dual Architecture
+## Fabric Integration
 
-Files conditionally compile with `#ifdef RCT_NEW_ARCH_ENABLED`:
-- **New arch:** Fabric component descriptors, `updateProps:oldProps:`, `SharedViewEventEmitter`, `prepareForRecycle`, TurboModule spec
-- **Old arch:** `RCTView`/`RCTViewManager`, `RCT_EXPORT_VIEW_PROPERTY`, `RCTDirectEventBlock` callbacks, `layoutSubviews` lifecycle, `willMoveToSuperview:`
+All views extend `RCTViewComponentView` and use Fabric component descriptors,
+`updateProps:oldProps:`, `SharedViewEventEmitter` and `prepareForRecycle`. Components are
+registered through `codegenConfig.ios.componentProvider` in `package.json`; there are no
+`RCTViewManager` subclasses. The `focus` command arrives via `handleCommand:args:` on
+`RNAOA11yScreenReaderView`.
 
-`RNAOFabricEventHelper` is entirely new-arch only and emits four typed Fabric events: `onIndexViewFocusChange`, `onA11yViewFocusChange`, `onA11yViewFocused`, `onA11yViewScreenReaderDescendantFocusChanged`.
+`RNAOFabricEventHelper` emits four typed Fabric events: `onIndexViewFocusChange`, `onA11yViewFocusChange`, `onA11yViewFocused`, `onA11yViewScreenReaderDescendantFocusChanged`.
 
 `RNAOPropsHelper` is used in `updateProps:oldProps:` to detect changed props from C++ structs (`isPropChanged:stringValue:`, `isPropChanged:intValue:`, `unwrapStringValue:`, `unwrapIntValue:`).
 
@@ -144,7 +146,7 @@ Files conditionally compile with `#ifdef RCT_NEW_ARCH_ENABLED`:
 
 ```
 React JS
-  → RNAOA11yAnnounceModule (RCT_EXPORT_METHOD / TurboModule)
+  → RNAOA11yAnnounceModule (TurboModule)
   → calm=true:  RNAOA11yAnnounceService → RNAOA11yAnnounceQueue → RNAODebouncer (0.3s)
                 → RNAOFocusChangeListener (VoiceOver must be active, lock off)
                 → RNAOA11yAnnounceHelper → UIAccessibilityPostNotification(AnnouncementNotification)

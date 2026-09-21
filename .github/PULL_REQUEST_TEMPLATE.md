@@ -20,8 +20,6 @@
 
 - [ ] Tested on iOS with VoiceOver
 - [ ] Tested on Android with TalkBack
-- [ ] Tested on New Architecture
-- [ ] Tested on Old Architecture
 - [ ] `yarn typecheck` passes
 - [ ] `yarn lint` passes
 - [ ] `yarn test` passes

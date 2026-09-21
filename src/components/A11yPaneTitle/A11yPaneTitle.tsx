@@ -1,4 +1,3 @@
-import React from 'react';
 import A11yPaneTitleNative from '../../nativeSpecs/A11yPaneTitleNativeComponent';
 import type {
   A11yPaneTitleProps,

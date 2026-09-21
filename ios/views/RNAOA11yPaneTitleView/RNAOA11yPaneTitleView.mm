@@ -8,21 +8,21 @@
 #import <Foundation/Foundation.h>
 
 #import <UIKit/UIKit.h>
-#import <React/RCTViewManager.h>
 #import "RNAOA11yPaneTitleView.h"
 #import "UIViewController+RNAOA11yOrder.h"
 #import "RNAOA11yAnnounceService.h"
 #import "RNAOSpeechAttributes.h"
+#import "RNAOPropsHelper.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 #include <string>
 #import <react/renderer/components/RNA11yOrderSpec/ComponentDescriptors.h>
 #import <react/renderer/components/RNA11yOrderSpec/EventEmitters.h>
 #import <react/renderer/components/RNA11yOrderSpec/Props.h>
 #import <react/renderer/components/RNA11yOrderSpec/RCTComponentViewHelpers.h>
-#import "RNAOPropsHelper.h"
-#import "RCTFabricComponentsPlugins.h"
+
+#import <React/RCTFabricComponentsPlugins.h>
+#import <React/UIView+React.h>
 
 using namespace facebook::react;
 
@@ -30,16 +30,12 @@ using namespace facebook::react;
 
 @end
 
-#endif
-
-
 
 @implementation RNAOA11yPaneTitleView {
   BOOL _announced;
 }
 
 
-#ifdef RCT_NEW_ARCH_ENABLED
 - (void)prepareForRecycle
 {
   [super prepareForRecycle];
@@ -89,9 +85,6 @@ Class<RCTComponentViewProtocol> A11yPaneTitleCls(void)
 {
   return RNAOA11yPaneTitleView.class;
 }
-
-#endif
-
 
 
 - (void)didMoveToWindow {

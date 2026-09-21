@@ -39,8 +39,8 @@ No config plugin is required.
 | Architecture | Supported |
 | :-- | :-- |
 | New Architecture (Fabric / Turbo Modules) | Yes |
-| Old Architecture (Bridge) | Yes |
 | Bridgeless mode | Yes |
+| Old Architecture (Bridge) | No — removed in `2.0.0` |
 
 ## Quick start
 

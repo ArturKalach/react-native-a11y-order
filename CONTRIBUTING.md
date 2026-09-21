@@ -15,7 +15,7 @@ If you can, it's helpful to include:
 
 - A minimal code example or steps to reproduce
 - The library version, React Native version, and platform (iOS / Android)
-- Architecture (New Arch / Old Arch) and screen reader (VoiceOver / TalkBack)
+- The screen reader in use (VoiceOver / TalkBack)
 
 None of these are required — a rough description or even just a question is enough to get started. The more context you provide, the faster the fix, but something is always better than nothing.
 
@@ -41,24 +41,14 @@ yarn example android    # Android
 yarn example ios        # iOS
 ```
 
-### New Architecture
+### Architecture
 
-The example defaults to Old Architecture. To test New Arch:
+The library is New Architecture only (Fabric + TurboModules) as of `2.0.0`. There are no
+build flags to set — the example app builds New Arch on both platforms by default.
 
-**Android:**
-```sh
-yarn example android
-```
+Check Metro logs for `"fabric":true` to confirm it is active.
 
-**iOS:**
-```sh
-RCT_NEW_ARCH_ENABLED=1 yarn example pods
-yarn example ios
-```
-
-Check Metro logs for `"fabric":true` to confirm New Arch is active.
-
-When switching architectures, clean first:
+After changing native code or the Codegen specs, clean first:
 
 ```sh
 yarn clean

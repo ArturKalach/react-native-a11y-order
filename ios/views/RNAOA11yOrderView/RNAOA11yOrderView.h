@@ -11,9 +11,7 @@
 
 
 #import <UIKit/UIKit.h>
-#import <React/RCTUITextField.h>
 
-#ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTViewComponentView.h>
 
 
@@ -28,16 +26,4 @@ NS_ASSUME_NONNULL_BEGIN
 NS_ASSUME_NONNULL_END
 
 
-#else /* RCT_NEW_ARCH_ENABLED */
-
-
-#import <React/RCTView.h>
-@interface RNAOA11yOrderView : RCTView
-
-@property NSString* orderKey;
-
-@end
-
-
-#endif /* RCT_NEW_ARCH_ENABLED */
 #endif /* RNAOA11yOrderView_h */

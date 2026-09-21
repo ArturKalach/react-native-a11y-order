@@ -3,11 +3,9 @@ import {
   codegenNativeComponent,
   codegenNativeCommands,
   type ViewProps,
+  type CodegenTypes,
+  type HostComponent,
 } from 'react-native';
-import type {
-  DirectEventHandler,
-  Int32,
-} from 'react-native/Libraries/Types/CodegenTypes';
 
 export type ScreenReaderFocusChange = Readonly<{
   isFocused: boolean;
@@ -19,18 +17,18 @@ export type ScreenReaderDescendantFocusChanged = Readonly<{
 }>;
 
 export interface A11yIndexNativeComponentProps extends ViewProps {
-  orderIndex?: Int32;
+  orderIndex?: CodegenTypes.Int32;
   orderKey?: string;
-  orderFocusType?: Int32;
-  shouldGroupAccessibilityChildren?: Int32;
+  orderFocusType?: CodegenTypes.Int32;
+  shouldGroupAccessibilityChildren?: CodegenTypes.Int32;
 
   descendantFocusChangedEnabled?: boolean;
 
-  onScreenReaderFocused?: DirectEventHandler<{}>;
-  onScreenReaderDescendantFocusChanged?: DirectEventHandler<ScreenReaderDescendantFocusChanged>;
-  onScreenReaderFocusChange?: DirectEventHandler<ScreenReaderFocusChange>;
+  onScreenReaderFocused?: CodegenTypes.DirectEventHandler<{}>;
+  onScreenReaderDescendantFocusChanged?: CodegenTypes.DirectEventHandler<ScreenReaderDescendantFocusChanged>;
+  onScreenReaderFocusChange?: CodegenTypes.DirectEventHandler<ScreenReaderFocusChange>;
 
-  containerType?: Int32;
+  containerType?: CodegenTypes.Int32;
 }
 
 export interface NativeCommands {
@@ -44,4 +42,4 @@ export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
 
 export default codegenNativeComponent<A11yIndexNativeComponentProps>(
   'A11yIndexView'
-);
+) as HostComponent<A11yIndexNativeComponentProps>;

@@ -5,7 +5,6 @@
 #import "RNAOScreenReaderFocusDelegate.h"
 #import "RNAOViewItemProtocol.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,11 +13,5 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#else
-
-@interface RNAOA11yScreenReaderView : RNAOA11yViewGroup<RNAOScreenReaderFocusDelegate, RNAOViewItemProtocol>
-@end
-
-#endif
 
 #endif /* RNAOA11yScreenReaderView_h */

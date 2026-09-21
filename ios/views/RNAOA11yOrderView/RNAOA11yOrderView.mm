@@ -10,10 +10,8 @@
 
 #import "RNAOA11yOrderView.h"
 #import <UIKit/UIKit.h>
-#import <React/RCTViewManager.h>
 #import "RNAOA11yOrderLinking.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 #include <string>
 #import <react/renderer/components/RNA11yOrderSpec/ComponentDescriptors.h>
@@ -21,16 +19,13 @@
 #import <react/renderer/components/RNA11yOrderSpec/Props.h>
 #import <react/renderer/components/RNA11yOrderSpec/RCTComponentViewHelpers.h>
 
-#import "RCTFabricComponentsPlugins.h"
+#import <React/RCTFabricComponentsPlugins.h>
 
 using namespace facebook::react;
 
 @interface RNAOA11yOrderView () <RCTA11yIndexViewViewProtocol>
 
 @end
-
-#endif
-
 
 
 @implementation RNAOA11yOrderView
@@ -41,11 +36,7 @@ using namespace facebook::react;
 
 - (void)setContainer {
   if(_orderKey != nil) {
-#ifdef RCT_NEW_ARCH_ENABLED
-      [[RNAOA11yOrderLinking sharedInstance] setContainer:_orderKey withView:self];
-#else
-      [[RNAOA11yOrderLinking sharedInstance] setContainer:_orderKey withView:self withDebounce: YES];
-#endif
+    [[RNAOA11yOrderLinking sharedInstance] setContainer:_orderKey withView:self];
   }
 }
 
@@ -54,24 +45,14 @@ using namespace facebook::react;
     [self setContainer];
 }
 
-#ifdef RCT_NEW_ARCH_ENABLED
 - (void)prepareForRecycle
 {
     [self setAccessibilityElements: nil];
     [super prepareForRecycle];
     [[RNAOA11yOrderLinking sharedInstance] removeContainer:_orderKey];
 }
-#else
-- (void)willMoveToSuperview:(UIView *)newSuperview {
-    [super willMoveToSuperview:newSuperview];
-    if (newSuperview == nil) {
-        [[RNAOA11yOrderLinking sharedInstance] removeContainer:_orderKey];
-    }
-}
-#endif
 
 
-#ifdef RCT_NEW_ARCH_ENABLED
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
     return concreteComponentDescriptorProvider<A11yOrderViewComponentDescriptor>();
@@ -104,6 +85,5 @@ Class<RCTComponentViewProtocol> A11yOrderViewCls(void)
     return RNAOA11yOrderView.class;
 }
 
-#endif
 
 @end

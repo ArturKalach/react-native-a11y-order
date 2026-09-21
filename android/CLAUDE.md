@@ -1,13 +1,13 @@
 # Android Native Layer
 
-Java implementation of the accessibility order library. Supports both New Architecture (Fabric/TurboModules) and Old Architecture (Bridge).
+Java implementation of the accessibility order library. **New Architecture only** (Fabric/TurboModules); Old Architecture (Bridge) support was removed in `2.0.0`.
 
 ## Directory Structure
 
 ```
 android/src/
 ├── main/java/com/a11yorder/
-│   ├── A11yOrderPackage.java               # TurboReactPackage — registers 5 view managers (Index, Order, PaneTitle, Lock, Card) + AnnounceModule
+│   ├── A11yOrderPackage.java               # BaseReactPackage — registers 5 view managers (Index, Order, PaneTitle, Lock, Card) + AnnounceModule
 │   ├── core/                               # Inheritance chain (bottom → top):
 │   │   ├── A11yViewGroup.java              #   Base — weak-ref first-child tracking (onChildAttached/onChildRemoved)
 │   │   ├── A11yScreenReaderView.java       #   ↳ screen reader events (focused/focusChanged/descendantFocusChanged)
@@ -41,8 +41,7 @@ android/src/
 │       ├── A11yOrderView/                  # A11y.Order — registers as order group container (extends ReactViewGroup directly)
 │       ├── A11yLockView/                   # A11y.FocusTrap — traps TalkBack focus (modal pattern); includes A11yLockService
 │       └── A11yPaneTitle/                  # A11y.PaneTitle — pane/screen transition announcements
-├── newarch/                                # Fabric/TurboModule spec wrappers (Codegen): 6 files
-└── oldarch/                                # Bridge spec wrappers: 6 files
+└── newarch/                                # Fabric/TurboModule spec wrappers (Codegen): 6 files
 ```
 
 ## Core Protocols / Interfaces
@@ -78,16 +77,16 @@ Stores weak references to the modal trap view and keyboard-focusable view. Used 
 | 1 | `ORDER_FOCUS_TYPE_CHILD` | First accessible descendant (DFS) |
 | 2 | `ORDER_FOCUS_TYPE_LEGACY` | Stored child view or first subview |
 
-## Dual Architecture
+## Codegen Spec Wrappers
 
-Source sets are merged at build time via Gradle. `newarch/` and `oldarch/` provide alternative `*Spec` base classes:
+`src/newarch` is added to the `main` source set by Gradle (together with `generated/java` and
+`generated/jni`). It holds 6 `*Spec` base classes that bridge the concrete implementations in
+`main/` to the Codegen output: `A11yAnnounceModuleSpec` extends the generated
+`NativeA11yAnnounceModuleSpec` (TurboModule); the five view-manager specs extend
+`ReactViewManager` and implement the generated `*ManagerInterface` (Fabric).
 
-- **New arch:** Spec classes extend Codegen-generated `Native*Spec` interfaces (Fabric/TurboModule)
-- **Old arch:** Spec classes extend `ReactContextBaseJavaModule` / `SimpleViewManager` directly
-
-Concrete implementations in `main/` are architecture-agnostic — they extend whichever spec is active.
-
-Both source sets have 6 spec files each: `A11yAnnounceModuleSpec`, `A11yCardViewManagerSpec`, `A11yIndexViewManagerSpec`, `A11yLockViewManagerSpec`, `A11yOrderViewManagerSpec`, `A11yPaneTitleSpec`.
+Files: `A11yAnnounceModuleSpec`, `A11yCardViewManagerSpec`, `A11yIndexViewManagerSpec`,
+`A11yLockViewManagerSpec`, `A11yOrderViewManagerSpec`, `A11yPaneTitleSpec`.
 
 ## Event System
 

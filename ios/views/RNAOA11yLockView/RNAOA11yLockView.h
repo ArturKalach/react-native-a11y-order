@@ -13,7 +13,6 @@
 #import "RNAOViewItemProtocol.h"
 
 
-#ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTViewComponentView.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,17 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-
-
-#else /* RCT_NEW_ARCH_ENABLED */
-
-#import <React/RCTView.h>
-@interface RNAOA11yLockView : RCTView
-@property (nonatomic, assign) BOOL lockDisabled;
-@property (nonatomic, assign) NSInteger componentType;
-@end
-
-#endif
 
 
 #endif /* RNAOA11yLockView_h */

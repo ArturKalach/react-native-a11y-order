@@ -1,11 +1,17 @@
-import { codegenNativeComponent, type ViewProps } from 'react-native';
-import type { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
+import {
+  codegenNativeComponent,
+  type HostComponent,
+  type ViewProps,
+  type CodegenTypes,
+} from 'react-native';
 
 export interface A11yLockNativeComponentProps extends ViewProps {
-  componentType: Int32;
+  componentType: CodegenTypes.Int32;
   containerKey?: string;
   lockDisabled?: boolean;
   forceLock?: boolean;
 }
 
-export default codegenNativeComponent<A11yLockNativeComponentProps>('A11yLock');
+export default codegenNativeComponent<A11yLockNativeComponentProps>(
+  'A11yLock'
+) as HostComponent<A11yLockNativeComponentProps>;

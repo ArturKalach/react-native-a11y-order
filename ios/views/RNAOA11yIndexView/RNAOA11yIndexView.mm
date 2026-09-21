@@ -1,24 +1,21 @@
 #import "RNAOA11yIndexView.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 #include <string>
 #import <react/renderer/components/RNA11yOrderSpec/ComponentDescriptors.h>
 #import <react/renderer/components/RNA11yOrderSpec/EventEmitters.h>
 #import <react/renderer/components/RNA11yOrderSpec/Props.h>
 #import <react/renderer/components/RNA11yOrderSpec/RCTComponentViewHelpers.h>
-#import "RCTFabricComponentsPlugins.h"
+#import <React/RCTFabricComponentsPlugins.h>
 
 using namespace facebook::react;
 
 @interface RNAOA11yIndexView () <RCTA11yIndexViewViewProtocol>
 @end
 
-#endif
 
 @implementation RNAOA11yIndexView
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
@@ -67,6 +64,5 @@ Class<RCTComponentViewProtocol> A11yIndexViewCls(void) {
   return RNAOA11yIndexView.class;
 }
 
-#endif
 
 @end

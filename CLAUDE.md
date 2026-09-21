@@ -83,12 +83,12 @@ Platform-specific files follow the React Native convention:
 
 Components with platform splits: `A11yCard`, `A11yFocusTrap`, `A11yFocusFrame`, `A11yBaseLock`, `A11yAnnounceModule`.
 
-### Native bridge
+### Native layer
 
-Codegen specs live in [src/nativeSpecs/](src/nativeSpecs/) and define the TypeScript interface for each native component and module. The library supports both New Architecture (Fabric/Turbo Modules) and Old Architecture (Bridge). Native implementations:
+Codegen specs live in [src/nativeSpecs/](src/nativeSpecs/) and define the TypeScript interface for each native component and module. The library is **New Architecture only** (Fabric + TurboModules); Old Architecture (Bridge) support was removed in `2.0.0`. Native implementations:
 
 - **iOS** ([ios/](ios/)): Objective-C with method swizzling (`RNAOSwizzleInstanceMethod`), a focus service (`RNAOA11yFocusService`), sorted map for order tracking (`RNAOSortedMap`), and per-component view classes. See [ios/CLAUDE.md](ios/CLAUDE.md).
-- **Android** ([android/](android/)): Java with separate `newarch/` and `oldarch/` source sets merged via Gradle. See [android/CLAUDE.md](android/CLAUDE.md).
+- **Android** ([android/](android/)): Java, with the Codegen spec wrappers in the `newarch/` source set merged via Gradle. See [android/CLAUDE.md](android/CLAUDE.md).
 
 The Codegen config name is `RNA11yOrderSpec` (see `codegenConfig` in [package.json](package.json)).
 

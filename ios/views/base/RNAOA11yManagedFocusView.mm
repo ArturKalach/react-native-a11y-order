@@ -1,16 +1,13 @@
 #import "RNAOA11yManagedFocusView.h"
 #import "RNAOViewItemDelegate.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
 #import "RNAOFabricEventHelper.h"
-#endif
 
 @implementation RNAOA11yManagedFocusView {
   BOOL _descendantFocusChangedEnabled;
   RNAOViewItemDelegate* _viewDelegate;
 }
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
@@ -30,21 +27,6 @@
   [_viewDelegate finalizeUpdates];
 }
 
-#else
-
-- (instancetype)initWithFrame:(CGRect)frame {
-  if (self = [super initWithFrame:frame]) {
-    _viewDelegate = [[RNAOViewItemDelegate alloc] initWithView: self];
-  }
-  return self;
-}
-
-- (void)layoutSubviews {
-  [super layoutSubviews];
-  [_viewDelegate layoutSubviews];
-}
-
-#endif
 
 - (void)setDescendantFocusChangedEnabled:(BOOL)descendantFocusChangedEnabled {
   _descendantFocusChangedEnabled = descendantFocusChangedEnabled;
@@ -108,43 +90,18 @@
   [self onScreenReaderDescendantFocusChangedHandler: false withId:nativeId];
 }
 
-#ifdef RCT_NEW_ARCH_ENABLED
 - (void)onScreenReaderFocusedHandler {
   [RNAOFabricEventHelper onA11yViewFocused: _eventEmitter];
 }
-#else
-- (void)onScreenReaderFocusedHandler {
-  if (self.onScreenReaderFocused) {
-    self.onScreenReaderFocused(@{});
-  }
-}
-#endif
 
-#ifdef RCT_NEW_ARCH_ENABLED
 - (void)onScreenReaderDescendantFocusChangedHandler:(BOOL)isFocused withId:(NSString*)nativeId {
   NSString* status = isFocused ? @"focused" : @"blurred";
   [RNAOFabricEventHelper onA11yViewScreenReaderDescendantFocusChanged:status withId:nativeId withEmitter:_eventEmitter];
 }
-#else
-- (void)onScreenReaderDescendantFocusChangedHandler:(BOOL)isFocused withId:(NSString*)nativeId {
-  if (self.onScreenReaderDescendantFocusChanged) {
-    NSString* status = isFocused ? @"focused" : @"blurred";
-    self.onScreenReaderDescendantFocusChanged(@{@"status": status, @"nativeId": nativeId});
-  }
-}
-#endif
 
-#ifdef RCT_NEW_ARCH_ENABLED
 - (void)onScreenReaderFocusChangeHandler:(BOOL)isFocused {
   [RNAOFabricEventHelper onA11yViewFocusChange:isFocused withEmitter:_eventEmitter];
 }
-#else
-- (void)onScreenReaderFocusChangeHandler:(BOOL)isFocused {
-  if (self.onScreenReaderFocusChange) {
-    self.onScreenReaderFocusChange(@{@"isFocused" : @(isFocused)});
-  }
-}
-#endif
 
 - (void)onChildAttached:(UIView*)child {
   [_viewDelegate didAddSubview: child];

@@ -1,5 +1,24 @@
 # Migration Guide
 
+## Migrating to 2.0 from 1.x
+
+**There are no public API changes.** Every component, prop, type and function exported in `1.x`
+behaves identically in `2.0`. The upgrade is entirely about platform requirements — if your app
+already meets them, `yarn add react-native-a11y-order@2` and a rebuild is the whole migration.
+
+### Old Architecture support removed
+
+`2.0` is New Architecture only (Fabric + TurboModules). Removed in this release:
+
+- the Android `oldarch` source set and the `newArchEnabled` / `IS_NEW_ARCHITECTURE_ENABLED` switches
+- the iOS legacy `*ViewManager` classes and the bridge announce module
+- the `NativeModules` fallback and `LINKING_ERROR` proxy in `ScreenReader` — the TurboModule is now
+  imported directly
+
+If your app runs on the Old Architecture, stay on `1.x`. It remains supported for bug fixes.
+
+---
+
 ## Migrating to 1.0 from 0.9.x
 
 ### `orderType` value renames

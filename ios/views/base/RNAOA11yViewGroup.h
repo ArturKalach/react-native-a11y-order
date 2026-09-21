@@ -3,7 +3,6 @@
 
 #import <UIKit/UIKit.h>
 
-#ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTViewComponentView.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -18,18 +17,5 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#else
-
-#import <React/RCTView.h>
-
-@interface RNAOA11yViewGroup : RCTView
-
-- (nullable UIView*)getSubChild;
-- (void)onChildAttached:(UIView*)child;
-- (void)onChildRemoved;
-
-@end
-
-#endif
 
 #endif /* RNAOA11yViewGroup_h */

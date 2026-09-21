@@ -12,8 +12,6 @@
 #import "RNAOA11yAnnounceService.h"
 #import "RCTModalHostViewComponentView+RNAOA11yOrder.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
-
 
 @implementation RCTModalHostViewComponentView (RNAOA11yOrder)
 
@@ -48,35 +46,3 @@ RNAO_INSTALL_SWIZZLES(RNAORegisterModalPresentationSwizzles)
 
 @end
 
-#else
-
-@implementation RCTModalHostView (RNAOA11yOrder)
-
-static void RNAORegisterModalPresentationSwizzles(void) {
-    Class cls = objc_getClass("RCTModalHostView");
-    if (!cls) return;
-    RNAOSwizzleInstanceMethod(cls,
-        @selector(ensurePresentedOnlyIfNeeded),
-        @selector(rnao_ensurePresentedOnlyIfNeeded));
-    RNAOSwizzleInstanceMethod(cls,
-        @selector(dismissModalViewController),
-        @selector(rnao_dismissModalViewController));
-}
-
-RNAO_INSTALL_SWIZZLES(RNAORegisterModalPresentationSwizzles)
-
-- (void)rnao_ensurePresentedOnlyIfNeeded
-{
-    [self rnao_ensurePresentedOnlyIfNeeded];
-    [[RNAOA11yAnnounceService shared] temporarilyLockAnnounce: 0.1];
-}
-
-- (void)rnao_dismissModalViewController
-{
-    [self rnao_dismissModalViewController];
-    [[RNAOA11yAnnounceService shared] temporarilyLockAnnounce: 0.1];
-}
-
-@end
-
-#endif

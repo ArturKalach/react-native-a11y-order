@@ -5,20 +5,28 @@
 
 #import "RNAOA11yCardView.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 #import <react/renderer/components/RNA11yOrderSpec/ComponentDescriptors.h>
+#import <react/renderer/components/RNA11yOrderSpec/Props.h>
 #import <react/renderer/components/RNA11yOrderSpec/RCTComponentViewHelpers.h>
-#import "RCTFabricComponentsPlugins.h"
+#import <React/RCTFabricComponentsPlugins.h>
 
 using namespace facebook::react;
 
-#endif
 
 @implementation RNAOA11yCardView {
   UIFocusGuide *_contentFocusGuide;
   NSString *_overlayFocusGroupIdentifier;
   NSString *_contentFocusGroupIdentifier;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+  if (self = [super initWithFrame:frame]) {
+    static const auto defaultProps = std::make_shared<const A11yCardViewProps>();
+    _props = defaultProps;
+  }
+  return self;
 }
 
 - (nullable NSArray *)accessibilityElements {
@@ -52,7 +60,6 @@ using namespace facebook::react;
   }
 }
 
-#ifdef RCT_NEW_ARCH_ENABLED
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView
                           index:(NSInteger)index {
@@ -68,16 +75,5 @@ Class<RCTComponentViewProtocol> A11yCardViewCls(void) {
   return RNAOA11yCardView.class;
 }
 
-#else
-
-- (void)didAddSubview:(UIView *)subview {
-  [super didAddSubview:subview];
-  NSUInteger index = [self.subviews indexOfObject:subview];
-  if (index != NSNotFound) {
-    [self assignFocusGroupIdentifierToChild:subview atIndex:(NSInteger)index];
-  }
-}
-
-#endif
 
 @end
