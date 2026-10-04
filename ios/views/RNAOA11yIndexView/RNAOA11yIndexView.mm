@@ -30,9 +30,9 @@ using namespace facebook::react;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps {
-  const auto &oldViewProps = *std::static_pointer_cast<A11yIndexViewProps const>(_props);
+  const auto oldViewPropsPtr = std::static_pointer_cast<A11yIndexViewProps const>(_props);
+  const auto &oldViewProps = *oldViewPropsPtr;
   const auto &newViewProps = *std::static_pointer_cast<A11yIndexViewProps const>(props);
-  [super updateProps:props oldProps:oldProps];
 
   if (oldViewProps.orderIndex != newViewProps.orderIndex || [self delegatePosition] == nil) {
     [self setPosition: @(newViewProps.orderIndex)];
@@ -49,15 +49,17 @@ using namespace facebook::react;
   if (self.groupChildrenMode != newViewProps.shouldGroupAccessibilityChildren) {
     self.groupChildrenMode = newViewProps.shouldGroupAccessibilityChildren;
   }
-  
+
   if (self.descendantFocusChangedEnabled != newViewProps.descendantFocusChangedEnabled) {
     [self setDescendantFocusChangedEnabled: newViewProps.descendantFocusChangedEnabled];
   }
-  
+
   if (oldViewProps.containerType != newViewProps.containerType) {
       NSInteger containerType = newViewProps.containerType;
       self.accessibilityContainerType = (UIAccessibilityContainerType)containerType;
   }
+
+  [super updateProps:props oldProps:oldProps];
 }
 
 Class<RCTComponentViewProtocol> A11yIndexViewCls(void) {

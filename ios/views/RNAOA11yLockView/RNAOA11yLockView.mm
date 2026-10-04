@@ -123,10 +123,11 @@ using namespace facebook::react;
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
   const auto &newViewProps = *std::static_pointer_cast<A11yLockProps const>(props);
-  [super updateProps:props oldProps:oldProps];
 
   self.lockDisabled = newViewProps.lockDisabled;
   self.componentType = newViewProps.componentType;
+
+  [super updateProps:props oldProps:oldProps];
 }
 
 Class<RCTComponentViewProtocol> A11yLockCls(void)
