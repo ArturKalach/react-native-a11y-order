@@ -67,10 +67,9 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-  const auto &oldViewProps = *std::static_pointer_cast<A11yPaneTitleProps const>(_props);
+  const auto oldViewPropsPtr = std::static_pointer_cast<A11yPaneTitleProps const>(_props);
+  const auto &oldViewProps = *oldViewPropsPtr;
   const auto &newViewProps = *std::static_pointer_cast<A11yPaneTitleProps const>(props);
-  [super updateProps
-   :props oldProps:oldProps];
 
   if ([RNAOPropsHelper isPropChanged: _title stringValue: newViewProps.title]) {
     [self setTitle: [RNAOPropsHelper unwrapStringValue: newViewProps.title]];
@@ -83,6 +82,8 @@ using namespace facebook::react;
   if (_withFocusRestore != newViewProps.withFocusRestore) {
     [self setWithFocusRestore: newViewProps.withFocusRestore];
   }
+
+  [super updateProps:props oldProps:oldProps];
 }
 
 Class<RCTComponentViewProtocol> A11yPaneTitleCls(void)
