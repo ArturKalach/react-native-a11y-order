@@ -1242,7 +1242,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-a11y-order (0.11.0-rc1):
+  - react-native-a11y-order (0.11.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1802,7 +1802,7 @@ SPEC CHECKSUMS:
   React-logger: ae95f0effa7e1791bd6f7283caddca323d4fbc1e
   React-Mapbuffer: 7eb5d69e1154e7743487ef0c8d7261e5b59afb32
   React-microtasksnativemodule: 16e31e4f503a5f46adafd035096130418c3bce70
-  react-native-a11y-order: aba1bc1b96d412caaf8e2eb76b6b2f22fb0b0a91
+  react-native-a11y-order: a19aecd523212abb014408e5b2945f74adde64ef
   react-native-safe-area-context: e134b241010ebe2aacdcea013565963d13826faa
   React-nativeconfig: f7ab6c152e780b99a8c17448f2d99cf5f69a2311
   React-NativeModulesApple: 9aeb901b9bfcc9235e912445fb3cf4780a99baf4
@@ -1837,4 +1837,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 64dfb1359766794a4cfa73eaf2ba1ad4f55b2fdd
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0
