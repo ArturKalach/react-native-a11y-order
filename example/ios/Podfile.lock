@@ -1246,7 +1246,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-a11y-order (1.0.0):
+  - react-native-a11y-order (2.0.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2065,7 +2065,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 295203fc648a43acf7fba609ddf573aa9fca849f
   React-microtasksnativemodule: 269f81deee27a2a9bedb6b2d1088c1ae93de9bd3
   React-mutationobservernativemodule: 877e9f730e0d8175c2e952901b55c170fc3d372f
-  react-native-a11y-order: 8eb5decc1add9b40d857068d74a93789e1425152
+  react-native-a11y-order: d94eaab1299770bcf21b5e26372f39fa06e4fd6f
   react-native-safe-area-context: b3e507b0dbfb44dfadb29f7a31e884ac13789723
   React-NativeModulesApple: adb1dd8361dff80e9f6652fb3fdbf033cfbe2a89
   React-networking: c00b437c4408f0640ba0d4158357133488521eca
