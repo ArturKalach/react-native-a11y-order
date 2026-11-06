@@ -1,7 +1,5 @@
 package com.a11yorder.views.A11yIndexView;
 
-import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -9,7 +7,6 @@ import com.a11yorder.events.EventHelper;
 import com.a11yorder.events.ScreenReaderDescendantFocusChangedEvent;
 import com.a11yorder.events.ScreenReaderFocusChangedEvent;
 import com.a11yorder.events.ScreenReaderFocusedEvent;
-import com.a11yorder.utils.A11yHelper;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -62,18 +59,13 @@ public class A11yIndexViewManager extends com.a11yorder.A11yIndexViewManagerSpec
 
   @Override
   public void focus(A11yIndexView view) {
-    this.focus((ReactViewGroup) view);
-  }
-
-  private <T extends ReactViewGroup> void focus(T view) {
-    View firstAccessible = A11yHelper.findFirstAccessible(view, true);
-    A11yHelper.focus(firstAccessible);
+    view.focus();
   }
 
   @Override
   public void receiveCommand(ReactViewGroup root, String commandId, @Nullable ReadableArray args) {
     if (commandId.equals("focus")) {
-      this.focus(root);
+      this.focus((A11yIndexView) root);
     } else {
       super.receiveCommand(root, commandId, args);
     }
