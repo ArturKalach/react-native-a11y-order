@@ -1,6 +1,5 @@
 package com.a11yorder.services.focus;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -84,25 +83,24 @@ public final class A11yFocusService {
 
   private void attemptFocus(int delay, int retry) {
     lock = false;
-    ViewGroup targetViewGroup = getStoredView();
-    if (targetViewGroup == null) return;
-
-    View accessibleView = A11yHelper.findFirstAccessible(targetViewGroup);
-    if (accessibleView != null) {
-      attemptFocusRetry(accessibleView, retry, delay);
-    }
+    attemptFocusRetry(retry, delay);
   }
 
   private void attemptFocus(int delay) {
     this.attemptFocus(delay, DEFAULT_RETRIES);
   }
 
-  private void attemptFocusRetry(@NonNull View targetView, int retries, int delay) {
-    if (retries <= 0 || shouldAbortFocus(targetView)) return;
+  // The target can still be unmeasured when the command arrives (first frame of a
+  // Modal window), so resolve the accessible view on every attempt instead of once
+  // up front — otherwise a null on the first look cancels the whole request.
+  private void attemptFocusRetry(int retries, int delay) {
+    if (retries <= 0 || lock) return;
     cancelPendingRetry();
 
     ViewGroup storedView = getStoredView();
-    if (storedView == null || A11yHelper.isFocused(storedView)) {
+    if (storedView == null) return;
+
+    if (A11yHelper.isFocused(storedView) || A11yHelper.isFocused(resolveTarget())) {
       lock = true;
       return;
     }
@@ -110,18 +108,25 @@ public final class A11yFocusService {
     pendingRetryTask = () -> {
       if (lock) return;
 
-      focusOnPost(targetView);
-      attemptFocusRetry(targetView, retries - 1, delay);
+      focusOnPost();
+      attemptFocusRetry(retries - 1, delay);
     };
 
-    targetView.postDelayed(pendingRetryTask, delay);
+    storedView.postDelayed(pendingRetryTask, delay);
   }
 
-  private void focusOnPost(@NonNull View targetView) {
-    if (shouldAbortFocus(targetView)) return;
+  @Nullable
+  private View resolveTarget() {
+    return A11yHelper.findFirstAccessible(getStoredView());
+  }
 
-    targetView.post(() -> {
-      if (shouldAbortFocus(targetView)) return;
+  private void focusOnPost() {
+    ViewGroup storedView = getStoredView();
+    if (storedView == null || lock) return;
+
+    storedView.post(() -> {
+      View targetView = resolveTarget();
+      if (targetView == null || shouldAbortFocus(targetView)) return;
       A11yHelper.focus(targetView);
     });
   }
